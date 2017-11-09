@@ -36,22 +36,66 @@ public class Office
    //Database Transaction Stubbs
    public boolean fetch()
    {
-      return true;
+      try
+      {
+         String[] params = { getUserName() };
+         resultSet = MySQLDatabase.getData("SELECT * FROM office WHERE UserName = ?", params);
+         
+         setUserName(resultSet[0][0]);
+         setOfficeNumber(resultSet[0][1]);
+         
+         return true;
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
    
    public boolean put()
    {
-      return true;
+      try
+      {
+         String[] params = { getUserName(), getOfficeNumber (), getUserName() };
+         MySQLDatabase.setData("UPDATE office SET UserName = ?, OfficeNumber = ? WHERE UserName = ?", params);
+         return true;
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
    
    public boolean post()
    {
-      return true;
+      try
+      {
+         String[] params = { getUserName(), getOfficeNumber() };
+         MySQLDatabase.setData("INSERT INTO office (UserName, OfficeNumber) VALUES (?, ?)", params);
+         return true; 
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
    
    public boolean delete()
    {
-      return true;
+      try
+      {
+         String[] params = { getUserName() };
+         MySQLDatabase.setData("DELETE FROM office WHERE UserName = ?", params);
+         return true;
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
 
 }

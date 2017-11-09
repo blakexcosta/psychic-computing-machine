@@ -42,22 +42,67 @@ public class Email
    //Database Transaction Stubbs
    public boolean fetch()
    {
-      return true;
+      try
+      {
+         String[] params = { getUserName() };
+         resultSet = MySQLDatabase.getData("SELECT * FROM email WHERE UserName = ?", params);
+         
+         setUserName(resultSet[0][0]);
+         setEmailAddress(resultSet[0][1]);
+         setEmailType(resultSet[0][2]);
+         
+         return true;
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
    
    public boolean put()
    {
-      return true;
+      try
+      {
+         String[] params = { getUserName(), getEmailAddress(), getEmailType(), getUserName() };
+         MySQLDatabase.setData("UPDATE email SET UserName = ?, EmailAddress = ?, EmailType = ? WHERE UserName = ?", params);
+         return true;
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
    
    public boolean post()
    {
-      return true;
+      try
+      {
+         String[] params = { getUserName(), getEmailAddress(), getEmailType() };
+         MySQLDatabase.setData("INSERT INTO email (UserName, EmailAddress, EmailType) VALUES (?, ?, ?)", params);
+         return true; 
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
    
    public boolean delete()
    {
-      return true;
+      try
+      {
+         String[] params = { getUserName() };
+         MySQLDatabase.setData("DELETE FROM email WHERE UserName = ?", params);
+         return true;
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
 
 }

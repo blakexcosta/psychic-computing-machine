@@ -43,6 +43,7 @@ public class Project
       projectType = "unknown";
       projectStartDate = "unknown";
       projectEndDate = "unknown";
+      projectDueDate = "unknown";
       projectCompleted = false;
       projectProposalApproved = false;
       projectFinalDefenseDate = "unknown";
@@ -52,7 +53,7 @@ public class Project
    }
    
    //Parameterized Constructor - Everything
-   public Project(int projectID, String projectName, String projectSummary, String projectTopic, String projectStartDate, String projectEndDate, boolean projectCompleted, boolean projectProposalApproved, String projectFinalDefenseDate, String projectPlagiarismPercentage, String projectGrade, int committeeID)
+   public Project(int projectID, String projectName, String projectSummary, String projectTopic, String projectStartDate, String projectEndDate, String projectDueDate, boolean projectCompleted, boolean projectProposalApproved, String projectFinalDefenseDate, String projectPlagiarismPercentage, String projectGrade, int committeeID)
    {
       this.projectID = projectID;
       this.projectName = projectName;
@@ -61,6 +62,7 @@ public class Project
       this.projectType = projectType;
       this.projectStartDate = projectStartDate;
       this.projectEndDate = projectEndDate;
+      this.projectDueDate = projectDueDate;
       this.projectCompleted = projectCompleted;
       this.projectProposalApproved = projectProposalApproved;
       this.projectFinalDefenseDate = projectFinalDefenseDate;
@@ -77,6 +79,7 @@ public class Project
    public String getProjectType() { return projectType; }
    public String getProjectStartDate() { return projectStartDate; }
    public String getProjectEndDate() { return projectEndDate; }
+   public String getProjectDueDate() { return projectDueDate; }
    public boolean getProjectCompleted() { return projectCompleted; }
    public boolean getProjectProposalApproved() { return projectProposalApproved; }
    public String getProjectPlagiarismPercentage() { return projectPlagiarismPercentage; }
@@ -92,6 +95,7 @@ public class Project
    public void getProjectType(String projectType) { this.projectType = projectType; }
    public void setProjectStartDate(String projectStartDate) { this.projectStartDate = projectStartDate; }
    public void setProjectEndDate(String projectEndDate) { this.projectEndDate = projectEndDate; }
+   public void setProjectDueDate(String projectDueDate) { this.projectDueDate = projectDueDate; }
    public void setProjectCompleted(boolean projectCompleted) { this.projectCompleted = projectCompleted; }
    public void setProjectProposalApproved(boolean projectProposalApproved) { this.projectProposalApproved = projectProposalApproved; }
    public void setProjectPlagiarismPercentage(String projectPlagiarismPercentage) { this.projectFinalDefenseDate = projectFinalDefenseDate; }
@@ -101,22 +105,77 @@ public class Project
    //Database Transaction Stubbs
    public boolean fetch()
    {
-      return true;
+      try
+      {
+         String[] params = { getProjectID() };
+         resultSet = MySQLDatabase.getData("SELECT * FROM project WHERE ID = ?", params);
+         
+         setProjectID(resultSet[0][0]);
+         setProjectName(resultSet[0][1]);
+         setProjectSummary(resultSet[0][2]);
+         setProjectTopic(resultSet[0][3]);
+         setProjectType(resultSet[0][4]);
+         setProjectStartDate(resultSet[0][5]);
+         setProjectEndDate(resultSet[0][6]);
+         setProjectDueDate(resultSet[0][7]);
+         setProjectCompleted(resultSet[0][8]);
+         setProjectProposalApproved(resultSet[0][9]);
+         setProjectPlagiarismPercentage(resultSet[0][10]);
+         setProjectGrade(resultSet[0][11]);
+         setCommitteeID(resultSet[0][12]);
+         
+         return true;
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
    
    public boolean put()
    {
-      return true;
+      try
+      {
+         String[] params = { getProjectID(), getProjectName(), getProjectSummary(), getProjectTopic(), getProjectType(), getProjectStartDate(), getProjectEndDate(), getProjectDueDate(), getProjectCompleted(), getProjectProposalApproved(), getProjectFinalDefenseDate(), getProjectPlagiarismPercentage(), getProjectGrade(), getCommitteeID(), getProjectID() };
+         MySQLDatabase.setData("UPDATE project SET ID = ?, Name = ?, Summary = ?, Topic = ?, Type = ?, StartDate = ?, EndDate = ?, DueDate = ?, Completed = ?, ProposalApproved = ?, FinalDefenseDate = ?, PlagiarismPercentage = ?, ProjectGrade = ?, CommitteeID = ? WHERE ID = ?", params);
+         return true;
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
    
    public boolean post()
    {
-      return true;
+      try
+      {
+         String[] params = { getProjectID(), getProjectName(), getProjectSummary(), getProjectTopic(), getProjectType(), getProjectStartDate(), getProjectEndDate(), getProjectDueDate(), getProjectCompleted(), getProjectProposalApproved(), getProjectFinalDefenseDate(), getProjectPlagiarismPercentage(), getProjectGrade(), getCommitteeID() };
+         MySQLDatabase.setData("INSERT INTO project (ID, Name, Summary, Topic, Type, StartDate, EndDate, DueDate, Competed, ProposalApproved, FinalDefenseDate, PlagiarismPercentage, ProjectGrade, CommitteeID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", params);
+         return true; 
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
    
    public boolean delete()
    {
-      return true;
+      try
+      {
+         String[] params = { getProjectID() };
+         MySQLDatabase.setData("DELETE FROM project WHERE ID = ?", params);
+         return true;
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
 
 }

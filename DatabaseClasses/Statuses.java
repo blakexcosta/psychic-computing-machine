@@ -36,22 +36,66 @@ public class Statuses
    //Database Transaction Stubbs
    public boolean fetch()
    {
-      return true;
+      try
+      {
+         String[] params = { getStatusCode() };
+         resultSet = MySQLDatabase.getData("SELECT * FROM statuses WHERE Code = ?", params);
+         
+         setStatusCode(resultSet[0][0]);
+         setStatusDescription(resultSet[0][1]);
+         
+         return true;
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
    
    public boolean put()
    {
-      return true;
+      try
+      {
+         String[] params = { getStatusCode(), getStatusDescription(), getStatusCode() };
+         MySQLDatabase.setData("UPDATE statuses SET Code = ?, Description = ? WHERE Code = ?", params);
+         return true;
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
    
    public boolean post()
    {
-      return true;
+      try
+      {
+         String[] params = { getStatusCode(), getStatusDescription() };
+         MySQLDatabase.setData("INSERT INTO statuses (Code, Description) VALUES (?, ?)", params);
+         return true; 
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
    
    public boolean delete()
    {
-      return true;
+      try
+      {
+         String[] params = { getStatusCode() };
+         MySQLDatabase.setData("DELETE FROM statuses WHERE Code = ?", params);
+         return true;
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
 
 }   

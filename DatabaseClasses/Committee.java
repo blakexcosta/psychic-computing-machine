@@ -41,22 +41,67 @@ public class Committee
    //Database Transaction Stubbs
    public boolean fetch()
    {
-      return true;
+      try
+      {
+         String[] params = { getCommitteeID() };
+         resultSet = MySQLDatabase.getData("SELECT * FROM committee WHERE ID = ?", params);
+         
+         setCommitteeID(resultSet[0][0]);
+         setProjectID(resultSet[0][1]);
+         setProjectGrade(resultSet[0][2]);
+         
+         return true;
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
    
    public boolean put()
    {
-      return true;
+      try
+      {
+         String[] params = { getCommitteeID(), getProjectID(), getProjectGrade(), getCommitteeID() };
+         MySQLDatabase.setData("UPDATE committee SET ID = ?, ProjectID = ?, ProjectGrade = ? WHERE ID = ?", params);
+         return true;
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
    
    public boolean post()
    {
-      return true;
+      try
+      {
+         String[] params = { getCommitteeID(), getProjectID(), getProjectGrade() };
+         MySQLDatabase.setData("INSERT INTO committee (ID, ProjectID, ProjectGrade) VALUES (?, ?, ?)", params);
+         return true; 
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
    
    public boolean delete()
    {
-      return true;
+      try
+      {
+         String[] params = { getCommitteeID() };
+         MySQLDatabase.setData("DELETE FROM committee WHERE ID = ?", params);
+         return true;
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
       
 }

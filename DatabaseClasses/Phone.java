@@ -42,21 +42,66 @@ public class Phone
    //Database Transaction Stubbs
    public boolean fetch()
    {
-      return true;
+      try
+      {
+         String[] params = { getUserName() };
+         resultSet = MySQLDatabase.getData("SELECT * FROM phone WHERE UserName = ?", params);
+         
+         setUserName(resultSet[0][0]);
+         setPhoneNumber(resultSet[0][1]);
+         setPhoneType(resultSet[0][2]);
+         
+         return true;
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
    
    public boolean put()
    {
-      return true;
+      try
+      {
+         String[] params = { getUserName(), getPhoneNumber(), getPhoneType(), getUserName() };
+         MySQLDatabase.setData("UPDATE phone SET UserName = ?, PhoneNumber = ?, PhoneType = ? WHERE UserName = ?", params);
+         return true;
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
    
    public boolean post()
    {
-      return true;
+      try
+      {
+         String[] params = { getUserName(), getPhoneNumber(), getPhoneType() };
+         MySQLDatabase.setData("INSERT INTO phone (UserName, PhoneNumber, PhoneType) VALUES (?, ?, ?)", params);
+         return true; 
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
    
    public boolean delete()
    {
-      return true;
+      try
+      {
+         String[] params = { getUserName() };
+         MySQLDatabase.setData("DELETE FROM phone WHERE UserName = ?", params);
+         return true;
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
 }

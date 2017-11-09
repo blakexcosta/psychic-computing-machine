@@ -78,22 +78,73 @@ public class User
    //Database Transaction Stubbs
    public boolean fetch()
    {
-      return true;
+      try
+      {
+         String[] params = { getUserName() };
+         resultSet = MySQLDatabase.getData("SELECT * FROM user WHERE UserName = ?", params);
+         
+         setUserName(resultSet[0][0]);
+         setFirstName(resultSet[0][1]);
+         setLastName(resultSet[0][2]);
+         setPassword(resultSet[0][3]);
+         setImageURL(resultSet[0][4]);
+         setGraduationDate(resultSet[0][5]);
+         setDepartment(resultSet[0][6]);
+         setMajor(resultSet[0][7]);
+         setRole(resultSet[0][8]);
+         
+         return true;
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
    
    public boolean put()
    {
-      return true;
+      try
+      {
+         String[] params = { getUserName(), getFirstName(), getLastName(), getPassword(), getImageURL(), getGraduationDate(), getDepartment(), getMajor(), getRole(), getUserName() };
+         MySQLDatabase.setData("UPDATE user SET UserName = ?, FirstName = ?, LastName = ?, Password = ?, Image = ?, GraduationDate = ?, Department = ?, Major = ?, Role = ? WHERE UserName = ?", params);
+         return true;
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
    
    public boolean post()
    {
-      return true;
+      try
+      {
+         String[] params = { getUserName(), getFirstName(), getLastName(), getPassword(), getImageURL(), getGraduationDate(), getDepartment(), getMajor(), getRole() }
+         MySQLDatabase.setData("INSERT INTO user (UserName, FirstName, LastName, Password, Image, GraduationDate, Department, Major, Role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", params);
+         return true; 
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
    
    public boolean delete()
    {
-      return true;
+      try
+      {
+         String[] params = { getUserName() };
+         MySQLDatabase.setData("DELETE FROM user WHERE UserName = ?", params);
+         return true;
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
    
 }

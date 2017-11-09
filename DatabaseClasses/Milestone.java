@@ -59,22 +59,70 @@ public class Milestone
    //Database Transaction Stubbs
    public boolean fetch()
    {
-      return true;
+      try
+      {
+         String[] params = { getMilestoneID() };
+         resultSet = MySQLDatabase.getData("SELECT * FROM milestone WHERE ID = ?", params);
+         
+         setMilestoneID(resultSet[0][1]);
+         setMilestoneStatusCode(resultSet[0][1]);
+         setMilestoneName(resultSet[0][2]);
+         setMilestoneNumber(resultSet[0][3]);
+         setMilestoneDueDate(resultSet[0][4]);
+         setMilestoneApproved(resultSet[0][5]);
+         
+         return true;
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
    
    public boolean put()
    {
-      return true;
+      try
+      {
+         String[] params = { getMilestoneID(), getMilestoneStatusCode(), getMilestoneName(), getMilestoneNumber(), getMilestoneDueDate(), getMilestoneApproved(), getMilestoneID() };
+         MySQLDatabase.setData("UPDATE milestone SET ID = ?, StatusCode = ?, Name = ?, Number = ?, DueDate = ?, Approved = ?  WHERE ID = ?", params);
+         return true;
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
    
    public boolean post()
    {
-      return true;
+      try
+      {
+         String[] params = { getMilestoneID(), getMilestoneStatusCode(), getMilestoneName(), getMilestoneNumber(), getMilestoneDueDate(), getMilestoneApproved() };
+         MySQLDatabase.setData("INSERT INTO milestone (ID, StatusCode, Name, Number, DueDate, Approved) VALUES (?, ?, ?, ?, ?, ?)", params);
+         return true; 
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
    
    public boolean delete()
    {
-      return true;
+      try
+      {
+         String[] params = { getMilestoneID() };
+         MySQLDatabase.setData("DELETE FROM milestone WHERE ID = ?", params);
+         return true;
+      }
+      catch (Exception ex)
+      {
+         System.out.println(ex.Message());
+         return false;
+      }
    }
 
 }
