@@ -1,3 +1,6 @@
+import java.sql.*;
+import java.util.*;
+
 public class User
 {
    //Attributes
@@ -10,6 +13,7 @@ public class User
    private String department;
    private String major;
    private String role;
+   MySQLDatabase databaseClass = new MySQLDatabase();
    
    //Default Constructor
    public User()
@@ -81,7 +85,7 @@ public class User
       try
       {
          String[] params = { getUserName() };
-         resultSet = MySQLDatabase.getData("SELECT * FROM user WHERE UserName = ?", params);
+         String[][] resultSet = databaseClass.getData("SELECT * FROM user WHERE UserName = ?", params);
          
          setUserName(resultSet[0][0]);
          setFirstName(resultSet[0][1]);
@@ -97,7 +101,7 @@ public class User
       }
       catch (Exception ex)
       {
-         System.out.println(ex.Message());
+         ex.printStackTrace();
          return false;
       }
    }
@@ -107,12 +111,12 @@ public class User
       try
       {
          String[] params = { getUserName(), getFirstName(), getLastName(), getPassword(), getImageURL(), getGraduationDate(), getDepartment(), getMajor(), getRole(), getUserName() };
-         MySQLDatabase.setData("UPDATE user SET UserName = ?, FirstName = ?, LastName = ?, Password = ?, Image = ?, GraduationDate = ?, Department = ?, Major = ?, Role = ? WHERE UserName = ?", params);
+         databaseClass.setData("UPDATE user SET UserName = ?, FirstName = ?, LastName = ?, Password = ?, Image = ?, GraduationDate = ?, Department = ?, Major = ?, Role = ? WHERE UserName = ?", params);
          return true;
       }
       catch (Exception ex)
       {
-         System.out.println(ex.Message());
+         ex.printStackTrace();
          return false;
       }
    }
@@ -121,13 +125,13 @@ public class User
    {
       try
       {
-         String[] params = { getUserName(), getFirstName(), getLastName(), getPassword(), getImageURL(), getGraduationDate(), getDepartment(), getMajor(), getRole() }
-         MySQLDatabase.setData("INSERT INTO user (UserName, FirstName, LastName, Password, Image, GraduationDate, Department, Major, Role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", params);
+         String[] params = { getUserName(), getFirstName(), getLastName(), getPassword(), getImageURL(), getGraduationDate(), getDepartment(), getMajor(), getRole()};
+         databaseClass.setData("INSERT INTO user (UserName, FirstName, LastName, Password, Image, GraduationDate, Department, Major, Role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", params);
          return true; 
       }
       catch (Exception ex)
       {
-         System.out.println(ex.Message());
+         ex.printStackTrace();
          return false;
       }
    }
@@ -137,12 +141,12 @@ public class User
       try
       {
          String[] params = { getUserName() };
-         MySQLDatabase.setData("DELETE FROM user WHERE UserName = ?", params);
+         databaseClass.setData("DELETE FROM user WHERE UserName = ?", params);
          return true;
       }
       catch (Exception ex)
       {
-         System.out.println(ex.Message());
+         ex.printStackTrace();
          return false;
       }
    }

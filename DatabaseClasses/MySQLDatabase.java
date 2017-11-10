@@ -9,6 +9,10 @@ public class MySQLDatabase {
    static Connection conn;
    static String[][] sqlArr;
 
+   public MySQLDatabase(){
+       //default constructor
+   }
+
    public MySQLDatabase(String uri_, String driver_, String user_, String password_){
    
       this.uri_ = uri_;
@@ -251,6 +255,38 @@ public class MySQLDatabase {
    } // end descTable();
 
 
+    public PreparedStatement prepare(String sql, String[] strvals){
+        PreparedStatement ps = null;
+
+        String preparedStr = sql; //sql string must contain ?
+        //strvals list must contain values in order of ?
+
+
+        try{
+            //makeConnection();
+            ps = conn.prepareStatement(preparedStr);
+
+            //int j = 1;
+            for(int i = 1; i <= strvals.length; i++){
+
+                for(int j = 0; j <= strvals.length-1; j++){
+                    ps.setString(i, strvals[j]);
+                    //System.out.println("i: " + i + " j: " + j);
+
+                }
+
+
+            }
+
+            //System.out.println(ps);
+
+        }catch(SQLException sqle){
+            //System.out.println("Could not connect to db " + uri_);
+
+        }
+
+        return ps;
+    }
 
 
 //****************************************** getData() ***************************************
@@ -288,9 +324,61 @@ public class MySQLDatabase {
       return sqlArr;
     
    } // end getData();
-   
-   
-   
+
+
+    public String[][] getData(String sql, String[] strvals){
+
+
+        try{
+
+
+            PreparedStatement stmt = prepare(sql, strvals);
+            ResultSet rs = stmt.executeQuery();
+            ResultSetMetaData rsmd = rs.getMetaData();
+            //boolean yesNo = colnames;                           ///NEW
+            int columnCount = rsmd.getColumnCount();
+
+            String headers[] = new String[columnCount];
+
+            //new
+
+            for (int i = 1; i <= columnCount; i++){          //loops through and collects headings and their lengths
+
+                headers[i-1] = rsmd.getColumnName(i);     //creates the column heading for chart
+
+
+            }
+
+
+
+
+            while(rs.next()){
+
+                sqlArr = new String[2][columnCount];
+                for (int i = 0; i < 2; i++){
+                    for(int j = 1; j <= columnCount; j++){
+                        if(i == 0){
+                            sqlArr[i][j-1] = headers[j-1]; //loop through column data from list(?) and populate this row with column headers
+                        }else{
+                            sqlArr[i][j-1] = rs.getString(j);
+
+                        }
+                    }
+
+                }
+            }
+
+
+        }catch(SQLException sqle){
+            //System.out.println("Error in getData(): SQL Statement not valid (?) ");
+
+        }catch(NullPointerException npe){
+
+        }
+
+        return sqlArr;
+
+    } // end getData();
 //****************************************** setData() ***************************************
    public static boolean setData(String sql){
       boolean flag;
@@ -320,5 +408,38 @@ public class MySQLDatabase {
       return flag;
    
    }//end setData()
+
+    public boolean setData(String sql, String[] strvals){
+        boolean flag = true;
+
+        if(executeStmt(sql, strvals) == -1){
+            flag = false;
+        }
+        else{
+            flag = true;
+        }
+        return flag;
+    }
+
+    public int executeStmt(String sql, String[] strvals){
+
+        int rc = 0;
+
+        try{
+
+            PreparedStatement stmt = prepare(sql, strvals);
+            //ResultSet rs = stmt.executeUpdate();
+            rc = stmt.executeUpdate();
+
+
+        }catch(SQLException sqle){
+
+        }catch(NullPointerException npe){
+
+        }
+
+        return rc;
+    }//end executeStmt
+
 
 } // end program
