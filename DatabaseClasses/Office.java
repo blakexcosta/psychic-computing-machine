@@ -11,37 +11,57 @@ public class Office
    //Attributes
    private String userName;
    private String officeNumber;
-   
-   //Default Constructor
+
+   /**
+    * Purpose: Default constructor
+    */
    public Office()
    {
       userName = "unknown";
       officeNumber = "unknown";
    }
-   
-   //Parameterized Constructor - ID
+
+   /**
+    * Purpose: Parameterized constructor - userName
+    * @param userName String
+    */
    public Office(String userName)
    {
       this.userName = userName;
       officeNumber = "unknown";
    }
-   
-   //Parameterized Constructor - Everything
+
+    /**
+     * Purpose: Parameterized constructor
+     * @param userName String
+     * @param officeNumber string
+     */
    public Office(String userName, String officeNumber)
    {
       this.userName = userName;
       this.officeNumber = officeNumber;
    }
-   
-   //Accessors
+
+    /**
+     * Purpose: Accessor
+     * @return userName String
+     * @return officeNumber String
+     */
    public String getUserName() { return userName; }
    public String getOfficeNumber() { return officeNumber; }
-   
-   //Mutators
+
+    /**
+     * Purpose: Mutators
+     * @param userName String
+     * @param officeNumber String
+     */
    public void setUserName(String userName) { this.userName = userName; }
    public void setOfficeNumber(String officeNumber) { this.officeNumber = officeNumber; }
-   
-   //Database Transaction Stubbs
+
+    /**
+     * Purpose: Fetches  a row from the office table
+     * @return boolean
+     */
    public boolean fetch()
    {
       try
@@ -60,7 +80,10 @@ public class Office
          return false;
       }
    }
-   
+    /**
+     * Purpose: Updates a row in the office table
+     * @return boolean
+     */
    public boolean put()
    {
       try
@@ -75,7 +98,10 @@ public class Office
          return false;
       }
    }
-   
+    /**
+     * Purpose: Inserts a row into the office table
+     * @return boolean
+     */
    public boolean post()
    {
       try
@@ -90,7 +116,10 @@ public class Office
          return false;
       }
    }
-   
+    /**
+     * Purpose: Deletes a row in the office table
+     * @return boolean
+     */
    public boolean delete()
    {
       try
