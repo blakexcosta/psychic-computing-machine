@@ -4,6 +4,7 @@ public class Committee
    private int committeeID;
    private int projectID;
    private String projectGrade;
+   MySQLDatabase dbClass;
    
    //Default Constructor
    public Committee()
@@ -43,18 +44,18 @@ public class Committee
    {
       try
       {
-         String[] params = { getCommitteeID() };
-         resultSet = MySQLDatabase.getData("SELECT * FROM committee WHERE ID = ?", params);
+         String[] params = { Integer.toString(getCommitteeID()) };
+         String[][] resultSet = dbClass.getData("SELECT * FROM committee WHERE ID = ?", params);
          
-         setCommitteeID(resultSet[0][0]);
-         setProjectID(resultSet[0][1]);
+         setCommitteeID(Integer.parseInt(resultSet[0][0]));
+         setProjectID(Integer.parseInt(resultSet[0][1]));
          setProjectGrade(resultSet[0][2]);
          
          return true;
       }
       catch (Exception ex)
       {
-         System.out.println(ex.Message());
+         ex.printStackTrace();
          return false;
       }
    }
@@ -63,13 +64,13 @@ public class Committee
    {
       try
       {
-         String[] params = { getCommitteeID(), getProjectID(), getProjectGrade(), getCommitteeID() };
-         MySQLDatabase.setData("UPDATE committee SET ID = ?, ProjectID = ?, ProjectGrade = ? WHERE ID = ?", params);
+         String[] params = { Integer.toString(getCommitteeID()), Integer.toString(getProjectID()), getProjectGrade(), Integer.toString(getCommitteeID()) };
+         dbClass.setData("UPDATE committee SET ID = ?, ProjectID = ?, ProjectGrade = ? WHERE ID = ?", params);
          return true;
       }
       catch (Exception ex)
       {
-         System.out.println(ex.Message());
+         ex.printStackTrace();
          return false;
       }
    }
@@ -78,13 +79,13 @@ public class Committee
    {
       try
       {
-         String[] params = { getCommitteeID(), getProjectID(), getProjectGrade() };
-         MySQLDatabase.setData("INSERT INTO committee (ID, ProjectID, ProjectGrade) VALUES (?, ?, ?)", params);
+         String[] params = { Integer.toString(getCommitteeID()), Integer.toString(getProjectID()), getProjectGrade() };
+         dbClass.setData("INSERT INTO committee (ID, ProjectID, ProjectGrade) VALUES (?, ?, ?)", params);
          return true; 
       }
       catch (Exception ex)
       {
-         System.out.println(ex.Message());
+         ex.printStackTrace();
          return false;
       }
    }
@@ -93,13 +94,13 @@ public class Committee
    {
       try
       {
-         String[] params = { getCommitteeID() };
-         MySQLDatabase.setData("DELETE FROM committee WHERE ID = ?", params);
+         String[] params = {Integer.toString(getCommitteeID()) };
+         dbClass.setData("DELETE FROM committee WHERE ID = ?", params);
          return true;
       }
       catch (Exception ex)
       {
-         System.out.println(ex.Message());
+         ex.printStackTrace();
          return false;
       }
    }
