@@ -26,8 +26,10 @@ public class Project
    private String[][] resultSet;
    MySQLDatabase databaseClass = new MySQLDatabase();
 
-   
-   //Default Constructor
+
+   /**
+    * Purpose: default constructor
+    */
    public Project()
    {
       projectID = -9999;
@@ -44,8 +46,11 @@ public class Project
       projectGrade = "unknown";
       committeeID = -9999;
    }
-   
-   //Parameterized Constructor - ID
+
+   /**
+    * Purpose: Parameterized constructor
+    * @param projectID int
+    */
    public Project(int projectID)
    {
       this.projectID = projectID;
@@ -63,8 +68,24 @@ public class Project
       projectGrade = "unknown";
       committeeID = -9999;
    }
-   
-   //Parameterized Constructor - Everything
+
+    /**
+     * Purpose: parameterized constructor
+     * @param projectID int
+     * @param projectName string
+     * @param projectSummary string
+     * @param projectTopic string
+     * @param ProjectStartDate string
+     * @param ProjectEndDate String
+     * @param projectDueDate string
+     * @param projectCompleted boolean
+     * @param projectProposalApproved boolean
+     * @param projectFinalDefenseDate String
+     * @param projectPlagiarismPercentage String
+     * @param projectGrade String
+     * @param committeeID int
+    {
+     */
    public Project(int projectID, String projectName, String projectSummary, String projectTopic, String projectStartDate, String projectEndDate, String projectDueDate, boolean projectCompleted, boolean projectProposalApproved, String projectFinalDefenseDate, String projectPlagiarismPercentage, String projectGrade, int committeeID)
    {
       this.projectID = projectID;
@@ -82,8 +103,19 @@ public class Project
       this.projectGrade = projectGrade;
       this.committeeID = committeeID;
    }
-   
-   //Accessors
+
+    /**
+     * Purpose: Accessors
+     * @return projectID int
+     * @return proejctSummary String
+     * @return projectTopic String
+     * @return projectType String
+     * @return projectStartDate String
+     * @return projctEndDate String
+     * @return projectDueDate String
+     * @return projectCompleted boolean
+     * @return proejctProposalApproved boolean
+     */
    public int getProjectID() { return projectID; }
    public String getProjectName() { return projectName; }
    public String getProjectSummary() { return projectSummary; }
@@ -97,9 +129,20 @@ public class Project
    public String getProjectPlagiarismPercentage() { return projectPlagiarismPercentage; }
    public String getProjectGrade() { return projectGrade; }
    public int getCommitteeID() { return committeeID; }
-   
-   
-   //Mutators
+
+
+    /**
+     * Purpose: Mutators
+     * @param projectID int
+     * @param proejctSummary String
+     * @param projectTopic String
+     * @param projectType String
+     * @param projectStartDate String
+     * @param projctEndDate String
+     * @param projectDueDate String
+     * @param projectCompleted boolean
+     * @param proejctProposalApproved boolean
+     */
    public void setProjectID(int projectID) { this.projectID = projectID; }
    public void setProjectName(String projectName) { this.projectName = projectName; }
    public void setProjectSummary(String projectSummary){ this.projectSummary = projectSummary; }
@@ -113,18 +156,17 @@ public class Project
    public void setProjectPlagiarismPercentage(String projectPlagiarismPercentage) { this.projectFinalDefenseDate = projectFinalDefenseDate; }
    public void setProjectGrade(String projectGrade) { this.projectGrade = projectGrade; }
    public void setCommitteeID(int committeeID) { this.committeeID = committeeID; }
-   
-   //Database Transaction Stubbs
+
+    /**
+     * Purpose: fetches a table from the database
+     * @param tableName String[][]
+     * @return resultSet String[][]
+     */
    public String[][] fetchAll(String tableName)
    {
       try
       {
-
          resultSet = databaseClass.getAllData(tableName);
-         
-
-         
-      
       }
       catch (Exception ex)
       {
@@ -132,11 +174,7 @@ public class Project
       }
       return resultSet;
    }//end fetchAll
-   
-   
-   
-   
-   
+
    // public boolean fetch()
 //    {
 //       try
@@ -166,7 +204,10 @@ public class Project
 //          return false;
 //       }
 //    }
-   
+    /**
+     * Purpose: updates a row into a database
+     * @return boolean
+     */
    public boolean put()
    {
       try
@@ -181,7 +222,10 @@ public class Project
          return false;
       }
    }
-   
+    /**
+     * Purpose: Inserts a new row into a database
+     * @return boolean
+     */
    public boolean post()
    {
       try
@@ -196,7 +240,10 @@ public class Project
          return false;
       }
    }
-   
+    /**
+     * Purpose: Deletes a row from the database
+     * @return boolean
+     */
    public boolean delete()
    {
       try
