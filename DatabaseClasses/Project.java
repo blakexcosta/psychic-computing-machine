@@ -8,6 +8,7 @@ public class Project
    private String projectType;
    private String projectStartDate;
    private String projectEndDate;
+   private String projectDueDate;
    private boolean projectCompleted;
    private boolean projectProposalApproved;
    private String projectFinalDefenseDate;
@@ -107,8 +108,8 @@ public class Project
    {
       try
       {
-         String[] params = { getProjectID() };
-         resultSet = MySQLDatabase.getData("SELECT * FROM project WHERE ID = ?", params);
+         String[] params = { Integer.toString(getProjectID() ) };
+         String[][] resultSet = MySQLDatabase.getData("SELECT * FROM project WHERE ID = ?", params);
          
          setProjectID(resultSet[0][0]);
          setProjectName(resultSet[0][1]);
@@ -138,7 +139,7 @@ public class Project
       try
       {
          String[] params = { getProjectID(), getProjectName(), getProjectSummary(), getProjectTopic(), getProjectType(), getProjectStartDate(), getProjectEndDate(), getProjectDueDate(), getProjectCompleted(), getProjectProposalApproved(), getProjectFinalDefenseDate(), getProjectPlagiarismPercentage(), getProjectGrade(), getCommitteeID(), getProjectID() };
-         MySQLDatabase.setData("UPDATE project SET ID = ?, Name = ?, Summary = ?, Topic = ?, Type = ?, StartDate = ?, EndDate = ?, DueDate = ?, Completed = ?, ProposalApproved = ?, FinalDefenseDate = ?, PlagiarismPercentage = ?, ProjectGrade = ?, CommitteeID = ? WHERE ID = ?", params);
+         MySQLDatabase.setData("UPDATE project SET ID =?, Name = ?, Summary = ?, Topic = ?, Type = ?, StartDate = ?, EndDate = ?, DueDate = ?, Completed = ?, ProposalApproved = ?, FinalDefenseDate = ?, PlagiarismPercentage = ?, ProjectGrade = ?, CommitteeID = ? WHERE ID = ?", params);
          return true;
       }
       catch (Exception ex)
