@@ -12,42 +12,65 @@ public class Phone
    private String userName;
    private String phoneNumber;
    private String phoneType;
-   
-   //Default Constructor
+
+   /**
+    * Purpose: default constructor
+    */
    public Phone()
    {
       userName = "unknown";
       phoneNumber = "unknown";
       phoneType = "unknown";
    }
-   
-   //Parameterized Constructor - ID
+
+   /**
+    * Purpose: parameterized constructor
+    * @param userName String
+    */
    public Phone(String userName)
    {
       this.userName = userName;
       phoneNumber = "unknown";
       phoneType = "unknown";
    }
-   
-   //Parameterized Constructor - ID
+
+   /**
+    * Purpose: parameterized constructor
+    * @param userName String
+    * @param phoneNumer String
+    * @param phoneType String
+    */
    public Phone(String userName, String phoneNumber, String phoneType)
    {
       this.userName = userName;
       this.phoneNumber = phoneNumber;
       this.phoneType = phoneType;
    }
-   
-   //Accessors
+
+   /**
+    * Purpose: Accessor
+    * @return userName string
+    * @return phoneNumber String
+    * @return phoneType String
+    */
    public String getUserName() { return userName; }
    public String getPhoneNumber() { return phoneNumber; }
    public String getPhoneType() { return phoneType; }
-   
-   //Mutators
+
+    /**
+     * Purpose: Mutators
+     * @param userName string
+     * @param phoneNumber String
+     * @param phoneType String
+     */
    public void setUserName(String userName) { this.userName = userName; }
    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
    public void getPhoneType(String phoneType) { this.phoneType = phoneType; }
-   
-   //Database Transaction Stubbs
+
+    /**
+     * Purpose: fetches a row from the database
+     * @return boolean
+     */
    public boolean fetch()
    {
       try
@@ -67,7 +90,10 @@ public class Phone
          return false;
       }
    }
-   
+    /**
+     * Purpose: Updates a row in the phones table
+     * @return boolean
+     */
    public boolean put()
    {
       try
@@ -82,7 +108,10 @@ public class Phone
          return false;
       }
    }
-   
+    /**
+     * Purpose: Inserts a new row into the phone table
+     * @return userName boolean
+     */
    public boolean post()
    {
       try
@@ -97,7 +126,10 @@ public class Phone
          return false;
       }
    }
-   
+    /**
+     * Purpose: deletes a row from the phones table
+     * @return boolean
+     */
    public boolean delete()
    {
       try
