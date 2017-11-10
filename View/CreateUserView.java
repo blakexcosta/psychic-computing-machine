@@ -10,7 +10,9 @@ package View;
 public class CreateUserView extends View{
 
     /**
-     * constructor
+     * Purpose: constructor
+     * @param
+     * @return
      */
     public CreateUserView() {
         super();

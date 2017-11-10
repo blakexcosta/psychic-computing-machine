@@ -9,6 +9,11 @@ package View;
  */
 public class ProjectView extends View{
 
+    /**
+     * Purpose: constructor
+     * @param
+     * @return
+     */
     public ProjectView() {
         super();
     }

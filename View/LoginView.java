@@ -10,7 +10,9 @@ package View;
 public class LoginView extends View{
 
     /**
-     * constructor
+     * Purpose: Constructor
+     * @param
+     * @return
      */
     public LoginView() {
         super();
