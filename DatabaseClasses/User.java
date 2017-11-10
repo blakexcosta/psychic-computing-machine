@@ -24,9 +24,12 @@ public class User
    private String role;
    private String[][] resultSet; 
    MySQLDatabase databaseClass = new MySQLDatabase();
-   
-   
-   //Default Constructor
+
+
+   /**
+    * Purpose: default constructor
+    */
+
    public User()
    {
       userName = "unknown";
@@ -39,8 +42,12 @@ public class User
       major = "unknown";
       role = "unknown";
    }
-   
-   //Parameterized Constructor - ID
+
+   /**
+    * Purpose: parameterized constructor, takes in the userName
+    * @param userName String
+    */
+
    public User(String userName)
    {
       this.userName = userName;
@@ -53,8 +60,19 @@ public class User
       major = "unknown";
       role = "unknown";
    }
-   
-   //Parameterized Constructor - Everything
+
+   /**
+    * Purpose: parameterized constructor
+    * @param userName String
+    * @param firstName String
+    * @param lastName String
+    * @param password String
+    * @param imageURL String
+    * @param graduationDate String
+    * @param department String
+    * @param major String
+    * @param role String
+    */
    public User(String userName, String firstName, String lastName, String password, String imageURL, String graduationDate, String department, String major, String role)
    {
       this.userName = userName;
@@ -67,8 +85,10 @@ public class User
       this.major = major;
       this.role = role;
    }
-   
-   //Accessors
+
+   /**
+    * Purpose: accessors
+    */
    public String getUserName() { return userName; }
    public String getFirstName() { return firstName; }
    public String getLastName() { return lastName; }
@@ -78,8 +98,10 @@ public class User
    public String getDepartment() { return department; }
    public String getMajor() { return major; }
    public String getRole() { return role; }
-   
-   //Mutators
+
+   /**
+    * Purpose: mutators
+    */
    public void setUserName(String userName) { this.userName = userName; }
    public void setFirstName(String firstName) { this.firstName = firstName; }
    public void setLastName(String lastName) { this.lastName = lastName; }
@@ -89,26 +111,26 @@ public class User
    public void setDepartment(String department) { this.department = department; }
    public void setMajor(String major) { this.major = major; }
    public void setRole(String role) { this.role = role; }
-   
-   //Database Transaction Stubbs
+
+    /**
+     * Purpose: fetches a 2d array of strings from the database, takes a string to determine what table to fetch
+     * @param tableName String
+     * @return resultSet String[][] return a result set that holds all of the data extracted from the database
+     */
    public String[][] fetchAll(String tableName)
    {
-      try
-      {
-
+      try {
          resultSet = databaseClass.getAllData(tableName);
-         
-
-         
-      
-      }
-      catch (Exception ex)
-      {
+      } catch (Exception ex) {
          ex.printStackTrace();
       }
       return resultSet;
    }//end fetchAll
-   
+
+    /**
+     * Purpose: Updates a table in the database
+     * @return boolean
+     */
    public boolean put()
    {
       try
@@ -123,7 +145,11 @@ public class User
          return false;
       }
    }
-   
+
+    /**
+     * Purpose: Inserts a single row into a table
+     * @return boolean
+     */
    public boolean post()
    {
       try
@@ -138,7 +164,11 @@ public class User
          return false;
       }
    }
-   
+
+    /**
+     * Purpose: Deletes a row from the database
+     * @return boolean
+     */
    public boolean delete()
    {
       try
