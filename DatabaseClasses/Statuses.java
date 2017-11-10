@@ -11,37 +11,57 @@ public class Statuses
    //Attributes
    private int statusCode;
    private String statusDescription;
-   
-   //Default Constructor
+
+   /**
+    * Purpose: default constructor
+    */
    public Statuses()
    {
       statusCode = -9999;
       statusDescription = "unknown";
    }
-   
-   //Parameterized Constructor - ID
+
+   /**
+    * Purpose: parameterized constructor
+    * @param statusCode int
+    */
    public Statuses(int statusCode)
    {
       this.statusCode = statusCode;
       statusDescription = "unknown";
    }
-   
-   //Parameterized Constructor - Everything
+
+    /**
+     * Purpose: parameterized constructor
+     * @param statusCode int
+     * @param statusDescription String
+     */
    public Statuses(int statusCode, String statusDescription)
    {
       this.statusCode = statusCode;
       this.statusDescription = statusDescription;
    }
-   
-   //Accessors
+
+    /**
+     * Purpose: Accessors
+     * @return statusCode int
+     * @return statusDescription String
+     */
    public int getStatusCode() { return statusCode; }
    public String getStatusDescription() { return statusDescription; }
-   
-   //Mutators
+
+    /**
+     * Purpose: Mutators
+     * @param statusCode int
+     * @param statusDescription String
+     */
    public void setStatusCode(int statusCode) { this.statusCode = statusCode; }
    public void setStatusDescription(String statusDescription) { this.statusDescription = statusDescription; }
 
-   //Database Transaction Stubbs
+    /**
+     * Purpose: Gets a row of data after taking in the code number
+     * @return boolean
+     */
    public boolean fetch()
    {
       try
@@ -60,7 +80,10 @@ public class Statuses
          return false;
       }
    }
-   
+    /**
+     * Purpose: Updates a row in the database
+     * @return boolean
+     */
    public boolean put()
    {
       try
@@ -75,7 +98,11 @@ public class Statuses
          return false;
       }
    }
-   
+
+    /**
+     * Purpose: Inserts a new row into the database
+     * @return boolean
+     */
    public boolean post()
    {
       try
@@ -90,7 +117,10 @@ public class Statuses
          return false;
       }
    }
-   
+    /**
+     * Purpose: deletes a row in a database
+     * @return boolean
+     */
    public boolean delete()
    {
       try
