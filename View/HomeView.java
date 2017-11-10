@@ -9,7 +9,9 @@ package View;
 public class HomeView extends View{
 
     /**
-     * constructor
+     * Purpose: constructor
+     * @param
+     * @return
      */
     public HomeView() {
         super();

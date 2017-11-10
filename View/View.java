@@ -14,10 +14,21 @@ import java.util.Observer;
  */
 public abstract class View extends JFrame implements Observer{
 
+    /**
+     * Purpose: View constructor
+     * @param
+     * @return
+     */
     public View(){
         super();
     }
 
+
+    /**
+     * Purpose: update is used to update all observable objects
+     * @param
+     * @return
+     */
     @Override
     public void update(Observable observable, Object o) {
 
