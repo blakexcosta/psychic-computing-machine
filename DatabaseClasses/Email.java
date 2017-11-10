@@ -4,6 +4,7 @@ public class Email
    private String userName;
    private String emailAddress;
    private String emailType;
+   MySQLDatabase dbClass = new MySQLDatabase();
    
    //Default Constructor
    public Email()
@@ -45,7 +46,7 @@ public class Email
       try
       {
          String[] params = { getUserName() };
-         resultSet = MySQLDatabase.getData("SELECT * FROM email WHERE UserName = ?", params);
+         String[][] resultSet = dbClass.getData("SELECT * FROM email WHERE UserName = ?", params);
          
          setUserName(resultSet[0][0]);
          setEmailAddress(resultSet[0][1]);
@@ -55,7 +56,7 @@ public class Email
       }
       catch (Exception ex)
       {
-         System.out.println(ex.Message());
+         ex.printStackTrace();
          return false;
       }
    }
@@ -65,12 +66,12 @@ public class Email
       try
       {
          String[] params = { getUserName(), getEmailAddress(), getEmailType(), getUserName() };
-         MySQLDatabase.setData("UPDATE email SET UserName = ?, EmailAddress = ?, EmailType = ? WHERE UserName = ?", params);
+         dbClass.setData("UPDATE email SET UserName = ?, EmailAddress = ?, EmailType = ? WHERE UserName = ?", params);
          return true;
       }
       catch (Exception ex)
       {
-         System.out.println(ex.Message());
+         ex.printStackTrace();
          return false;
       }
    }
@@ -80,12 +81,12 @@ public class Email
       try
       {
          String[] params = { getUserName(), getEmailAddress(), getEmailType() };
-         MySQLDatabase.setData("INSERT INTO email (UserName, EmailAddress, EmailType) VALUES (?, ?, ?)", params);
+         dbClass.setData("INSERT INTO email (UserName, EmailAddress, EmailType) VALUES (?, ?, ?)", params);
          return true; 
       }
       catch (Exception ex)
       {
-         System.out.println(ex.Message());
+         ex.printStackTrace();
          return false;
       }
    }
@@ -95,12 +96,12 @@ public class Email
       try
       {
          String[] params = { getUserName() };
-         MySQLDatabase.setData("DELETE FROM email WHERE UserName = ?", params);
+         dbClass.setData("DELETE FROM email WHERE UserName = ?", params);
          return true;
       }
       catch (Exception ex)
       {
-         System.out.println(ex.Message());
+         ex.printStackTrace();
          return false;
       }
    }
