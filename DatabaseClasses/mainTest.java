@@ -13,11 +13,11 @@ public class mainTest {
    public static void main(String[] args) {
       String uri_ = "jdbc:mysql://localhost/project_tracker?autoReconnect=true&useSSL=false";
       String driver_ = "com.mysql.jdbc.Driver";
-      String user_ = "root"; //"iste330t01";
-      String password_ = "oswaldo615";//"iste330bmgoq";
+      String user_ = "root";
+      String password_ = "student";
       Connection conn_ = null;
       
-      
+    
 
       MySQLDatabase mySqlDB = new MySQLDatabase( uri_, driver_, user_, password_);
 
@@ -34,7 +34,8 @@ public class mainTest {
       
       System.out.println(Arrays.deepToString(user.fetchAll("User") ) );
       System.out.println(Arrays.deepToString(proj.fetchAll("Project") ) );
-
+      System.out.println(Arrays.deepToString(user.fetchAll("Email") ) );
+      System.out.println(Arrays.deepToString(proj.fetchAll("Office") ) );
 
 
 

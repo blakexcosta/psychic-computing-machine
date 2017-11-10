@@ -22,15 +22,23 @@ public class Email
       emailType = "unknown";
    }
    
-   //Parameterized Constructor - ID
+   /**
+     * Purpose: Parameterized Constructor - ID
+     * @param userName String
+     */
    public Email(String userName)
    {
       this.userName = userName;
       emailAddress = "unknown";
       emailType = "unknown";
    }
-   
-   //Parameterized Constructor - Everything
+ 
+   /**
+     * Purpose: Parameterized Constructor - Everything
+     * @param userName String
+     * @param emailAddress String
+     * @param emailType String
+     */
    public Email(String userName, String emailAddress, String emailType)
    {
       this.userName = userName;
@@ -48,7 +56,10 @@ public class Email
    public void setEmailAddress(String emailAdress) { this.emailAddress = emailAddress; }
    public void setEmailType(String emailType) { this.emailType = emailType; }
 
-   //Database Transaction Stubbs
+   /**
+     * Purpose: Executes a SELECT SQL Statement on the email table and returns a 2D array of the data retrieved
+     * @return boolean depending on the success of the execution
+     */
    public boolean fetch()
    {
       try
@@ -69,6 +80,10 @@ public class Email
       }
    }
    
+   /**
+     * Purpose: Executes an UPDATE SQL Statement on the email table and it will update new values that reflect the attributes
+     * @return boolean depending on the success of the execution
+     */
    public boolean put()
    {
       try
@@ -84,6 +99,10 @@ public class Email
       }
    }
    
+   /**
+     * Purpose: Executes an INSERT SQL Statement on the email table and it will insert new values that reflect the attributes 
+     * @return boolean depending on the success of the execution
+     */
    public boolean post()
    {
       try
@@ -99,6 +118,10 @@ public class Email
       }
    }
    
+   /**
+     * Purpose: Executes a DELETE SQL Statement on the email table and will delete the data from the selected ID attribute
+     * @return boolean depending on the success of the execution
+     */
    public boolean delete()
    {
       try

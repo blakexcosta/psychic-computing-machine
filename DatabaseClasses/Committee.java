@@ -22,7 +22,10 @@ public class Committee
       projectGrade = "unknown";
    }
    
-   //Parameterized Constructor - ID
+   /**
+     * Purpose: Parameterized Constructor - ID
+     * @param committeeID int
+     */
    public Committee(int committeeID)
    {
       this.committeeID = committeeID;
@@ -30,13 +33,19 @@ public class Committee
       projectGrade = "unknown";
    }
    
-   //Parameterized Constructor - Everything
+   /**
+     * Purpose: Parameterized Constructor - Everything
+     * @param committeeID int
+     * @param projectID int
+     * @param projectGrade String
+     */  
    public Committee(int committeeID, int projectID, String projectGrade)
    {
       this.committeeID = committeeID;
       this.projectID = projectID;
       this.projectGrade = projectGrade;
    }
+   
    //Accessors
    public int getCommitteeID() { return committeeID; }
    public int getProjectID() { return projectID; }
@@ -47,7 +56,10 @@ public class Committee
    public void setProjectID(int projectID) { this.projectID = projectID; }
    public void setProjectGrade(String projectGrade) { this.projectGrade = projectGrade; }
    
-   //Database Transaction Stubbs
+   /**
+     * Purpose: Executes a SELECT SQL Statement on the committee table and returns a 2D array of the data retrieved
+     * @return boolean depending on the success of the execution
+     */
    public boolean fetch()
    {
       try
@@ -68,6 +80,10 @@ public class Committee
       }
    }
    
+   /**
+     * Purpose: Executes an UPDATE SQL Statement on the committee table and it will update new values that reflect the attributes
+     * @return boolean depending on the success of the execution
+     */
    public boolean put()
    {
       try
@@ -83,6 +99,10 @@ public class Committee
       }
    }
    
+   /**
+     * Purpose: Executes an INSERT SQL Statement on the committee table and it will insert new values that reflect the attributes 
+     * @return boolean depending on the success of the execution
+     */
    public boolean post()
    {
       try
@@ -98,6 +118,10 @@ public class Committee
       }
    }
    
+   /**
+     * Purpose: Executes a DELETE SQL Statement on the committee table and will delete the data from the selected ID attribute
+     * @return boolean depending on the success of the execution
+     */
    public boolean delete()
    {
       try

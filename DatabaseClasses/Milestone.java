@@ -28,7 +28,10 @@ public class Milestone
       milestoneApproved = false;
    }
    
-   //Parameterized Constructor - ID
+   /**
+     * Purpose: Parameterized Constructor - ID
+     * @param milestoneID int
+     */
    public Milestone(int milestoneID)
    {
       this.milestoneID = milestoneID;
@@ -39,7 +42,15 @@ public class Milestone
       milestoneApproved = false;
    }
    
-   //Parameterized Constructor - Everything
+   /**
+     * Purpose: Parameterized Constructor - Everything
+     * @param milestoneID int
+     * @param milestoneStatusCode int
+     * @param milestoneName String
+     * @param milestoneNumber int
+     * @param milestoneDueDate String
+     * @param milestoneApproved boolean
+     */
    public Milestone(int milestoneID, int milestoneStatusCode, String milestoneName, int milestoneNumber, String milestoneDueDate, boolean milestoneApproved)
    {
       this.milestoneID = milestoneID;
@@ -65,7 +76,10 @@ public class Milestone
    public void setMilestoneDueDate(String milestoneDueDate) { this.milestoneDueDate = milestoneDueDate; }
    public void setMilestoneApproved(boolean milestoneApproved) { this.milestoneApproved = milestoneApproved; }
 
-   //Database Transaction Stubbs
+   /**
+     * Purpose: Executes a SELECT SQL Statement on the milestone table and returns a 2D array of the data retrieved
+     * @return boolean depending on the success of the execution
+     */
    public boolean fetch()
    {
       try
@@ -89,6 +103,10 @@ public class Milestone
       }
    }
    
+   /**
+     * Purpose: Executes an UPDATE SQL Statement on the milestone table and it will update new values that reflect the attributes
+     * @return boolean depending on the success of the execution
+     */
    public boolean put()
    {
       try
@@ -104,6 +122,10 @@ public class Milestone
       }
    }
    
+   /**
+     * Purpose: Executes an INSERT SQL Statement on the email table and it will insert new values that reflect the attributes 
+     * @return boolean depending on the success of the execution
+     */
    public boolean post()
    {
       try
@@ -119,6 +141,10 @@ public class Milestone
       }
    }
    
+   /**
+     * Purpose: Executes a DELETE SQL Statement on the email table and will delete the data from the selected ID attribute
+     * @return boolean depending on the success of the execution
+     */
    public boolean delete()
    {
       try
