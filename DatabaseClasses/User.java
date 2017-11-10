@@ -13,7 +13,7 @@ public class User
    private String department;
    private String major;
    private String role;
-   private String[][] resultSet;
+   private String[][] resultSet; 
    MySQLDatabase databaseClass = new MySQLDatabase();
    
    
@@ -98,7 +98,7 @@ public class User
          ex.printStackTrace();
       }
       return resultSet;
-   }
+   }//end fetchAll
    
    public boolean put()
    {

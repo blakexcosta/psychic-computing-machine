@@ -23,7 +23,11 @@ public class mainTest {
       }
       
       User user = new User();
+      Project proj = new Project();
+      
       System.out.println(Arrays.deepToString(user.fetchAll("User") ) );
+      System.out.println(Arrays.deepToString(proj.fetchAll("Project") ) );
+
 
 
 

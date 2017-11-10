@@ -15,6 +15,9 @@ public class Project
    private String projectPlagiarismPercentage;
    private String projectGrade;
    private int committeeID;
+   private String[][] resultSet;
+   MySQLDatabase databaseClass = new MySQLDatabase();
+
    
    //Default Constructor
    public Project()
@@ -104,47 +107,69 @@ public class Project
    public void setCommitteeID(int committeeID) { this.committeeID = committeeID; }
    
    //Database Transaction Stubbs
-   public boolean fetch()
+   public String[][] fetchAll(String tableName)
    {
       try
       {
-         String[] params = { Integer.toString(getProjectID() ) };
-         String[][] resultSet = MySQLDatabase.getData("SELECT * FROM project WHERE ID = ?", params);
+
+         resultSet = databaseClass.getAllData(tableName);
          
-         setProjectID(resultSet[0][0]);
-         setProjectName(resultSet[0][1]);
-         setProjectSummary(resultSet[0][2]);
-         setProjectTopic(resultSet[0][3]);
-         setProjectType(resultSet[0][4]);
-         setProjectStartDate(resultSet[0][5]);
-         setProjectEndDate(resultSet[0][6]);
-         setProjectDueDate(resultSet[0][7]);
-         setProjectCompleted(resultSet[0][8]);
-         setProjectProposalApproved(resultSet[0][9]);
-         setProjectPlagiarismPercentage(resultSet[0][10]);
-         setProjectGrade(resultSet[0][11]);
-         setCommitteeID(resultSet[0][12]);
+
          
-         return true;
+      
       }
       catch (Exception ex)
       {
-         System.out.println(ex.Message());
-         return false;
+         ex.printStackTrace();
       }
-   }
+      return resultSet;
+   }//end fetchAll
+   
+   
+   
+   
+   
+   // public boolean fetch()
+//    {
+//       try
+//       {
+//          String[] params = { Integer.toString(getProjectID() ) };
+//          resultSet = MySQLDatabase.getData("SELECT * FROM project WHERE ID = ?", params);
+//          
+//          setProjectID(resultSet[0][0]);
+//          setProjectName(resultSet[0][1]);
+//          setProjectSummary(resultSet[0][2]);
+//          setProjectTopic(resultSet[0][3]);
+//          setProjectType(resultSet[0][4]);
+//          setProjectStartDate(resultSet[0][5]);
+//          setProjectEndDate(resultSet[0][6]);
+//          setProjectDueDate(resultSet[0][7]);
+//          setProjectCompleted(resultSet[0][8]);
+//          setProjectProposalApproved(resultSet[0][9]);
+//          setProjectPlagiarismPercentage(resultSet[0][10]);
+//          setProjectGrade(resultSet[0][11]);
+//          setCommitteeID(resultSet[0][12]);
+//          
+//          return true;
+//       }
+//       catch (Exception ex)
+//       {
+//          System.out.println(ex.Message());
+//          return false;
+//       }
+//    }
    
    public boolean put()
    {
       try
       {
-         String[] params = { getProjectID(), getProjectName(), getProjectSummary(), getProjectTopic(), getProjectType(), getProjectStartDate(), getProjectEndDate(), getProjectDueDate(), getProjectCompleted(), getProjectProposalApproved(), getProjectFinalDefenseDate(), getProjectPlagiarismPercentage(), getProjectGrade(), getCommitteeID(), getProjectID() };
-         MySQLDatabase.setData("UPDATE project SET ID =?, Name = ?, Summary = ?, Topic = ?, Type = ?, StartDate = ?, EndDate = ?, DueDate = ?, Completed = ?, ProposalApproved = ?, FinalDefenseDate = ?, PlagiarismPercentage = ?, ProjectGrade = ?, CommitteeID = ? WHERE ID = ?", params);
+         // String[] params = { getProjectID(), getProjectName(), getProjectSummary(), getProjectTopic(), getProjectType(), getProjectStartDate(), getProjectEndDate(), getProjectDueDate(), getProjectCompleted(), getProjectProposalApproved(), getProjectFinalDefenseDate(), getProjectPlagiarismPercentage(), getProjectGrade(), getCommitteeID(), getProjectID() };
+//          MySQLDatabase.setData("UPDATE project SET ID =?, Name = ?, Summary = ?, Topic = ?, Type = ?, StartDate = ?, EndDate = ?, DueDate = ?, Completed = ?, ProposalApproved = ?, FinalDefenseDate = ?, PlagiarismPercentage = ?, ProjectGrade = ?, CommitteeID = ? WHERE ID = ?", params);
          return true;
       }
-      catch (Exception ex)
+      catch (Exception e)
       {
-         System.out.println(ex.Message());
+         System.out.println(e.getMessage());
          return false;
       }
    }
@@ -153,13 +178,13 @@ public class Project
    {
       try
       {
-         String[] params = { getProjectID(), getProjectName(), getProjectSummary(), getProjectTopic(), getProjectType(), getProjectStartDate(), getProjectEndDate(), getProjectDueDate(), getProjectCompleted(), getProjectProposalApproved(), getProjectFinalDefenseDate(), getProjectPlagiarismPercentage(), getProjectGrade(), getCommitteeID() };
-         MySQLDatabase.setData("INSERT INTO project (ID, Name, Summary, Topic, Type, StartDate, EndDate, DueDate, Competed, ProposalApproved, FinalDefenseDate, PlagiarismPercentage, ProjectGrade, CommitteeID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", params);
+         // String[] params = { getProjectID(), getProjectName(), getProjectSummary(), getProjectTopic(), getProjectType(), getProjectStartDate(), getProjectEndDate(), getProjectDueDate(), getProjectCompleted(), getProjectProposalApproved(), getProjectFinalDefenseDate(), getProjectPlagiarismPercentage(), getProjectGrade(), getCommitteeID() };
+//          MySQLDatabase.setData("INSERT INTO project (ID, Name, Summary, Topic, Type, StartDate, EndDate, DueDate, Competed, ProposalApproved, FinalDefenseDate, PlagiarismPercentage, ProjectGrade, CommitteeID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", params);
          return true; 
       }
       catch (Exception ex)
       {
-         System.out.println(ex.Message());
+         System.out.println(ex.getMessage());
          return false;
       }
    }
@@ -168,13 +193,13 @@ public class Project
    {
       try
       {
-         String[] params = { getProjectID() };
-         MySQLDatabase.setData("DELETE FROM project WHERE ID = ?", params);
+         // String[] params = { getProjectID() };
+//          MySQLDatabase.setData("DELETE FROM project WHERE ID = ?", params);
          return true;
       }
       catch (Exception ex)
       {
-         System.out.println(ex.Message());
+         System.out.println(ex.getMessage());
          return false;
       }
    }
