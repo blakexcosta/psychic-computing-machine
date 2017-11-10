@@ -6,8 +6,8 @@ public class mainTest {
    public static void main(String[] args) {
       String uri_ = "jdbc:mysql://localhost/project_tracker?autoReconnect=true&useSSL=false";
       String driver_ = "com.mysql.jdbc.Driver";
-      String user_ = "iste330t01";
-      String password_ = "iste330bmgoq";
+      String user_ = "root"; //"iste330t01";
+      String password_ = "oswaldo615";//"iste330bmgoq";
       Connection conn_ = null;
       
       
@@ -23,7 +23,7 @@ public class mainTest {
       }
       
       User user = new User();
-      user.fetch();
+      System.out.println(Arrays.deepToString(user.fetchAll("User") ) );
 
 
 

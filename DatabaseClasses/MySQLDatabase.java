@@ -22,6 +22,77 @@ public class MySQLDatabase {
    
    }
    
+       public String[][] getAllData(String tableName){
+
+
+        try{
+            //*******************get row count***************
+            String sql = "SELECT * FROM "+ tableName + ";" ;
+            //String sql = "SELECT * FROM " +
+
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            int rowNum = 0;
+            //get row count
+            if(rs.last()){
+               rowNum = rs.getRow();
+               rs.beforeFirst(); 
+            }
+
+            
+            //************************************************
+
+
+            ResultSetMetaData rsmd = rs.getMetaData();
+            //boolean yesNo = colnames;                           ///NEW
+            int columnCount = rsmd.getColumnCount();
+
+            String headers[] = new String[columnCount];
+
+            //new
+
+            for (int i = 1; i <= columnCount; i++){          //loops through and collects headings and their lengths
+
+                headers[i-1] = rsmd.getColumnName(i);     //creates the column heading for chart
+
+
+            }
+
+
+
+
+            while(rs.next()){
+
+                sqlArr = new String[rowNum][columnCount];
+                for (int i = 0; i < rowNum; i++){
+                    for(int j = 1; j <= columnCount; j++){
+                        if(i == 0){
+                            sqlArr[i][j-1] = headers[j-1]; //loop through column data from list(?) and populate this row with column headers
+                        }else{
+                            sqlArr[i][j-1] = rs.getString(j);
+
+                        }
+                    }
+
+                }
+            }
+
+         System.out.println("Number of Rows retrieved: " + rowNum);
+
+        }catch(SQLException sqle){
+            //System.out.println("Error in getData(): SQL Statement not valid (?) ");
+
+        }catch(NullPointerException npe){
+
+        }
+
+        return sqlArr;
+
+    } // end getData();
+
+   
+   
+   
    //*************************************** CONNECT *********************************
    
    public boolean makeConnection() {
@@ -112,6 +183,9 @@ public class MySQLDatabase {
                }
                row++;
             }
+            
+            
+            
 //*******************************************META DATA***********************************************
            System.out.println("+---------------------+--------------------+");
            System.out.println("| Field               | Type               |");
@@ -255,7 +329,7 @@ public class MySQLDatabase {
    } // end descTable();
 
 
-    public PreparedStatement prepare(String sql, String[] strvals){
+    public static PreparedStatement prepare(String sql, String[] strvals){
         PreparedStatement ps = null;
 
         String preparedStr = sql; //sql string must contain ?

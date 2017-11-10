@@ -13,7 +13,9 @@ public class User
    private String department;
    private String major;
    private String role;
+   private String[][] resultSet;
    MySQLDatabase databaseClass = new MySQLDatabase();
+   
    
    //Default Constructor
    public User()
@@ -80,30 +82,22 @@ public class User
    public void setRole(String role) { this.role = role; }
    
    //Database Transaction Stubbs
-   public boolean fetch()
+   public String[][] fetchAll(String tableName)
    {
       try
       {
-         String[] params = { getUserName() };
-         String[][] resultSet = databaseClass.getData("SELECT * FROM user WHERE UserName = ?", params);
+
+         resultSet = databaseClass.getAllData(tableName);
          
-         setUserName(resultSet[0][0]);
-         setFirstName(resultSet[0][1]);
-         setLastName(resultSet[0][2]);
-         setPassword(resultSet[0][3]);
-         setImageURL(resultSet[0][4]);
-         setGraduationDate(resultSet[0][5]);
-         setDepartment(resultSet[0][6]);
-         setMajor(resultSet[0][7]);
-         setRole(resultSet[0][8]);
+
          
-         return true;
+      
       }
       catch (Exception ex)
       {
          ex.printStackTrace();
-         return false;
       }
+      return resultSet;
    }
    
    public boolean put()
