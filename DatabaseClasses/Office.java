@@ -60,6 +60,33 @@ public class Office
    public void setUserName(String userName) { this.userName = userName; }
    public void setOfficeNumber(String officeNumber) { this.officeNumber = officeNumber; }
 
+
+    /**
+     * Purpose: fetches a table from the database
+     * @param tableName String[][]
+     * @return resultSet String[][]
+     */
+   public String[][] fetchAll(String tableName)
+   {
+      try
+      {
+         //Connect MySQL:
+         msdb.makeConnection();
+      
+         resultSet = msdb.getAllData(tableName);
+         
+         //Close MySQL:
+         msdb.closeConnection();
+
+      
+      }catch (Exception ex){
+         ex.printStackTrace();
+      }
+      return resultSet;
+   }//end fetchAll
+   
+   
+   
     /**
      * Purpose: Fetches  a row from the office table
      * @return boolean

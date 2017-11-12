@@ -12,6 +12,8 @@ public class Phone
    private String userName;
    private String phoneNumber;
    private String phoneType;
+   private String[][] resultSet;
+   private MySQLDatabase msdb = new MySQLDatabase();
 
    /**
     * Purpose: default constructor
@@ -68,6 +70,32 @@ public class Phone
    public void getPhoneType(String phoneType) { this.phoneType = phoneType; }
 
     /**
+     * Purpose: fetches a table from the database
+     * @param tableName String[][]
+     * @return resultSet String[][]
+     */
+   public String[][] fetchAll(String tableName)
+   {
+      try
+      {
+         //Connect MySQL:
+         msdb.makeConnection();
+      
+         resultSet = msdb.getAllData(tableName);
+         
+         //Close MySQL:
+         msdb.closeConnection();
+
+      
+      }catch (Exception ex){
+         ex.printStackTrace();
+      }
+      return resultSet;
+   }//end fetchAll
+   
+
+   
+    /**
      * Purpose: fetches a row from the database
      * @return boolean
      */
@@ -75,18 +103,21 @@ public class Phone
    {
       try
       {
-         String[] params = { getUserName() };
-         resultSet = MySQLDatabase.getData("SELECT * FROM phone WHERE UserName = ?", params);
-         
-         setUserName(resultSet[0][0]);
-         setPhoneNumber(resultSet[0][1]);
-         setPhoneType(resultSet[0][2]);
-         
+         msdb.makeConnection();
+
+         // String[] params = { getUserName() };
+//          resultSet = msdb.getData("SELECT * FROM phone WHERE UserName = ?", params);
+//          
+//          setUserName(resultSet[0][0]);
+//          setPhoneNumber(resultSet[0][1]);
+//          setPhoneType(resultSet[0][2]);
+         msdb.closeConnection();
+
          return true;
       }
       catch (Exception ex)
       {
-         System.out.println(ex.Message());
+         System.out.println(ex.getMessage());
          return false;
       }
    }
@@ -98,13 +129,17 @@ public class Phone
    {
       try
       {
+         msdb.makeConnection();
+
          String[] params = { getUserName(), getPhoneNumber(), getPhoneType(), getUserName() };
-         MySQLDatabase.setData("UPDATE phone SET UserName = ?, PhoneNumber = ?, PhoneType = ? WHERE UserName = ?", params);
+         msdb.setData("UPDATE phone SET UserName = ?, PhoneNumber = ?, PhoneType = ? WHERE UserName = ?", params);
+         msdb.closeConnection();
+
          return true;
       }
       catch (Exception ex)
       {
-         System.out.println(ex.Message());
+         System.out.println(ex.getMessage());
          return false;
       }
    }
@@ -116,13 +151,17 @@ public class Phone
    {
       try
       {
+         msdb.makeConnection();
+
          String[] params = { getUserName(), getPhoneNumber(), getPhoneType() };
-         MySQLDatabase.setData("INSERT INTO phone (UserName, PhoneNumber, PhoneType) VALUES (?, ?, ?)", params);
+         msdb.setData("INSERT INTO phone (UserName, PhoneNumber, PhoneType) VALUES (?, ?, ?)", params);
+         msdb.closeConnection();
+
          return true; 
       }
       catch (Exception ex)
       {
-         System.out.println(ex.Message());
+         System.out.println(ex.getMessage());
          return false;
       }
    }
@@ -134,13 +173,17 @@ public class Phone
    {
       try
       {
+         msdb.makeConnection();
+
          String[] params = { getUserName() };
-         MySQLDatabase.setData("DELETE FROM phone WHERE UserName = ?", params);
+         msdb.setData("DELETE FROM phone WHERE UserName = ?", params);
+         msdb.closeConnection();
+
          return true;
       }
       catch (Exception ex)
       {
-         System.out.println(ex.Message());
+         System.out.println(ex.getMessage());
          return false;
       }
    }

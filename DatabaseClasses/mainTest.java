@@ -17,15 +17,19 @@ public class mainTest {
       Project proj = new Project();
       Email email = new Email();
       Office office = new Office();
-      
-      
-      Committee comm = new Committee();
+   
+   
+      Phone phone = new Phone();
       Statuses stat = new Statuses();
       
       System.out.println(Arrays.deepToString(user.fetchAll("User") ) );
       System.out.println(Arrays.deepToString(proj.fetchAll("Project") ) );
       System.out.println(Arrays.deepToString(email.fetchAll("Email") ) );
-      System.out.println(Arrays.deepToString(office.fetchAll("Office") ) );      
+      System.out.println(Arrays.deepToString(office.fetchAll("Office") ) );  
+      System.out.println(Arrays.deepToString(phone.fetchAll("Phone") ) );  
+      System.out.println(Arrays.deepToString(stat.fetchAll("Statuses") ) );  
+
+          
       
 
 
