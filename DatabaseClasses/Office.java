@@ -99,7 +99,7 @@ public class Office
       }
       catch (Exception ex)
       {
-         System.out.println(ex.Message());
+         System.out.println(ex);
          return false;
       }
    }
@@ -119,7 +119,7 @@ public class Office
       }
       catch (Exception ex)
       {
-         System.out.println(ex.Message());
+         System.out.println(ex);
          return false;
       }
    }
@@ -139,7 +139,7 @@ public class Office
       }
       catch (Exception ex)
       {
-         System.out.println(ex.Message());
+         System.out.println(ex);
          return false;
       }
    }

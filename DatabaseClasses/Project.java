@@ -23,7 +23,6 @@ public class Project
    private String projectPlagiarismPercentage;
    private String projectGrade;
    private int committeeID;
-   private String[][] resultSet;
    MySQLDatabase databaseClass = new MySQLDatabase();
 
 
