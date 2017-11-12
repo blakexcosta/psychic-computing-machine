@@ -48,8 +48,8 @@ CREATE TABLE IF NOT EXISTS `project_tracker`.`committee` (
   CONSTRAINT `ProjectID_Committee_FK`
     FOREIGN KEY (`ProjectID`)
     REFERENCES `project_tracker`.`project` (`ID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -83,8 +83,8 @@ CREATE TABLE IF NOT EXISTS `project_tracker`.`email` (
   CONSTRAINT `User_Email_FK`
     FOREIGN KEY (`UserName`)
     REFERENCES `project_tracker`.`user` (`UserName`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -114,8 +114,8 @@ CREATE TABLE IF NOT EXISTS `project_tracker`.`milestone` (
   CONSTRAINT `Milestone_Status_FK`
     FOREIGN KEY (`StatusCode`)
     REFERENCES `project_tracker`.`statuses` (`Code`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -130,8 +130,8 @@ CREATE TABLE IF NOT EXISTS `project_tracker`.`office` (
   CONSTRAINT `User_Office_FK`
     FOREIGN KEY (`UserName`)
     REFERENCES `project_tracker`.`user` (`UserName`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -147,8 +147,8 @@ CREATE TABLE IF NOT EXISTS `project_tracker`.`phone` (
   CONSTRAINT `User_Phone_FK`
     FOREIGN KEY (`UserName`)
     REFERENCES `project_tracker`.`user` (`UserName`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -163,13 +163,13 @@ CREATE TABLE IF NOT EXISTS `project_tracker`.`project_milestone_link` (
   CONSTRAINT `ProjectID_Milestone_FK`
     FOREIGN KEY (`ProjectID`)
     REFERENCES `project_tracker`.`project` (`ID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `Project_MilestoneID_FK`
     FOREIGN KEY (`MilestoneID`)
     REFERENCES `project_tracker`.`milestone` (`ID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -180,12 +180,13 @@ DEFAULT CHARACTER SET = utf8;
 CREATE TABLE IF NOT EXISTS `project_tracker`.`user_committee_link` (
   `UserName` VARCHAR(20) NOT NULL,
   `CommitteID` INT(11) NOT NULL,
+  `Role` ENUM('chair', 'reader', 'other') NULL,
   PRIMARY KEY (`UserName`, `CommitteID`),
   CONSTRAINT `UserID_Committee_FK`
     FOREIGN KEY (`UserName`)
     REFERENCES `project_tracker`.`user` (`UserName`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `User_CommitteeID_FK`
     FOREIGN KEY (`CommitteID`)
     REFERENCES `project_tracker`.`committee` (`ID`)
@@ -205,13 +206,13 @@ CREATE TABLE IF NOT EXISTS `project_tracker`.`user_project_link` (
   CONSTRAINT `UserID_Project_FK`
     FOREIGN KEY (`UserName`)
     REFERENCES `project_tracker`.`user` (`UserName`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `User_ProjectID_FK`
     FOREIGN KEY (`ProjectID`)
     REFERENCES `project_tracker`.`project` (`ID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -383,6 +384,31 @@ COMMIT;
 
 
 -- -----------------------------------------------------
+-- Data for table `project_tracker`.`statuses`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `project_tracker`;
+INSERT INTO `project_tracker`.`statuses` (`Code`, `Description`) VALUES (100, '1. Pre-proprosal (optional but very useful)');
+INSERT INTO `project_tracker`.`statuses` (`Code`, `Description`) VALUES (200, '2. Forming the committee (two for project and three for thesis)');
+INSERT INTO `project_tracker`.`statuses` (`Code`, `Description`) VALUES (300, '3. Continue proposal development ');
+INSERT INTO `project_tracker`.`statuses` (`Code`, `Description`) VALUES (400, '4. Proposal approval ');
+INSERT INTO `project_tracker`.`statuses` (`Code`, `Description`) VALUES (500, '4.1 Download the proposal approval form from the IST website (under forms)');
+INSERT INTO `project_tracker`.`statuses` (`Code`, `Description`) VALUES (600, '4.2 Collect signatures from committee members (email approval is fine)');
+INSERT INTO `project_tracker`.`statuses` (`Code`, `Description`) VALUES (700, '4.3 Submit the approved proposal form along with the electronic version of the proposal to the department office (Tracy)');
+INSERT INTO `project_tracker`.`statuses` (`Code`, `Description`) VALUES (800, '4.4 The IST department office performs plagiarism checking and sends the results and proposal to the Graduate Director for final approval');
+INSERT INTO `project_tracker`.`statuses` (`Code`, `Description`) VALUES (900, '4.5 After the approval from the Graduate Director');
+INSERT INTO `project_tracker`.`statuses` (`Code`, `Description`) VALUES (1000, '5. Continue the capstone work based on what is proposed in the proposal. ');
+INSERT INTO `project_tracker`.`statuses` (`Code`, `Description`) VALUES (1100, '6. Finish the work and complete the final report.');
+INSERT INTO `project_tracker`.`statuses` (`Code`, `Description`) VALUES (1200, '7. Get approval from the committee to schedule the final defense.');
+INSERT INTO `project_tracker`.`statuses` (`Code`, `Description`) VALUES (1300, '7.1 Conduct the defense');
+INSERT INTO `project_tracker`.`statuses` (`Code`, `Description`) VALUES (1400, '8. Revise the final report based on committee feedback. (if committee requires revisions)');
+INSERT INTO `project_tracker`.`statuses` (`Code`, `Description`) VALUES (1500, '9. After getting the final approval from the committee');
+INSERT INTO `project_tracker`.`statuses` (`Code`, `Description`) VALUES (1600, '10. Committee chair report the capstone grade to the IST department office.');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
 -- Data for table `project_tracker`.`office`
 -- -----------------------------------------------------
 START TRANSACTION;
@@ -455,65 +481,93 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `project_tracker`;
-INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('ab1234', '', 'none');
-INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('dn1234', '', 'none');
-INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('gs1234', '', 'none');
-INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('txaics', '', 'none');
+INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('ab1234', '', 'None');
+INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('dn1234', '', 'None');
+INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('gs1234', '', 'None');
+INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('txaics', '', 'None');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('gpavks', '585-475-7854', 'Office');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('dlaics', '585-475-4784', 'Office');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('ciiics', '585-281-6162', 'Office');
-INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('aobics', '', 'none');
-INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('tsbics', '', 'none');
+INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('aobics', '', 'None');
+INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('tsbics', '', 'None');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('dsbics', '585-4755231', 'Office');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('cbbics', '585-475-7946', 'Office');
-INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('spbics', '', 'none');
-INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('mjcics', '', 'none');
-INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('mjcvks', '', 'none');
+INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('spbics', '', 'None');
+INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('mjcics', '', 'None');
+INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('mjcvks', '', 'None');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('mjfics', '585-475-7031', 'Office');
-INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('nffbbu', '', 'none');
+INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('nffbbu', '', 'None');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('bdfvks', '585-475-6511', 'Office');
-INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('dmgics', '', 'none');
-INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('efgics', '', 'none');
-INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('jrhicsa', '', 'none');
+INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('dmgics', '', 'None');
+INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('efgics', '', 'None');
+INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('jrhicsa', '', 'None');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('vlhics', '585-475-5384', 'Office');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('bhhics', '585-475-7938', 'Office');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('amhgss', '585-475-4554', 'Office');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('lwhfac', '585-475-7064', 'Office');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('ephics', '585-475-5361', 'Office');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('mphics', '585-475-2459', 'Office');
-INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('jcjics', '', 'none');
-INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('mrjics', '', 'none');
+INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('jcjics', '', 'None');
+INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('mrjics', '', 'None');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('jwkics', '585-475-5362', 'Office');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('drkisd', '585-475-2811', 'Office');
-INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('hnkics', '', 'none');
-INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('mxkics1', '', 'none');
+INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('hnkics', '', 'None');
+INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('mxkics1', '', 'None');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('dmlics', '585-475-5001', 'Office');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('jalics', '585-475-2284', 'Office');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('jalvks', '585-475-6451', 'Office');
-INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('jxlics', '', 'none');
+INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('jxlics', '', 'None');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('phlics', '585-475-6162', 'Office');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('spmics', '585-475-6989', 'Office');
-INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('mjmics', '', 'none');
+INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('mjmics', '', 'None');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('thoics', '585-475-7642', 'Office');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('sphics', '585-475-7941', 'Office');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('djpihst', '585-475-2487', 'Office');
-INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('sarics', '', 'none');
-INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('ldrics', '', 'none');
-INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('kmsics', '', 'none');
-INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('cxsics', '', 'none');
-INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('nxsvks', '', 'none');
+INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('sarics', '', 'None');
+INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('ldrics', '', 'None');
+INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('kmsics', '', 'None');
+INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('cxsics', '', 'None');
+INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('nxsvks', '', 'None');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('aesfaa', '585-475-4552', 'Office');
-INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('jxtadm', '', 'none');
+INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('jxtadm', '', 'None');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('bmtski', '585-475-2869', 'Office');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('rpvvks', '585-475-7281', 'Office');
-INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('axgvks', '', 'none');
+INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('axgvks', '', 'None');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('emwics', '585-475-6733', 'Office');
-INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('jswics', '', 'none');
-INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('mayici', '', 'none');
+INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('jswics', '', 'None');
+INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('mayici', '', 'None');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('qyuvks', '585-475-6929', 'Office');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('sjzics', '585-475-7643', 'Office');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('rdbcst', '585-475-7924', 'Office');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('GradCoord', '585-475-6929', 'Office');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `project_tracker`.`user_committee_link`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `project_tracker`;
+INSERT INTO `project_tracker`.`user_committee_link` (`UserName`, `CommitteID`, `Role`) VALUES ('mjfics', 1, 'Reader');
+INSERT INTO `project_tracker`.`user_committee_link` (`UserName`, `CommitteID`, `Role`) VALUES ('mjfics', 2, 'Reader');
+INSERT INTO `project_tracker`.`user_committee_link` (`UserName`, `CommitteID`, `Role`) VALUES ('ephics', 3, 'Reader');
+INSERT INTO `project_tracker`.`user_committee_link` (`UserName`, `CommitteID`, `Role`) VALUES ('drkisd', 1, 'Chair');
+INSERT INTO `project_tracker`.`user_committee_link` (`UserName`, `CommitteID`, `Role`) VALUES ('drkisd', 2, 'Chair');
+INSERT INTO `project_tracker`.`user_committee_link` (`UserName`, `CommitteID`, `Role`) VALUES ('mjfics', 3, 'Chair');
+INSERT INTO `project_tracker`.`user_committee_link` (`UserName`, `CommitteID`, `Role`) VALUES ('thoics', 1, 'Reader');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `project_tracker`.`user_project_link`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `project_tracker`;
+INSERT INTO `project_tracker`.`user_project_link` (`UserName`, `ProjectID`) VALUES ('ab1234', 1);
+INSERT INTO `project_tracker`.`user_project_link` (`UserName`, `ProjectID`) VALUES ('dn1234', 2);
+INSERT INTO `project_tracker`.`user_project_link` (`UserName`, `ProjectID`) VALUES ('gs1234', 3);
 
 COMMIT;
 
