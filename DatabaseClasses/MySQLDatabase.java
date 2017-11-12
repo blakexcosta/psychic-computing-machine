@@ -20,7 +20,7 @@ public class MySQLDatabase {
       uri_    = "jdbc:mysql://localhost/project_tracker?autoReconnect=true&useSSL=false";
       driver_ = "com.mysql.jdbc.Driver";
       user_   = "root";
-      password_ = "student";
+      password_ = "oswaldo615";
       conn_ = null;
       
     }

@@ -23,7 +23,7 @@ public class User
    private String major;
    private String role;
    private String[][] resultSet; 
-   MySQLDatabase databaseClass = new MySQLDatabase();
+   private MySQLDatabase databaseClass = new MySQLDatabase();
 
 
    /**
@@ -119,11 +119,17 @@ public class User
      */
    public String[][] fetchAll(String tableName)
    {
-      try {
+   
+  
+         //Connect MySQL:
+         databaseClass.makeConnection();
+      
          resultSet = databaseClass.getAllData(tableName);
-      } catch (Exception ex) {
-         ex.printStackTrace();
-      }
+         
+         //Close MySQL:
+         databaseClass.closeConnection();
+
+      
       return resultSet;
    }//end fetchAll
 

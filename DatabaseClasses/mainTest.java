@@ -12,34 +12,20 @@ public class mainTest {
    
    public static void main(String[] args) {
       
-    
-
-      MySQLDatabase mySqlDB = new MySQLDatabase( uri_, driver_, user_, password_);
-
-         //Connect MySQL:
-      if(mySqlDB.makeConnection() == true){
-         System.out.println(" **** Connection Success: mySQL ****\n\n");
-      }
-      else{
-         System.out.println(" **** ERROR: mySQL connection FAILED ****");
-      }
       
       User user = new User();
       Project proj = new Project();
+      Email email = new Email();
+      //Office office = new Office();
+      
+      
+      Committee comm = new Committee();
       
       System.out.println(Arrays.deepToString(user.fetchAll("User") ) );
       System.out.println(Arrays.deepToString(proj.fetchAll("Project") ) );
-      System.out.println(Arrays.deepToString(user.fetchAll("Email") ) );
-      System.out.println(Arrays.deepToString(proj.fetchAll("Office") ) );
+//       System.out.println(Arrays.deepToString(proj.fetchAll("Email") ) );
+//       System.out.println(Arrays.deepToString(proj.fetchAll("Office") ) );
 
-
-
-         //Close MySQL:
-      if(mySqlDB.closeConnection() == true){
-         System.out.println(" \n\n**** MySQL Connection Successfully CLOSED ****");
-      }
-      else{
-         System.out.println(" **** ERROR: MySQL connection FAILED TO CLOSE ****");      }
 
 
       System.out.println("\n * * * * * * * * * * * * * * * * * * * * * * ");
