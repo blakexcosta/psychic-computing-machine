@@ -11,11 +11,6 @@ import java.util.*;
 public class mainTest {
    
    public static void main(String[] args) {
-      String uri_ = "jdbc:mysql://localhost/project_tracker?autoReconnect=true&useSSL=false";
-      String driver_ = "com.mysql.jdbc.Driver";
-      String user_ = "root";
-      String password_ = "student";
-      Connection conn_ = null;
       
     
 

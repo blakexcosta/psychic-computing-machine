@@ -9,7 +9,7 @@ import java.util.*;
  * November 10th, 2017
  */
 public class MySQLDatabase {
-    String uri_, driver_, user_, password_;
+    String uri_, driver_, user_, password_, conn_;
     static Connection conn;
     static String[][] sqlArr;
 
@@ -17,7 +17,12 @@ public class MySQLDatabase {
      * Purpose: Default Constructor
      */
     public MySQLDatabase() {
-
+      uri_    = "jdbc:mysql://localhost/project_tracker?autoReconnect=true&useSSL=false";
+      driver_ = "com.mysql.jdbc.Driver";
+      user_   = "root";
+      password_ = "student";
+      conn_ = null;
+      
     }
 
     /**
