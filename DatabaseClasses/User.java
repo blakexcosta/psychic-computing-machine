@@ -143,8 +143,12 @@ public class User
    {
       try
       {
+         databaseClass.makeConnection();
+
          String[] params = { getUserName(), getFirstName(), getLastName(), getPassword(), getImageURL(), getGraduationDate(), getDepartment(), getMajor(), getRole(), getUserName() };
          databaseClass.setData("UPDATE user SET UserName = ?, FirstName = ?, LastName = ?, Password = ?, Image = ?, GraduationDate = ?, Department = ?, Major = ?, Role = ? WHERE UserName = ?", params);
+         databaseClass.closeConnection();
+
          return true;
       }
       catch (Exception ex)
@@ -162,8 +166,12 @@ public class User
    {
       try
       {
+         databaseClass.makeConnection();
+
          String[] params = { getUserName(), getFirstName(), getLastName(), getPassword(), getImageURL(), getGraduationDate(), getDepartment(), getMajor(), getRole()};
          databaseClass.setData("INSERT INTO user (UserName, FirstName, LastName, Password, Image, GraduationDate, Department, Major, Role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", params);
+         databaseClass.closeConnection();
+
          return true; 
       }
       catch (Exception ex)
@@ -181,8 +189,13 @@ public class User
    {
       try
       {
+         databaseClass.makeConnection();
+
          String[] params = { getUserName() };
          databaseClass.setData("DELETE FROM user WHERE UserName = ?", params);
+        databaseClass.closeConnection();
+
+        
          return true;
       }
       catch (Exception ex)

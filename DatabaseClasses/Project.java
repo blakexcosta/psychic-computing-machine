@@ -217,7 +217,7 @@ public class Project
    public boolean put()
    {
       try
-      {
+      {  
          // String[] params = { getProjectID(), getProjectName(), getProjectSummary(), getProjectTopic(), getProjectType(), getProjectStartDate(), getProjectEndDate(), getProjectDueDate(), getProjectCompleted(), getProjectProposalApproved(), getProjectFinalDefenseDate(), getProjectPlagiarismPercentage(), getProjectGrade(), getCommitteeID(), getProjectID() };
 //          MySQLDatabase.setData("UPDATE project SET ID =?, Name = ?, Summary = ?, Topic = ?, Type = ?, StartDate = ?, EndDate = ?, DueDate = ?, Completed = ?, ProposalApproved = ?, FinalDefenseDate = ?, PlagiarismPercentage = ?, ProjectGrade = ?, CommitteeID = ? WHERE ID = ?", params);
          return true;
@@ -236,8 +236,10 @@ public class Project
    {
       try
       {
+         databaseClass.makeConnection();
          // String[] params = { getProjectID(), getProjectName(), getProjectSummary(), getProjectTopic(), getProjectType(), getProjectStartDate(), getProjectEndDate(), getProjectDueDate(), getProjectCompleted(), getProjectProposalApproved(), getProjectFinalDefenseDate(), getProjectPlagiarismPercentage(), getProjectGrade(), getCommitteeID() };
 //          MySQLDatabase.setData("INSERT INTO project (ID, Name, Summary, Topic, Type, StartDate, EndDate, DueDate, Competed, ProposalApproved, FinalDefenseDate, PlagiarismPercentage, ProjectGrade, CommitteeID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", params);
+         databaseClass.closeConnection();
          return true; 
       }
       catch (Exception ex)
@@ -253,9 +255,11 @@ public class Project
    public boolean delete()
    {
       try
-      {
+      {  
+         databaseClass.makeConnection();
          // String[] params = { getProjectID() };
 //          MySQLDatabase.setData("DELETE FROM project WHERE ID = ?", params);
+         databaseClass.closeConnection();
          return true;
       }
       catch (Exception ex)
