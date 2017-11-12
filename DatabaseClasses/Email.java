@@ -61,6 +61,36 @@ public class Email
    public void setEmailAddress(String emailAdress) { this.emailAddress = emailAddress; }
    public void setEmailType(String emailType) { this.emailType = emailType; }
 
+    /**
+     * Purpose: fetches a 2d array of strings from the database, takes a string to determine what table to fetch
+     * @param tableName String
+     * @return resultSet String[][] return a result set that holds all of the data extracted from the database
+     */
+   public String[][] fetchAll(String tableName)
+   {
+   
+      try{
+         //Connect MySQL:
+         dbClass.makeConnection();
+      
+         resultSet = dbClass.getAllData(tableName);
+         
+         //Close MySQL:
+         dbClass.closeConnection();
+
+      }catch(Exception e){
+         e.getMessage();
+      }
+      return resultSet;
+   }//end fetchAll
+
+
+
+
+
+
+
+
    /**
      * Purpose: Executes a SELECT SQL Statement on the email table and returns a 2D array of the data retrieved
      * @return boolean depending on the success of the execution

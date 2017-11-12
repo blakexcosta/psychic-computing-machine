@@ -23,7 +23,7 @@ public class mainTest {
       
       System.out.println(Arrays.deepToString(user.fetchAll("User") ) );
       System.out.println(Arrays.deepToString(proj.fetchAll("Project") ) );
-//       System.out.println(Arrays.deepToString(proj.fetchAll("Email") ) );
+      System.out.println(Arrays.deepToString(email.fetchAll("Email") ) );
 //       System.out.println(Arrays.deepToString(proj.fetchAll("Office") ) );
 
 
