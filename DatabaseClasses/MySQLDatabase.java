@@ -56,7 +56,7 @@ public class MySQLDatabase {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             
-            System.out.println("sql command: " + sql);
+            System.out.println("\n");
             int rowNum = 0;
             //get row count
             if (rs.last()) {
