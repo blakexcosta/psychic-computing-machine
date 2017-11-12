@@ -11,6 +11,8 @@ public class Office
    //Attributes
    private String userName;
    private String officeNumber;
+   private String resultSet[][];
+   private MySQLDatabase msdb= new MySQLDatabase();
 
    /**
     * Purpose: Default constructor
@@ -66,17 +68,18 @@ public class Office
    {
       try
       {
+         msdb.makeConnection();
          String[] params = { getUserName() };
-         resultSet = MySQLDatabase.getData("SELECT * FROM office WHERE UserName = ?", params);
+         resultSet = msdb.getData("SELECT * FROM office WHERE UserName = ?", params);
          
          setUserName(resultSet[0][0]);
          setOfficeNumber(resultSet[0][1]);
-         
+         msdb.closeConnection();
          return true;
       }
       catch (Exception ex)
       {
-         System.out.println(ex.Message());
+         System.out.println(ex);
          return false;
       }
    }
@@ -88,8 +91,10 @@ public class Office
    {
       try
       {
+         msdb.makeConnection();
          String[] params = { getUserName(), getOfficeNumber (), getUserName() };
-         MySQLDatabase.setData("UPDATE office SET UserName = ?, OfficeNumber = ? WHERE UserName = ?", params);
+         msdb.setData("UPDATE office SET UserName = ?, OfficeNumber = ? WHERE UserName = ?", params);
+         msdb.closeConnection();
          return true;
       }
       catch (Exception ex)
@@ -106,8 +111,10 @@ public class Office
    {
       try
       {
+         msdb.makeConnection();
          String[] params = { getUserName(), getOfficeNumber() };
-         MySQLDatabase.setData("INSERT INTO office (UserName, OfficeNumber) VALUES (?, ?)", params);
+         msdb.setData("INSERT INTO office (UserName, OfficeNumber) VALUES (?, ?)", params);
+         msdb.closeConnection();
          return true; 
       }
       catch (Exception ex)
@@ -124,8 +131,10 @@ public class Office
    {
       try
       {
+         msdb.makeConnection();
          String[] params = { getUserName() };
-         MySQLDatabase.setData("DELETE FROM office WHERE UserName = ?", params);
+         msdb.setData("DELETE FROM office WHERE UserName = ?", params);
+         msdb.closeConnection();
          return true;
       }
       catch (Exception ex)

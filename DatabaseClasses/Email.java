@@ -1,3 +1,7 @@
+import com.sun.corba.se.pept.transport.ConnectionCache;
+
+import java.sql.Connection;
+
 /**
  * Blake Costa, Gavin Drabik, Matthew Turczmanovicz, Oswaldo Rosete-Garcia, and Quinn Bissen
  * Group 11
@@ -12,7 +16,8 @@ public class Email
    private String userName;
    private String emailAddress;
    private String emailType;
-   MySQLDatabase dbClass = new MySQLDatabase();
+   private String[][] resultSet;
+   private MySQLDatabase dbClass = new MySQLDatabase();
    
    //Default Constructor
    public Email()
@@ -64,8 +69,9 @@ public class Email
    {
       try
       {
+
          String[] params = { getUserName() };
-         String[][] resultSet = dbClass.getData("SELECT * FROM email WHERE UserName = ?", params);
+         resultSet = dbClass.getData("SELECT * FROM email WHERE UserName = ?", params);
          
          setUserName(resultSet[0][0]);
          setEmailAddress(resultSet[0][1]);
@@ -88,8 +94,10 @@ public class Email
    {
       try
       {
+         dbClass.makeConnection();
          String[] params = { getUserName(), getEmailAddress(), getEmailType(), getUserName() };
          dbClass.setData("UPDATE email SET UserName = ?, EmailAddress = ?, EmailType = ? WHERE UserName = ?", params);
+         dbClass.closeConnection();
          return true;
       }
       catch (Exception ex)
@@ -107,8 +115,10 @@ public class Email
    {
       try
       {
+         dbClass.makeConnection();
          String[] params = { getUserName(), getEmailAddress(), getEmailType() };
          dbClass.setData("INSERT INTO email (UserName, EmailAddress, EmailType) VALUES (?, ?, ?)", params);
+         dbClass.closeConnection();
          return true; 
       }
       catch (Exception ex)
@@ -126,8 +136,10 @@ public class Email
    {
       try
       {
+         dbClass.makeConnection();
          String[] params = { getUserName() };
          dbClass.setData("DELETE FROM email WHERE UserName = ?", params);
+         dbClass.closeConnection();
          return true;
       }
       catch (Exception ex)
