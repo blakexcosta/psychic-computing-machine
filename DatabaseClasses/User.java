@@ -120,7 +120,7 @@ public class User
    public String[][] fetchAll(String tableName)
    {
    
-  
+      try{
          //Connect MySQL:
          databaseClass.makeConnection();
       
@@ -129,7 +129,9 @@ public class User
          //Close MySQL:
          databaseClass.closeConnection();
 
-      
+      }catch(Exception e){
+         e.getMessage();
+      }
       return resultSet;
    }//end fetchAll
 

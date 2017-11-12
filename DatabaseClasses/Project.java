@@ -166,10 +166,16 @@ public class Project
    {
       try
       {
+         //Connect MySQL:
+         databaseClass.makeConnection();
+      
          resultSet = databaseClass.getAllData(tableName);
-      }
-      catch (Exception ex)
-      {
+         
+         //Close MySQL:
+         databaseClass.closeConnection();
+
+      
+      }catch (Exception ex){
          ex.printStackTrace();
       }
       return resultSet;
