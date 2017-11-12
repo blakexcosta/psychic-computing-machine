@@ -55,6 +55,8 @@ public class MySQLDatabase {
             //String sql = "SELECT * FROM " +
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
+            
+            System.out.println("sql command: " + sql);
             int rowNum = 0;
             //get row count
             if (rs.last()) {
@@ -87,6 +89,7 @@ public class MySQLDatabase {
             //System.out.println("Error in getData(): SQL Statement not valid (?) ");
         } catch (NullPointerException npe) {
         }
+        
         return sqlArr;
     } // end getData();
 
