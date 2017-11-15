@@ -133,7 +133,9 @@ public class User
    }//end fetchAll
 
     /**
-     * Purpose: Updates a table in the database
+     * Purpose: Updates a table in the database, to make representative updates, make sure to update
+     * a user object via the setters and then call this method. There are no parameters for this method as a
+     * result
      * @return boolean
      */
    public boolean put()
@@ -141,11 +143,9 @@ public class User
       try
       {
          databaseClassObj.makeConnection();
-
          String[] params = { getUserName(), getFirstName(), getLastName(), getPassword(), getImageURL(), getGraduationDate(), getDepartment(), getMajor(), getRole(), getUserName() };
          databaseClassObj.setData("UPDATE user SET UserName = ?, FirstName = ?, LastName = ?, Password = ?, Image = ?, GraduationDate = ?, Department = ?, Major = ?, Role = ? WHERE UserName = ?", params);
          databaseClassObj.closeConnection();
-
          return true;
       }
       catch (Exception ex)
@@ -164,11 +164,9 @@ public class User
       try
       {
          databaseClassObj.makeConnection();
-
          String[] params = { getUserName(), getFirstName(), getLastName(), getPassword(), getImageURL(), getGraduationDate(), getDepartment(), getMajor(), getRole()};
          databaseClassObj.setData("INSERT INTO user (UserName, FirstName, LastName, Password, Image, GraduationDate, Department, Major, Role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", params);
          databaseClassObj.closeConnection();
-
          return true; 
       }
       catch (Exception ex)
@@ -187,12 +185,10 @@ public class User
       try
       {
          databaseClassObj.makeConnection();
-
          String[] params = { getUserName() };
+         //note that this is based upon the username
          databaseClassObj.setData("DELETE FROM user WHERE UserName = ?", params);
-        databaseClassObj.closeConnection();
-
-        
+         databaseClassObj.closeConnection();
          return true;
       }
       catch (Exception ex)
