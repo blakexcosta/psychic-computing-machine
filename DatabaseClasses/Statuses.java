@@ -65,6 +65,7 @@ public class Statuses
      * @param tableName String
      * @return resultSet String[][] return a result set that holds all of the data extracted from the database
      */
+     //TODO: why not consolidate this into MySQLDatabase? if that handles it for us.
    public String[][] fetchAll(String tableName)
    {
    
