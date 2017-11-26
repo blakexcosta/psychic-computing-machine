@@ -1,3 +1,5 @@
+package DatabaseClasses;
+
 import java.sql.*;
 import java.util.*;
 
@@ -12,7 +14,7 @@ public class mainTest {
       
       
 
-      MySQLDatabase mySqlDB = new MySQLDatabase( uri_, driver_, user_, password_);
+      M mySqlDB = new MySQLDatabase( uri_, driver_, user_, password_);
 
          //Connect MySQL:
       if(mySqlDB.makeConnection() == true){
