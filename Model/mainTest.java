@@ -2,17 +2,20 @@ package DatabaseClasses;
 
 import java.sql.*;
 import java.util.*;
+/**
+ * Blake Costa, Gavin Drabik, Matthew Turczmanovicz, Oswaldo Rosete-Garcia, and Quinn Bissen
+ * Group 11
+ * ISTE-330
+ * Professor Floeser
+ * November 10th, 2017
+ */
 
 public class mainTest {
    
    public static void main(String[] args) {
-      String uri_ = "jdbc:mysql://localhost/project_tracker?autoReconnect=true&useSSL=false";
-      String driver_ = "com.mysql.jdbc.Driver";
-      String user_ = "root"; //"iste330t01";
-      String password_ = "oswaldo615";//"iste330bmgoq";
-      Connection conn_ = null;
       
       
+<<<<<<< HEAD:Model/mainTest.java
 
       M mySqlDB = new MySQLDatabase( uri_, driver_, user_, password_);
 
@@ -24,17 +27,27 @@ public class mainTest {
          System.out.println(" **** ERROR: mySQL connection FAILED ****");
       }
       
+=======
+>>>>>>> 1f794f3469d17c9212336c21388bf23a7dba728a:DatabaseClasses/mainTest.java
       User user = new User();
+      Project proj = new Project();
+      Email email = new Email();
+      Office office = new Office();
+   
+   
+      Phone phone = new Phone();
+      Statuses stat = new Statuses();
+      
       System.out.println(Arrays.deepToString(user.fetchAll("User") ) );
+      System.out.println(Arrays.deepToString(proj.fetchAll("Project") ) );
+      System.out.println(Arrays.deepToString(email.fetchAll("Email") ) );
+      System.out.println(Arrays.deepToString(office.fetchAll("Office") ) );  
+      System.out.println(Arrays.deepToString(phone.fetchAll("Phone") ) );  
+      System.out.println(Arrays.deepToString(stat.fetchAll("Statuses") ) );  
 
+          
+      
 
-
-         //Close MySQL:
-      if(mySqlDB.closeConnection() == true){
-         System.out.println(" \n\n**** MySQL Connection Successfully CLOSED ****");
-      }
-      else{
-         System.out.println(" **** ERROR: MySQL connection FAILED TO CLOSE ****");      }
 
 
       System.out.println("\n * * * * * * * * * * * * * * * * * * * * * * ");

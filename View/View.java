@@ -1,11 +1,15 @@
 package View;
 
 import javax.swing.*;
+<<<<<<< HEAD
 import java.awt.*;
+=======
+>>>>>>> 1f794f3469d17c9212336c21388bf23a7dba728a
 import java.util.Observable;
 import java.util.Observer;
 
 /**
+<<<<<<< HEAD
  * View class serves as the default template that holds all the functionality of the jpanels
  * individual components
  */
@@ -42,9 +46,38 @@ public class View extends JFrame implements Observer{
      * update method from Observer to update the view panel
      * @param observable
      * @param o
+=======
+ * Blake Costa, Gavin Drabik, Matthew Turczmanovicz, Oswaldo Rosete-Garcia, and Quinn Bissen
+ * Group 11
+ * ISTE-330
+ * Professor Floeser
+ * November 10th, 2017
+ * This abstract view class extends View
+ */
+public abstract class View extends JFrame implements Observer{
+
+    /**
+     * Purpose: View constructor
+     * @param
+     * @return
+     */
+    public View(){
+        super();
+    }
+
+
+    /**
+     * Purpose: update is used to update all observable objects
+     * @param
+     * @return
+>>>>>>> 1f794f3469d17c9212336c21388bf23a7dba728a
      */
     @Override
     public void update(Observable observable, Object o) {
 
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 1f794f3469d17c9212336c21388bf23a7dba728a
 }

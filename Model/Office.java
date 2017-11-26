@@ -1,99 +1,172 @@
+/**
+ * Blake Costa, Gavin Drabik, Matthew Turczmanovicz, Oswaldo Rosete-Garcia, and Quinn Bissen
+ * Group 11
+ * ISTE-330
+ * Professor Floeser
+ * November 10th, 2017
+ */
+
 public class Office
 {
    //Attributes
    private String userName;
    private String officeNumber;
-   
-   //Default Constructor
+   private String resultSet[][];
+   private MySQLDatabase msdb= new MySQLDatabase();
+
+   /**
+    * Purpose: Default constructor
+    */
    public Office()
    {
       userName = "unknown";
       officeNumber = "unknown";
    }
-   
-   //Parameterized Constructor - ID
+
+   /**
+    * Purpose: Parameterized constructor - userName
+    * @param userName String
+    */
    public Office(String userName)
    {
       this.userName = userName;
       officeNumber = "unknown";
    }
-   
-   //Parameterized Constructor - Everything
+
+    /**
+     * Purpose: Parameterized constructor
+     * @param userName String
+     * @param officeNumber string
+     */
    public Office(String userName, String officeNumber)
    {
       this.userName = userName;
       this.officeNumber = officeNumber;
    }
-   
-   //Accessors
+
+    /**
+     * Purpose: Accessor
+     * @return userName String
+     * @return officeNumber String
+     */
    public String getUserName() { return userName; }
    public String getOfficeNumber() { return officeNumber; }
-   
-   //Mutators
+
+    /**
+     * Purpose: Mutators
+     * @param userName String
+     * @param officeNumber String
+     */
    public void setUserName(String userName) { this.userName = userName; }
    public void setOfficeNumber(String officeNumber) { this.officeNumber = officeNumber; }
+
+
+    /**
+     * Purpose: fetches a table from the database
+     * @param tableName String[][]
+     * @return resultSet String[][]
+     */
+   public String[][] fetchAll(String tableName)
+   {
+      try
+      {
+         //Connect MySQL:
+         msdb.makeConnection();
+      
+         resultSet = msdb.getAllData(tableName);
+         
+         //Close MySQL:
+         msdb.closeConnection();
+
+      
+      }catch (Exception ex){
+         ex.printStackTrace();
+      }
+      return resultSet;
+   }//end fetchAll
    
-   //Database Transaction Stubbs
+   
+   
+    /**
+     * Purpose: Fetches  a row from the office table
+     * @return boolean
+     */
    public boolean fetch()
    {
       try
       {
+         msdb.makeConnection();
          String[] params = { getUserName() };
-         resultSet = MySQLDatabase.getData("SELECT * FROM office WHERE UserName = ?", params);
+         resultSet = msdb.getData("SELECT * FROM office WHERE UserName = ?", params);
          
          setUserName(resultSet[0][0]);
          setOfficeNumber(resultSet[0][1]);
-         
+         msdb.closeConnection();
          return true;
       }
       catch (Exception ex)
       {
-         System.out.println(ex.Message());
+         System.out.println(ex);
          return false;
       }
    }
-   
+    /**
+     * Purpose: Updates a row in the office table
+     * @return boolean
+     */
    public boolean put()
    {
       try
       {
+         msdb.makeConnection();
          String[] params = { getUserName(), getOfficeNumber (), getUserName() };
-         MySQLDatabase.setData("UPDATE office SET UserName = ?, OfficeNumber = ? WHERE UserName = ?", params);
+         msdb.setData("UPDATE office SET UserName = ?, OfficeNumber = ? WHERE UserName = ?", params);
+         msdb.closeConnection();
          return true;
       }
       catch (Exception ex)
       {
-         System.out.println(ex.Message());
+         System.out.println(ex);
          return false;
       }
    }
-   
+    /**
+     * Purpose: Inserts a row into the office table
+     * @return boolean
+     */
    public boolean post()
    {
       try
       {
+         msdb.makeConnection();
          String[] params = { getUserName(), getOfficeNumber() };
-         MySQLDatabase.setData("INSERT INTO office (UserName, OfficeNumber) VALUES (?, ?)", params);
+         msdb.setData("INSERT INTO office (UserName, OfficeNumber) VALUES (?, ?)", params);
+         msdb.closeConnection();
          return true; 
       }
       catch (Exception ex)
       {
-         System.out.println(ex.Message());
+         System.out.println(ex);
          return false;
       }
    }
-   
+    /**
+     * Purpose: Deletes a row in the office table
+     * @return boolean
+     */
    public boolean delete()
    {
       try
       {
+         msdb.makeConnection();
          String[] params = { getUserName() };
-         MySQLDatabase.setData("DELETE FROM office WHERE UserName = ?", params);
+         msdb.setData("DELETE FROM office WHERE UserName = ?", params);
+         msdb.closeConnection();
          return true;
       }
       catch (Exception ex)
       {
-         System.out.println(ex.Message());
+         System.out.println(ex);
          return false;
       }
    }

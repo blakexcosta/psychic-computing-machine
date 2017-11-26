@@ -1,3 +1,11 @@
+/**
+ * Blake Costa, Gavin Drabik, Matthew Turczmanovicz, Oswaldo Rosete-Garcia, and Quinn Bissen
+ * Group 11
+ * ISTE-330
+ * Professor Floeser
+ * November 10th, 2017
+ */
+
 public class Milestone
 {
    //Attributes
@@ -7,6 +15,7 @@ public class Milestone
    private int milestoneNumber;
    private String milestoneDueDate;
    private boolean milestoneApproved;
+   MySQLDatabase dbClass = new MySQLDatabase();
    
    //Default Constructor
    public Milestone()
@@ -19,7 +28,10 @@ public class Milestone
       milestoneApproved = false;
    }
    
-   //Parameterized Constructor - ID
+   /**
+     * Purpose: Parameterized Constructor - ID
+     * @param milestoneID int
+     */
    public Milestone(int milestoneID)
    {
       this.milestoneID = milestoneID;
@@ -30,7 +42,15 @@ public class Milestone
       milestoneApproved = false;
    }
    
-   //Parameterized Constructor - Everything
+   /**
+     * Purpose: Parameterized Constructor - Everything
+     * @param milestoneID int
+     * @param milestoneStatusCode int
+     * @param milestoneName String
+     * @param milestoneNumber int
+     * @param milestoneDueDate String
+     * @param milestoneApproved boolean
+     */
    public Milestone(int milestoneID, int milestoneStatusCode, String milestoneName, int milestoneNumber, String milestoneDueDate, boolean milestoneApproved)
    {
       this.milestoneID = milestoneID;
@@ -56,71 +76,86 @@ public class Milestone
    public void setMilestoneDueDate(String milestoneDueDate) { this.milestoneDueDate = milestoneDueDate; }
    public void setMilestoneApproved(boolean milestoneApproved) { this.milestoneApproved = milestoneApproved; }
 
-   //Database Transaction Stubbs
+   /**
+     * Purpose: Executes a SELECT SQL Statement on the milestone table and returns a 2D array of the data retrieved
+     * @return boolean depending on the success of the execution
+     */
    public boolean fetch()
    {
       try
       {
-         String[] params = { getMilestoneID() };
-         resultSet = MySQLDatabase.getData("SELECT * FROM milestone WHERE ID = ?", params);
+         String[] params = { Integer.toString(getMilestoneID()) };
+         String[][] resultSet = dbClass.getData("SELECT * FROM milestone WHERE ID = ?", params);
          
-         setMilestoneID(resultSet[0][1]);
-         setMilestoneStatusCode(resultSet[0][1]);
-         setMilestoneName(resultSet[0][2]);
-         setMilestoneNumber(resultSet[0][3]);
-         setMilestoneDueDate(resultSet[0][4]);
-         setMilestoneApproved(resultSet[0][5]);
+         setMilestoneID(Integer.parseInt(resultSet[0][1]));
+         setMilestoneStatusCode(Integer.parseInt(resultSet[0][2]));
+         setMilestoneName(resultSet[0][3]);
+         setMilestoneNumber(Integer.parseInt(resultSet[0][4]));
+         setMilestoneDueDate(resultSet[0][5]);
+         setMilestoneApproved(Boolean.parseBoolean(resultSet[0][6]));
          
          return true;
       }
       catch (Exception ex)
       {
-         System.out.println(ex.Message());
+         ex.printStackTrace();
          return false;
       }
    }
    
+   /**
+     * Purpose: Executes an UPDATE SQL Statement on the milestone table and it will update new values that reflect the attributes
+     * @return boolean depending on the success of the execution
+     */
    public boolean put()
    {
       try
       {
-         String[] params = { getMilestoneID(), getMilestoneStatusCode(), getMilestoneName(), getMilestoneNumber(), getMilestoneDueDate(), getMilestoneApproved(), getMilestoneID() };
-         MySQLDatabase.setData("UPDATE milestone SET ID = ?, StatusCode = ?, Name = ?, Number = ?, DueDate = ?, Approved = ?  WHERE ID = ?", params);
+         String[] params = { Integer.toString(getMilestoneID()), Integer.toString(getMilestoneStatusCode()), getMilestoneName(), Integer.toString(getMilestoneNumber()), getMilestoneDueDate(), Boolean.toString(getMilestoneApproved()), Integer.toString(getMilestoneID()) };
+         dbClass.setData("UPDATE milestone SET ID = ?, StatusCode = ?, Name = ?, Number = ?, DueDate = ?, Approved = ?  WHERE ID = ?", params);
          return true;
       }
       catch (Exception ex)
       {
-         System.out.println(ex.Message());
+         ex.printStackTrace();
          return false;
       }
    }
    
+   /**
+     * Purpose: Executes an INSERT SQL Statement on the email table and it will insert new values that reflect the attributes 
+     * @return boolean depending on the success of the execution
+     */
    public boolean post()
    {
       try
       {
-         String[] params = { getMilestoneID(), getMilestoneStatusCode(), getMilestoneName(), getMilestoneNumber(), getMilestoneDueDate(), getMilestoneApproved() };
-         MySQLDatabase.setData("INSERT INTO milestone (ID, StatusCode, Name, Number, DueDate, Approved) VALUES (?, ?, ?, ?, ?, ?)", params);
+         String[] params = { Integer.toString(getMilestoneID()), Integer.toString(getMilestoneStatusCode()), getMilestoneName(), Integer.toString(getMilestoneNumber()), getMilestoneDueDate(), Boolean.toString(getMilestoneApproved()) };
+         dbClass.setData("INSERT INTO milestone (ID, StatusCode, Name, Number, DueDate, Approved) VALUES (?, ?, ?, ?, ?, ?)", params);
          return true; 
       }
       catch (Exception ex)
       {
-         System.out.println(ex.Message());
+         ex.printStackTrace();
          return false;
       }
    }
    
+   /**
+     * Purpose: Executes a DELETE SQL Statement on the email table and will delete the data from the selected ID attribute
+     * @return boolean depending on the success of the execution
+     */
    public boolean delete()
    {
       try
       {
-         String[] params = { getMilestoneID() };
-         MySQLDatabase.setData("DELETE FROM milestone WHERE ID = ?", params);
+         String[] params = { Integer.toString(getMilestoneID()) };
+         dbClass.setData("DELETE FROM milestone WHERE ID = ?", params);
          return true;
       }
       catch (Exception ex)
       {
-         System.out.println(ex.Message());
+         ex.printStackTrace();
          return false;
       }
    }

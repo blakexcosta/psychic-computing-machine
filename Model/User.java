@@ -1,6 +1,15 @@
 import java.sql.*;
 import java.util.*;
 
+/**
+ * Blake Costa, Gavin Drabik, Matthew Turczmanovicz, Oswaldo Rosete-Garcia, and Quinn Bissen
+ * Group 11
+ * ISTE-330
+ * Professor Floeser
+ * November 10th, 2017
+ */
+
+
 public class User
 {
    //Attributes
@@ -13,11 +22,14 @@ public class User
    private String department;
    private String major;
    private String role;
-   private String[][] resultSet;
-   MySQLDatabase databaseClass = new MySQLDatabase();
-   
-   
-   //Default Constructor
+   private String[][] resultSet; 
+   private MySQLDatabase databaseClassObj = new MySQLDatabase();
+
+
+   /**
+    * Purpose: default constructor
+    */
+
    public User()
    {
       userName = "unknown";
@@ -30,8 +42,12 @@ public class User
       major = "unknown";
       role = "unknown";
    }
-   
-   //Parameterized Constructor - ID
+
+   /**
+    * Purpose: parameterized constructor, takes in the userName
+    * @param userName String
+    */
+
    public User(String userName)
    {
       this.userName = userName;
@@ -44,8 +60,19 @@ public class User
       major = "unknown";
       role = "unknown";
    }
-   
-   //Parameterized Constructor - Everything
+
+   /**
+    * Purpose: parameterized constructor
+    * @param userName String
+    * @param firstName String
+    * @param lastName String
+    * @param password String
+    * @param imageURL String
+    * @param graduationDate String
+    * @param department String
+    * @param major String
+    * @param role String
+    */
    public User(String userName, String firstName, String lastName, String password, String imageURL, String graduationDate, String department, String major, String role)
    {
       this.userName = userName;
@@ -58,8 +85,10 @@ public class User
       this.major = major;
       this.role = role;
    }
-   
-   //Accessors
+
+   /**
+    * Purpose: accessors
+    */
    public String getUserName() { return userName; }
    public String getFirstName() { return firstName; }
    public String getLastName() { return lastName; }
@@ -69,8 +98,10 @@ public class User
    public String getDepartment() { return department; }
    public String getMajor() { return major; }
    public String getRole() { return role; }
-   
-   //Mutators
+
+   /**
+    * Purpose: mutators
+    */
    public void setUserName(String userName) { this.userName = userName; }
    public void setFirstName(String firstName) { this.firstName = firstName; }
    public void setLastName(String lastName) { this.lastName = lastName; }
@@ -80,32 +111,41 @@ public class User
    public void setDepartment(String department) { this.department = department; }
    public void setMajor(String major) { this.major = major; }
    public void setRole(String role) { this.role = role; }
-   
-   //Database Transaction Stubbs
+
+    /**
+     * Purpose: fetches a 2d array of strings from the database, takes a string to determine what table to fetch
+     * @param tableName String
+     * @return resultSet String[][] return a result set that holds all of the data extracted from the database
+     */
    public String[][] fetchAll(String tableName)
    {
-      try
-      {
-
-         resultSet = databaseClass.getAllData(tableName);
-         
-
-         
-      
-      }
-      catch (Exception ex)
-      {
-         ex.printStackTrace();
+   
+      try{
+         //Connect MySQL:
+         databaseClassObj.makeConnection();
+         resultSet = databaseClassObj.getAllData(tableName);
+         //Close MySQL:
+         databaseClassObj.closeConnection();
+      }catch(Exception e){
+         e.getMessage();
       }
       return resultSet;
-   }
-   
+   }//end fetchAll
+
+    /**
+     * Purpose: Updates a table in the database, to make representative updates, make sure to update
+     * a user object via the setters and then call this method. There are no parameters for this method as a
+     * result
+     * @return boolean
+     */
    public boolean put()
    {
       try
       {
+         databaseClassObj.makeConnection();
          String[] params = { getUserName(), getFirstName(), getLastName(), getPassword(), getImageURL(), getGraduationDate(), getDepartment(), getMajor(), getRole(), getUserName() };
-         databaseClass.setData("UPDATE user SET UserName = ?, FirstName = ?, LastName = ?, Password = ?, Image = ?, GraduationDate = ?, Department = ?, Major = ?, Role = ? WHERE UserName = ?", params);
+         databaseClassObj.setData("UPDATE user SET UserName = ?, FirstName = ?, LastName = ?, Password = ?, Image = ?, GraduationDate = ?, Department = ?, Major = ?, Role = ? WHERE UserName = ?", params);
+         databaseClassObj.closeConnection();
          return true;
       }
       catch (Exception ex)
@@ -114,13 +154,19 @@ public class User
          return false;
       }
    }
-   
+
+    /**
+     * Purpose: Inserts a single row into a table
+     * @return boolean
+     */
    public boolean post()
    {
       try
       {
+         databaseClassObj.makeConnection();
          String[] params = { getUserName(), getFirstName(), getLastName(), getPassword(), getImageURL(), getGraduationDate(), getDepartment(), getMajor(), getRole()};
-         databaseClass.setData("INSERT INTO user (UserName, FirstName, LastName, Password, Image, GraduationDate, Department, Major, Role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", params);
+         databaseClassObj.setData("INSERT INTO user (UserName, FirstName, LastName, Password, Image, GraduationDate, Department, Major, Role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", params);
+         databaseClassObj.closeConnection();
          return true; 
       }
       catch (Exception ex)
@@ -129,13 +175,20 @@ public class User
          return false;
       }
    }
-   
+
+    /**
+     * Purpose: Deletes a row from the database
+     * @return boolean
+     */
    public boolean delete()
    {
       try
       {
+         databaseClassObj.makeConnection();
          String[] params = { getUserName() };
-         databaseClass.setData("DELETE FROM user WHERE UserName = ?", params);
+         //note that this is based upon the username
+         databaseClassObj.setData("DELETE FROM user WHERE UserName = ?", params);
+         databaseClassObj.closeConnection();
          return true;
       }
       catch (Exception ex)
