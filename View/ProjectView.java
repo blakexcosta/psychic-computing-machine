@@ -1,5 +1,8 @@
 package View;
 
+<<<<<<< HEAD
+public class ProjectView {
+=======
 /**
  * Blake Costa, Gavin Drabik, Matthew Turczmanovicz, Oswaldo Rosete-Garcia, and Quinn Bissen
  * Group 11
@@ -17,4 +20,5 @@ public class ProjectView extends View{
     public ProjectView() {
         super();
     }
+>>>>>>> 1f794f3469d17c9212336c21388bf23a7dba728a
 }

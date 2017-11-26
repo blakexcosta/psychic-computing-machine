@@ -23,7 +23,7 @@ public class User
    private String major;
    private String role;
    private String[][] resultSet; 
-   private MySQLDatabase databaseClass = new MySQLDatabase();
+   private MySQLDatabase databaseClassObj = new MySQLDatabase();
 
 
    /**
@@ -122,13 +122,10 @@ public class User
    
       try{
          //Connect MySQL:
-         databaseClass.makeConnection();
-      
-         resultSet = databaseClass.getAllData(tableName);
-         
+         databaseClassObj.makeConnection();
+         resultSet = databaseClassObj.getAllData(tableName);
          //Close MySQL:
-         databaseClass.closeConnection();
-
+         databaseClassObj.closeConnection();
       }catch(Exception e){
          e.getMessage();
       }
@@ -136,19 +133,19 @@ public class User
    }//end fetchAll
 
     /**
-     * Purpose: Updates a table in the database
+     * Purpose: Updates a table in the database, to make representative updates, make sure to update
+     * a user object via the setters and then call this method. There are no parameters for this method as a
+     * result
      * @return boolean
      */
    public boolean put()
    {
       try
       {
-         databaseClass.makeConnection();
-
+         databaseClassObj.makeConnection();
          String[] params = { getUserName(), getFirstName(), getLastName(), getPassword(), getImageURL(), getGraduationDate(), getDepartment(), getMajor(), getRole(), getUserName() };
-         databaseClass.setData("UPDATE user SET UserName = ?, FirstName = ?, LastName = ?, Password = ?, Image = ?, GraduationDate = ?, Department = ?, Major = ?, Role = ? WHERE UserName = ?", params);
-         databaseClass.closeConnection();
-
+         databaseClassObj.setData("UPDATE user SET UserName = ?, FirstName = ?, LastName = ?, Password = ?, Image = ?, GraduationDate = ?, Department = ?, Major = ?, Role = ? WHERE UserName = ?", params);
+         databaseClassObj.closeConnection();
          return true;
       }
       catch (Exception ex)
@@ -166,12 +163,10 @@ public class User
    {
       try
       {
-         databaseClass.makeConnection();
-
+         databaseClassObj.makeConnection();
          String[] params = { getUserName(), getFirstName(), getLastName(), getPassword(), getImageURL(), getGraduationDate(), getDepartment(), getMajor(), getRole()};
-         databaseClass.setData("INSERT INTO user (UserName, FirstName, LastName, Password, Image, GraduationDate, Department, Major, Role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", params);
-         databaseClass.closeConnection();
-
+         databaseClassObj.setData("INSERT INTO user (UserName, FirstName, LastName, Password, Image, GraduationDate, Department, Major, Role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", params);
+         databaseClassObj.closeConnection();
          return true; 
       }
       catch (Exception ex)
@@ -189,13 +184,11 @@ public class User
    {
       try
       {
-         databaseClass.makeConnection();
-
+         databaseClassObj.makeConnection();
          String[] params = { getUserName() };
-         databaseClass.setData("DELETE FROM user WHERE UserName = ?", params);
-        databaseClass.closeConnection();
-
-        
+         //note that this is based upon the username
+         databaseClassObj.setData("DELETE FROM user WHERE UserName = ?", params);
+         databaseClassObj.closeConnection();
          return true;
       }
       catch (Exception ex)

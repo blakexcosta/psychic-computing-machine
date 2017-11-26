@@ -54,32 +54,32 @@ public class MySQLDatabase {
             String sql = "SELECT * FROM " + tableName + ";";
             //String sql = "SELECT * FROM " +
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            
+            ResultSet rs = stmt.executeQuery(sql);    
             System.out.println("\n");
             int rowNum = 0;
             //get row count
             if (rs.last()) {
-                rowNum = rs.getRow();
+                rowNum = rs.getRow(); //int representation of the row being selected from the result set
                 rs.beforeFirst();
             }
             //************************************************
             ResultSetMetaData rsmd = rs.getMetaData();
             //boolean yesNo = colnames;                           ///NEW
-            int columnCount = rsmd.getColumnCount();
-            String headers[] = new String[columnCount];
+            int columnCount = rsmd.getColumnCount(); //getting columnCount
+            String headers[] = new String[columnCount]; //making new String header array based upon the column count
             //new
             for (int i = 1; i <= columnCount; i++) {          //loops through and collects headings and their lengths
                 headers[i - 1] = rsmd.getColumnName(i);     //creates the column heading for chart
             }
-            while (rs.next()) {
-                sqlArr = new String[rowNum][columnCount];
-                for (int i = 0; i < rowNum; i++) {
-                    for (int j = 1; j <= columnCount; j++) {
-                        if (i == 0) {
+            while (rs.next()) { //while the resultSet has a next row of data
+                sqlArr = new String[rowNum][columnCount]; //sqlArr static attribute = a new String array of the rowNumber and the column count
+                for (int i = 0; i < rowNum; i++) { //iterating over the number of rows
+                //TODO: edit this line, remove j=1 and make it j=0, adds unneccessary level of confusion with array indexing.
+                    for (int j = 1; j <= columnCount; j++) { //for each row, iterated over the columns
+                        if (i == 0) { //if i==0 it must be the header of the row, hence add it to the sqlArr
                             sqlArr[i][j - 1] = headers[j - 1]; //loop through column data from list(?) and populate this row with column headers
                         } else {
-                            sqlArr[i][j - 1] = rs.getString(j);
+                            sqlArr[i][j - 1] = rs.getString(j); //otherwise it's just a normal row of data. set the sql array row
                         }
                     }
                 }
@@ -93,8 +93,8 @@ public class MySQLDatabase {
         return sqlArr;
     } // end getData();
 
+    //TODO: Everyone: write out line by line your logic. documentation can turn into a nightmare otherwise.
     //*************************************** CONNECT *********************************
-
     /**
      * Purpose: Connect to the database
      *
@@ -146,8 +146,8 @@ public class MySQLDatabase {
         return false;
     }// end  closeConnection()
 
+//TODO: Please document this. Ty :)
 //****************************************** descTable() ***************************************
-
     /**
      * Purpose: Describe the table
      *
@@ -155,8 +155,9 @@ public class MySQLDatabase {
      */
     public void descTable(String statement) {
         try {
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT " + statement);
+            Statement stmt = conn.createStatement(); //creating a new statement
+            //TODO: Why is this select being used here? Why not remove it and just use statement?
+            ResultSet rs = stmt.executeQuery("SELECT " + statement); //executing select query
             ResultSetMetaData rsmd = rs.getMetaData();
             int columnCount = rsmd.getColumnCount();
             int rowCount = 0;
@@ -290,6 +291,7 @@ public class MySQLDatabase {
             //makeConnection();
             ps = conn.prepareStatement(preparedStr);
             //int j = 1;
+            //TODO: same issue as getAllData todo
             for (int i = 1; i <= strvals.length; i++) {
                 for (int j = 0; j <= strvals.length - 1; j++) {
                     ps.setString(i, strvals[j]);

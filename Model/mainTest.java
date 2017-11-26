@@ -1,3 +1,5 @@
+package DatabaseClasses;
+
 import java.sql.*;
 import java.util.*;
 /**
@@ -13,6 +15,20 @@ public class mainTest {
    public static void main(String[] args) {
       
       
+<<<<<<< HEAD:Model/mainTest.java
+
+      M mySqlDB = new MySQLDatabase( uri_, driver_, user_, password_);
+
+         //Connect MySQL:
+      if(mySqlDB.makeConnection() == true){
+         System.out.println(" **** Connection Success: mySQL ****\n\n");
+      }
+      else{
+         System.out.println(" **** ERROR: mySQL connection FAILED ****");
+      }
+      
+=======
+>>>>>>> 1f794f3469d17c9212336c21388bf23a7dba728a:DatabaseClasses/mainTest.java
       User user = new User();
       Project proj = new Project();
       Email email = new Email();
