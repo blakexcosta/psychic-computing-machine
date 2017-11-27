@@ -29,35 +29,54 @@ public class View extends Application implements Observer{
 
     @Override
     public void start(Stage myStage) throws Exception {
+        //Window title
         myStage.setTitle("Project Tracker");
 
+        //make and position view elements in the grid pane (button and text fields)
+        GridPane gp = new GridPane();
+        //gp.setPadding( new Insets( 15 ) );
+        gp.setHgap( 5 );
+        gp.setVgap( 5 );
+        gp.setAlignment( Pos.CENTER );
+
+
+        //Add label and text field for User Name
         TextField userNameField = new TextField();
         userNameField.setPromptText("User Name");
+
+        //add to the grid pane
+        gp.add( new Label("User Name:"), 0,0);
+        gp.add(userNameField, 1, 0);
+
+        //Add label and text field for Password
         TextField passwordField = new TextField();
         passwordField.setPromptText("Password");
 
-        Button loginButton = new Button("Log In");
+        gp.add( new Label ("Password:"), 0, 1);
+        gp.add(passwordField, 1, 1);
 
+        //add button to grid pane
+        Button loginButton = new Button("Log In");
+        gp.add(loginButton, 1, 3);
+
+        //position button to the left
+        gp.setHalignment(loginButton, HPos.LEFT);
+
+        //Login button click functionality
         loginButton.setOnAction(e -> {
             System.out.println("log a person in!");
         });
 
 
-        GridPane rootNode= new GridPane();
-        rootNode.setPadding( new Insets( 15 ) );
-        rootNode.setHgap( 5 );
-        rootNode.setVgap( 5 );
-        rootNode.setAlignment( Pos.CENTER );
 
-        Scene myScene = new Scene( rootNode, 300, 200 );
+        //make the view (scene) that will go into the window.
+        //Made up of the gridpane (that contains all the elements) and dimensions
+        Scene myScene = new Scene( gp, 600, 400 );
 
-        rootNode.add( new Label("User Name:"), 0,0); rootNode.add(userNameField, 1, 0);
-        rootNode.add( new Label ("Password:"), 0, 1); rootNode.add(passwordField, 1, 1);
-        rootNode.add(loginButton, 1, 3);
-        rootNode.setHalignment(loginButton, HPos.LEFT);
-
+        //Put view into the window
         myStage.setScene( myScene);
 
+        //show the window
         myStage.show();
     }
-}
+}  
