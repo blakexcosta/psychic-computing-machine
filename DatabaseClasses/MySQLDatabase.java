@@ -1,3 +1,5 @@
+package DatabaseClasses;
+
 import java.sql.*;
 import java.util.*;
 
@@ -20,7 +22,7 @@ public class MySQLDatabase {
       uri_    = "jdbc:mysql://localhost/project_tracker?autoReconnect=true&useSSL=false";
       driver_ = "com.mysql.jdbc.Driver";
       user_   = "root";
-      password_ = "oswaldo615";
+      password_ = "student";
       conn_ = null;
       
     }
@@ -28,10 +30,10 @@ public class MySQLDatabase {
     /**
      * Purpose: Parameterized Constructor
      *
-     * @param URI      string
-     * @param driver   String
-     * @param user     String
-     * @param password String
+     * @param uri_      string
+     * @param driver_   String
+     * @param user_     String
+     * @param password_ String
      */
     public MySQLDatabase(String uri_, String driver_, String user_, String password_) {
 
@@ -45,7 +47,7 @@ public class MySQLDatabase {
     /**
      * Purpose: This method execute a SELECT SQL Statement on the table submitted
      *
-     * @param table name String
+     * @param tableName name String
      * @return String[][] of all the data
      */
     public String[][] getAllData(String tableName) {
@@ -151,7 +153,7 @@ public class MySQLDatabase {
     /**
      * Purpose: Describe the table
      *
-     * @param A SQL Statement String
+     * @param statement SQL Statement String
      */
     public void descTable(String statement) {
         try {
@@ -278,8 +280,8 @@ public class MySQLDatabase {
     /**
      * Purpose: This method will prepare a SQL Statement
      *
-     * @param parameter values String[]
-     * @param SQL       Statement String
+     * @param strvals values String[]
+     * @param sql       Statement String
      * @return SQL Statement PreparedStatement
      */
     public static PreparedStatement prepare(String sql, String[] strvals) {
@@ -307,7 +309,7 @@ public class MySQLDatabase {
     /**
      * Purpose: This method execute a SELECT SQL Statement on the table submitted
      *
-     * @param SQL Statement String
+     * @param sql Statement String
      * @return String[][] of all the data
      */
     public static String[][] getData(String sql) {
@@ -337,8 +339,8 @@ public class MySQLDatabase {
     /**
      * Purpose: This method execute a SELECT SQL Statement on the table submitted
      *
-     * @param SQL        Statement String
-     * @param parameters values String[]
+     * @param sql        Statement String
+     * @param strvals values String[]
      * @return String[][] of all the data
      */
     public String[][] getData(String sql, String[] strvals) {
@@ -376,7 +378,7 @@ public class MySQLDatabase {
     /**
      * Purpose: This method execute a SELECT SQL Statement on the table submitted
      *
-     * @param SQL Statement String
+     * @param sql Statement String
      * @return Boolean value reflecting the success
      */
     public static boolean setData(String sql) {
@@ -403,8 +405,8 @@ public class MySQLDatabase {
     /**
      * Purpose: This method will update, insert, or delete data
      *
-     * @param SQL       Statement String
-     * @param Parameter values String[]
+     * @param sql       Statement String
+     * @param strvals values String[]
      * @return boolean depending on the success of the update, insert, or delete
      */
     public boolean setData(String sql, String[] strvals) {
@@ -420,8 +422,8 @@ public class MySQLDatabase {
     /**
      * Purpose: This method will execute a prepared statement
      *
-     * @param SQL       Statement String
-     * @param Parameter values String[]
+     * @param sql       Statement String
+     * @param strvals values String[]
      * @return results affected int
      */
     public int executeStmt(String sql, String[] strvals) {
