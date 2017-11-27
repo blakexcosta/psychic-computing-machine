@@ -32,39 +32,43 @@ public class View extends Application implements Observer{
         //Window title
         myStage.setTitle("Project Tracker");
 
-        //make and position view elements in the grid pane (button and text fields)
+        //make gridpane
         GridPane gp = new GridPane();
-        //gp.setPadding( new Insets( 15 ) );
         gp.setHgap( 5 );
         gp.setVgap( 5 );
         gp.setAlignment( Pos.CENTER );
 
-
-        //Add label and text field for User Name
+        //make user name text field
         TextField userNameField = new TextField();
         userNameField.setPromptText("User Name");
 
-        //add to the grid pane
-        gp.add( new Label("User Name:"), 0,0);
-        gp.add(userNameField, 1, 0);
-
-        //Add label and text field for Password
+        //make password text field
         TextField passwordField = new TextField();
         passwordField.setPromptText("Password");
 
+
+
+        //Add User Name label / Textfield to grid pane
+        gp.add( new Label("User Name:"), 0,0);
+        gp.add(userNameField, 1, 0);
+
+        //Add Password label / Textfield to grid pane
         gp.add( new Label ("Password:"), 0, 1);
         gp.add(passwordField, 1, 1);
 
         //add button to grid pane
         Button loginButton = new Button("Log In");
         gp.add(loginButton, 1, 3);
-
-        //position button to the left
-        gp.setHalignment(loginButton, HPos.LEFT);
+        gp.setHalignment(loginButton, HPos.LEFT);//position to the left
 
         //Login button click functionality
         loginButton.setOnAction(e -> {
+            boolean loginSuccess = true;
             System.out.println("log a person in!");
+
+            if (loginSuccess){
+                //Make home view (either student, staff, or faculty)
+            }
         });
 
 
@@ -79,4 +83,4 @@ public class View extends Application implements Observer{
         //show the window
         myStage.show();
     }
-}  
+}
