@@ -22,7 +22,6 @@ public class View extends Application implements Observer{
 
     }
 
-    Button loginButton;
 
     public static void main(String[] args) {
         launch(args);
@@ -30,12 +29,19 @@ public class View extends Application implements Observer{
 
     @Override
     public void start(Stage myStage) throws Exception {
+        myStage.setTitle("Project Tracker");
+
         TextField userNameField = new TextField();
         userNameField.setPromptText("User Name");
         TextField passwordField = new TextField();
         passwordField.setPromptText("Password");
 
-        myStage.setTitle("Calculator");
+        Button loginButton = new Button("Log In");
+
+        loginButton.setOnAction(e -> {
+            System.out.println("log a person in!");
+        });
+
 
         GridPane rootNode= new GridPane();
         rootNode.setPadding( new Insets( 15 ) );
@@ -47,7 +53,7 @@ public class View extends Application implements Observer{
 
         rootNode.add( new Label("User Name:"), 0,0); rootNode.add(userNameField, 1, 0);
         rootNode.add( new Label ("Password:"), 0, 1); rootNode.add(passwordField, 1, 1);
-        Button loginButton = new Button("Log In"); rootNode.add(loginButton, 1, 3);
+        rootNode.add(loginButton, 1, 3);
         rootNode.setHalignment(loginButton, HPos.LEFT);
 
         myStage.setScene( myScene);
