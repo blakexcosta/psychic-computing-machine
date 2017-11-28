@@ -1,4 +1,5 @@
 package View;
+import Controller.Controller;
 import Model.MySQLDatabase;
 import javafx.application.*;
 import javafx.scene.*;
@@ -29,7 +30,7 @@ public class View extends Application implements Observer{
     public void update(Observable o, Object arg) {
         if (arg instanceof MySQLDatabase) { //should be instance of this class
             arg = (MySQLDatabase) arg;
-            userNameField.setPromptText(((MySQLDatabase) arg).getAllData("user").toString());
+            userNameField.setPromptText(((MySQLDatabase) arg).getLoginUser());
         }
     }
 
@@ -84,6 +85,8 @@ public class View extends Application implements Observer{
                 window.setTitle("Capstone Tracker - User View");
                 window.setScene(sc);
             }
+            Controller controller = new Controller();
+            controller.postInformation();
         });
 
 

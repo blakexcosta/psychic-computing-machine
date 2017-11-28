@@ -1,5 +1,7 @@
 package Controller;
 
+import Model.MySQLDatabase;
+
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -11,8 +13,14 @@ import java.util.Observer;
 public class Controller{
     //private DatabaseConnection mySqlDB;
     private Object info;
+    //private MySQLDatabase = new MySQLDatabase();
+
 
     public Controller() {
+
+    }
+
+    public void getInformation(String table){
 
     }
 

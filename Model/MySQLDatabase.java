@@ -46,6 +46,14 @@ public class MySQLDatabase extends Observable{
     }
 
     /**
+     * gets the login user. set from getData
+     * @return
+     */
+    public String getLoginUser() {
+        return this.loginUser;
+    }
+
+    /**
      * Purpose: This method execute a SELECT SQL Statement on the table submitted
      *
      * @param tableName name String
@@ -92,6 +100,7 @@ public class MySQLDatabase extends Observable{
             //System.out.println("Error in getData(): SQL Statement not valid (?) ");
         } catch (NullPointerException npe) {
         }
+        loginUser = sqlArr[0][0];
         notifyObservers(this);
         return sqlArr;
     } // end getData();
@@ -153,7 +162,7 @@ public class MySQLDatabase extends Observable{
     /**
      * Purpose: Describe the table
      *
-     * @param A SQL Statement String
+     * @param statement SQL Statement String
      */
     public void descTable(String statement) {
         try {
@@ -281,8 +290,8 @@ public class MySQLDatabase extends Observable{
     /**
      * Purpose: This method will prepare a SQL Statement
      *
-     * @param parameter values String[]
-     * @param SQL       Statement String
+     * @param sql values String[]
+     * @param strvals       Statement String
      * @return SQL Statement PreparedStatement
      */
     public static PreparedStatement prepare(String sql, String[] strvals) {
@@ -311,7 +320,7 @@ public class MySQLDatabase extends Observable{
     /**
      * Purpose: This method execute a SELECT SQL Statement on the table submitted
      *
-     * @param SQL Statement String
+     * @param sql Statement String
      * @return String[][] of all the data
      */
     public static String[][] getData(String sql) {
@@ -341,8 +350,8 @@ public class MySQLDatabase extends Observable{
     /**
      * Purpose: This method execute a SELECT SQL Statement on the table submitted
      *
-     * @param SQL        Statement String
-     * @param parameters values String[]
+     * @param sql        Statement String
+     * @param strvals values String[]
      * @return String[][] of all the data
      */
     public String[][] getData(String sql, String[] strvals) {
@@ -380,7 +389,7 @@ public class MySQLDatabase extends Observable{
     /**
      * Purpose: This method execute a SELECT SQL Statement on the table submitted
      *
-     * @param SQL Statement String
+     * @param sql Statement String
      * @return Boolean value reflecting the success
      */
     public static boolean setData(String sql) {
