@@ -8,7 +8,6 @@ import javafx.geometry.*;
 import javafx.event.*;
 
 
-
 import java.util.Observable;
 import java.util.Observer;
 
@@ -26,6 +25,7 @@ public class View extends Application implements Observer{
 
 
     public static void main(String[] args) {
+
         launch(args);
     }
 
