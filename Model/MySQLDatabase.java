@@ -22,7 +22,7 @@ public class MySQLDatabase {
       uri_    = "jdbc:mysql://localhost/project_tracker?autoReconnect=true&useSSL=false";
       driver_ = "com.mysql.jdbc.Driver";
       user_   = "root";
-      password_ = "oswaldo615";
+      password_ = "student";
       conn_ = null;
       
     }
@@ -56,7 +56,7 @@ public class MySQLDatabase {
             String sql = "SELECT * FROM " + tableName + ";";
             //String sql = "SELECT * FROM " +
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);    
+            ResultSet rs = stmt.executeQuery(sql);
             System.out.println("\n");
             int rowNum = 0;
             //get row count
@@ -88,8 +88,10 @@ public class MySQLDatabase {
             }
             System.out.println("Number of Rows retrieved: " + rowNum);
         } catch (SQLException sqle) {
+            System.out.println(sqle);
             //System.out.println("Error in getData(): SQL Statement not valid (?) ");
         } catch (NullPointerException npe) {
+            System.out.println(npe);
         }
         
         return sqlArr;
@@ -370,8 +372,10 @@ public class MySQLDatabase {
                 }
             }
         } catch (SQLException sqle) {
+            System.out.println(sqle);
             //System.out.println("Error in getData(): SQL Statement not valid (?) ");
         } catch (NullPointerException npe) {
+            System.out.println(npe);
         }
         return sqlArr;
     } // end getData();
