@@ -6,12 +6,11 @@ import View.View;
  */
 public class Instantiation {
     public static void main(String[] args) {
-        System.out.println("hello");
-
-        //get a new databaseconnection
-        //View view = new View();
-        //view.launch(args);
-        // TODO: 11/27/17 make it so that this is the main class. solve the 'class Instantiation is not a subclass of javafx' -Blake
-        System.out.println("after view");
+        new Thread() {
+            @Override
+            public void run() {
+                javafx.application.Application.launch(View.class);
+            }
+        }.start();
     }
 }

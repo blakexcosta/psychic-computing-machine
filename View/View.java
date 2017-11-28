@@ -5,8 +5,6 @@ import javafx.scene.control.*;
 import javafx.stage.*;
 import javafx.scene.layout.*;
 import javafx.geometry.*;
-import javafx.event.*;
-
 
 import java.util.Observable;
 import java.util.Observer;
@@ -16,6 +14,15 @@ import java.util.Observer;
  * individual components
  */
 public class View extends Application implements Observer{
+
+    Stage window = new Stage();
+    TextField userNameField, passwordField;
+    GridPane gp;
+
+    //These class will have all of the functionality to make each scene.
+    FacultyView facultyView;
+    StaffView staffView;
+    StudentView studentView;
 
     @Override
     public void update(Observable o, Object arg) {
@@ -32,20 +39,20 @@ public class View extends Application implements Observer{
     @Override
     public void start(Stage myStage) throws Exception {
         //Window title
-        myStage.setTitle("Capstone Tracker - Login");
+        window.setTitle("Capstone Tracker - Login");
 
         //make gridpane
-        GridPane gp = new GridPane();
+        gp = new GridPane();
         gp.setHgap( 5 );
         gp.setVgap( 5 );
         gp.setAlignment( Pos.CENTER );
 
         //make user name text field
-        TextField userNameField = new TextField();
+        userNameField = new TextField();
         userNameField.setPromptText("User Name");
 
         //make password text field
-        TextField passwordField = new TextField();
+        passwordField = new TextField();
         passwordField.setPromptText("Password");
 
         //Add User Name label / Textfield to grid pane
@@ -69,14 +76,7 @@ public class View extends Application implements Observer{
             boolean loginSuccess = true;
 
             if (loginSuccess){
-                //Make home view (either student, staff, or faculty)
-                System.out.println("'SELECT Role FROM User where UserName = " + userNameField.getText() + "' after successful login to get role");
-                GridPane homePageGP = new GridPane();
-                Scene homePageScene = new Scene(homePageGP, 600,400);
-
-
-                myStage.setTitle("Capstone Tracker - Project View");
-                myStage.setScene(homePageScene);
+                //Make home view (either student, staff, or faculty by opening that class)
             }
         });
 
@@ -87,12 +87,11 @@ public class View extends Application implements Observer{
         Scene loginScene = new Scene( gp, 600, 400 );
 
         //Put view into the window
-        myStage.setScene(loginScene);
+        window.setScene(loginScene);
 
         //show the window
-        myStage.show();
+        window.show();
     }
-
 
 
 }
