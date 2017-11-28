@@ -12,6 +12,7 @@ import java.util.*;
  */
 public class MySQLDatabase extends Observable{
     String uri_, driver_, user_, password_, conn_;
+    String loginUser = null;
     static Connection conn;
     static String[][] sqlArr;
 
@@ -30,10 +31,10 @@ public class MySQLDatabase extends Observable{
     /**
      * Purpose: Parameterized Constructor
      *
-     * @param URI      string
-     * @param driver   String
-     * @param user     String
-     * @param password String
+     * @param uri_      string
+     * @param driver_   String
+     * @param user_     String
+     * @param password_ String
      */
     public MySQLDatabase(String uri_, String driver_, String user_, String password_) {
 
@@ -47,7 +48,7 @@ public class MySQLDatabase extends Observable{
     /**
      * Purpose: This method execute a SELECT SQL Statement on the table submitted
      *
-     * @param table name String
+     * @param tableName name String
      * @return String[][] of all the data
      */
     public String[][] getAllData(String tableName) {
@@ -91,7 +92,7 @@ public class MySQLDatabase extends Observable{
             //System.out.println("Error in getData(): SQL Statement not valid (?) ");
         } catch (NullPointerException npe) {
         }
-        
+        notifyObservers(this);
         return sqlArr;
     } // end getData();
 
@@ -152,7 +153,7 @@ public class MySQLDatabase extends Observable{
     /**
      * Purpose: Describe the table
      *
-     * @param statement SQL Statement String
+     * @param A SQL Statement String
      */
     public void descTable(String statement) {
         try {
@@ -280,8 +281,8 @@ public class MySQLDatabase extends Observable{
     /**
      * Purpose: This method will prepare a SQL Statement
      *
-     * @param strvals values String[]
-     * @param sql       Statement String
+     * @param parameter values String[]
+     * @param SQL       Statement String
      * @return SQL Statement PreparedStatement
      */
     public static PreparedStatement prepare(String sql, String[] strvals) {
@@ -310,7 +311,7 @@ public class MySQLDatabase extends Observable{
     /**
      * Purpose: This method execute a SELECT SQL Statement on the table submitted
      *
-     * @param sql Statement String
+     * @param SQL Statement String
      * @return String[][] of all the data
      */
     public static String[][] getData(String sql) {
@@ -340,11 +341,11 @@ public class MySQLDatabase extends Observable{
     /**
      * Purpose: This method execute a SELECT SQL Statement on the table submitted
      *
-     * @param sql        Statement String
-     * @param strvals values String[]
+     * @param SQL        Statement String
+     * @param parameters values String[]
      * @return String[][] of all the data
      */
-    public void getData(String sql, String[] strvals) {
+    public String[][] getData(String sql, String[] strvals) {
         try {
             PreparedStatement stmt = prepare(sql, strvals);
             ResultSet rs = stmt.executeQuery();
@@ -372,11 +373,37 @@ public class MySQLDatabase extends Observable{
             //System.out.println("Error in getData(): SQL Statement not valid (?) ");
         } catch (NullPointerException npe) {
         }
-        notifyObservers(this);
-        //return sqlArr;
+        return sqlArr;
     } // end getData();
 
 //****************************************** setData() ***************************************
+    /**
+     * Purpose: This method execute a SELECT SQL Statement on the table submitted
+     *
+     * @param SQL Statement String
+     * @return Boolean value reflecting the success
+     */
+    public static boolean setData(String sql) {
+        boolean flag;
+        try {
+            Statement stmt = conn.createStatement();
+            int rc = stmt.executeUpdate(sql);
+            flag = true;
+        } catch (SQLException se) {
+            //Handle errors for JDBC
+            flag = false;
+            se.printStackTrace();
+        } catch (NullPointerException npe) {
+            flag = false;
+            //Handle errors for Class.forName
+            System.out.println("Null pointer exceptoin");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return flag;
+    }//end setData()
+
     /**
      * Purpose: This method will update, insert, or delete data
      *
@@ -384,20 +411,16 @@ public class MySQLDatabase extends Observable{
      * @param strvals values String[]
      * @return boolean depending on the success of the update, insert, or delete
      */
-    public void setData(String sql, String[] strvals) {
+    public boolean setData(String sql, String[] strvals) {
         boolean flag = true;
         if (executeStmt(sql, strvals) == -1) {
             flag = false;
         } else {
             flag = true;
         }
-        notifyObservers();
-        //return flag;
+        return flag;
     }
 
-    public String[][] getSqlArr() {
-        return sqlArr;
-    }
     /**
      * Purpose: This method will execute a prepared statement
      *
@@ -433,21 +456,11 @@ public class MySQLDatabase extends Observable{
     }
 
     /**
-     * notifies the view instances, used for statements that do not return values natively
+     * notifys
      */
     @Override
     public void notifyObservers() {
         setChanged();
         super.notifyObservers();
-    }
-
-    /**
-     * notifies the view instances, but with a data object.
-     * @param o
-     */
-    @Override
-    public void notifyObservers(Object o) {
-        setChanged();
-        super.notifyObservers(o);
     }
 } // end program

@@ -1,4 +1,5 @@
 package View;
+import Model.MySQLDatabase;
 import javafx.application.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
@@ -26,8 +27,10 @@ public class View extends Application implements Observer{
 
     @Override
     public void update(Observable o, Object arg) {
-
-
+        if (arg instanceof MySQLDatabase) { //should be instance of this class
+            arg = (MySQLDatabase) arg;
+            userNameField.setPromptText(((MySQLDatabase) arg).getAllData("user").toString());
+        }
     }
 
 
@@ -72,7 +75,7 @@ public class View extends Application implements Observer{
         loginButton.setOnAction(e -> {
             System.out.println("Username: " + userNameField.getText());
             System.out.println("Password: " + passwordField.getText());
-            System.out.println("if Hashed("+passwordField.getText()+") == 'SELECT Password FROM user WHERE UserName = "+userNameField.getText()+"' THEN LOGIN WAS  A SUCCESS");
+            System.out.println("if Hashted("+passwordField.getText()+") == 'SELECT Password FROM user WHERE UserName = "+userNameField.getText()+"' THEN LOGIN WAS  A SUCCESS");
             boolean loginSuccess = true;
 
             if (loginSuccess){
