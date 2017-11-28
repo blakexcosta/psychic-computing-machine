@@ -20,8 +20,10 @@ public class View extends Application implements Observer{
     Stage window = new Stage();
     TextField userNameField, passwordField;
     GridPane gp;
+    MySQLDatabase msdb = new MySQLDatabase();
+    String usrRole;
 
-    //These class will have all of the functionality to make each scene.
+    //These classes will have all of the functionality to make each scene.
     FacultyView facultyView = new FacultyView();
     StaffView staffView = new StaffView();
     StudentView studentView = new StudentView();
@@ -35,10 +37,6 @@ public class View extends Application implements Observer{
     }
 
 
-    public static void main(String[] args) {
-
-        launch(args);
-    }
 
     @Override
     public void start(Stage myStage) throws Exception {
@@ -74,19 +72,47 @@ public class View extends Application implements Observer{
 
         //Login button click functionality
         loginButton.setOnAction(e -> {
+            //When button is clicked it will check to make sure the username and password are the same as the database.
+            String[] vals = new String[1];
+            boolean loginSuccess = false;
+            try{
+                vals[0] = userNameField.getText();
+                msdb.makeConnection();
+                String[][] rs = msdb.getData("SELECT Password, Role FROM User WHERE UserName in (?)", vals);
+                String dbPassword = rs[0][0];
+                usrRole = rs[1][1];
+                if (passwordField.getText().equals(dbPassword)){
+                    loginSuccess = true;
+                }
+            }
+            catch (Exception ee) {
+                System.out.println("Incorrect Login");
+            }
             System.out.println("Username: " + userNameField.getText());
             System.out.println("Password: " + passwordField.getText());
             System.out.println("if Hashted("+passwordField.getText()+") == 'SELECT Password FROM user WHERE UserName = "+userNameField.getText()+"' THEN LOGIN WAS  A SUCCESS");
-            boolean loginSuccess = true;
+            loginSuccess = true;
+
 
             if (loginSuccess){
                 //Make home view (either student, staff, or faculty by opening that class)
-                Scene sc = studentView.makeUserView();
+                System.out.println(usrRole);
+                Scene sc = null;
+                if (usrRole.equals("student")){
+
+                    sc = studentView.makeUserView();
+                }
+                if (usrRole.equals("staff")){
+                    sc = staffView.makeUserView();
+                }
+                if (usrRole.equals("faculty")){
+                    sc = facultyView.makeUserView();
+
+                }
                 window.setTitle("Capstone Tracker - User View");
                 window.setScene(sc);
             }
             Controller controller = new Controller();
-            controller.postInformation();
         });
 
 
@@ -102,5 +128,8 @@ public class View extends Application implements Observer{
         window.show();
     }
 
+    public static void main(String[] args) {
 
+        launch(args);
+    }
 }
