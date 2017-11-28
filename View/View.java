@@ -8,6 +8,7 @@ import javafx.geometry.*;
 import javafx.event.*;
 
 
+
 import java.util.Observable;
 import java.util.Observer;
 
@@ -20,6 +21,7 @@ public class View extends Application implements Observer{
     @Override
     public void update(Observable o, Object arg) {
 
+
     }
 
 
@@ -30,7 +32,7 @@ public class View extends Application implements Observer{
     @Override
     public void start(Stage myStage) throws Exception {
         //Window title
-        myStage.setTitle("Project Tracker");
+        myStage.setTitle("Capstone Tracker - Login");
 
         //make gridpane
         GridPane gp = new GridPane();
@@ -45,8 +47,6 @@ public class View extends Application implements Observer{
         //make password text field
         TextField passwordField = new TextField();
         passwordField.setPromptText("Password");
-
-
 
         //Add User Name label / Textfield to grid pane
         gp.add( new Label("User Name:"), 0,0);
@@ -63,11 +63,20 @@ public class View extends Application implements Observer{
 
         //Login button click functionality
         loginButton.setOnAction(e -> {
+            System.out.println("Username: " + userNameField.getText());
+            System.out.println("Password: " + passwordField.getText());
+            System.out.println("if Hashed("+passwordField.getText()+") == 'SELECT Password FROM user WHERE UserName = "+userNameField.getText()+"' THEN LOGIN WAS  A SUCCESS");
             boolean loginSuccess = true;
-            System.out.println("log a person in!");
 
             if (loginSuccess){
                 //Make home view (either student, staff, or faculty)
+                System.out.println("'SELECT Role FROM User where UserName = " + userNameField.getText() + "' after successful login to get role");
+                GridPane homePageGP = new GridPane();
+                Scene homePageScene = new Scene(homePageGP, 600,400);
+
+
+                myStage.setTitle("Capstone Tracker - Project View");
+                myStage.setScene(homePageScene);
             }
         });
 
@@ -75,12 +84,15 @@ public class View extends Application implements Observer{
 
         //make the view (scene) that will go into the window.
         //Made up of the gridpane (that contains all the elements) and dimensions
-        Scene myScene = new Scene( gp, 600, 400 );
+        Scene loginScene = new Scene( gp, 600, 400 );
 
         //Put view into the window
-        myStage.setScene( myScene);
+        myStage.setScene(loginScene);
 
         //show the window
         myStage.show();
     }
+
+
+
 }
