@@ -10,8 +10,9 @@ import java.util.*;
  * Professor Floeser
  * November 10th, 2017
  */
-public class MySQLDatabase {
+public class MySQLDatabase extends Observable{
     String uri_, driver_, user_, password_, conn_;
+    String loginUser = null;
     static Connection conn;
     static String[][] sqlArr;
 
@@ -30,10 +31,10 @@ public class MySQLDatabase {
     /**
      * Purpose: Parameterized Constructor
      *
-     * @param URI      string
-     * @param driver   String
-     * @param user     String
-     * @param password String
+     * @param uri_      string
+     * @param driver_   String
+     * @param user_     String
+     * @param password_ String
      */
     public MySQLDatabase(String uri_, String driver_, String user_, String password_) {
 
@@ -47,7 +48,7 @@ public class MySQLDatabase {
     /**
      * Purpose: This method execute a SELECT SQL Statement on the table submitted
      *
-     * @param table name String
+     * @param tableName name String
      * @return String[][] of all the data
      */
     public String[][] getAllData(String tableName) {
@@ -76,7 +77,7 @@ public class MySQLDatabase {
             while (rs.next()) { //while the resultSet has a next row of data
                 sqlArr = new String[rowNum][columnCount]; //sqlArr static attribute = a new String array of the rowNumber and the column count
                 for (int i = 0; i < rowNum; i++) { //iterating over the number of rows
-                //TODO: edit this line, remove j=1 and make it j=0, adds unneccessary level of confusion with array indexing.
+                //TODO: edit this line, remove j=1 and make it j=0, adds unneccessary level of confusion with array indexing. -Blake
                     for (int j = 1; j <= columnCount; j++) { //for each row, iterated over the columns
                         if (i == 0) { //if i==0 it must be the header of the row, hence add it to the sqlArr
                             sqlArr[i][j - 1] = headers[j - 1]; //loop through column data from list(?) and populate this row with column headers
@@ -93,11 +94,10 @@ public class MySQLDatabase {
         } catch (NullPointerException npe) {
             System.out.println(npe);
         }
-        
+        notifyObservers(this);
         return sqlArr;
     } // end getData();
 
-    //TODO: Everyone: write out line by line your logic. documentation can turn into a nightmare otherwise.
     //*************************************** CONNECT *********************************
     /**
      * Purpose: Connect to the database
@@ -150,7 +150,7 @@ public class MySQLDatabase {
         return false;
     }// end  closeConnection()
 
-//TODO: Please document this. Ty :)
+//TODO: Please document this. Ty :) -Blake
 //****************************************** descTable() ***************************************
     /**
      * Purpose: Describe the table
@@ -160,7 +160,7 @@ public class MySQLDatabase {
     public void descTable(String statement) {
         try {
             Statement stmt = conn.createStatement(); //creating a new statement
-            //TODO: Why is this select being used here? Why not remove it and just use statement?
+            //TODO: Why is this select being used here? Why not remove it and just use statement? -Blake
             ResultSet rs = stmt.executeQuery("SELECT " + statement); //executing select query
             ResultSetMetaData rsmd = rs.getMetaData();
             int columnCount = rsmd.getColumnCount();
@@ -295,7 +295,7 @@ public class MySQLDatabase {
             //makeConnection();
             ps = conn.prepareStatement(preparedStr);
             //int j = 1;
-            //TODO: same issue as getAllData todo
+            //TODO: same issue as getAllData todo -Blake
             for (int i = 1; i <= strvals.length; i++) {
                 for (int j = 0; j <= strvals.length - 1; j++) {
                     ps.setString(i, strvals[j]);
@@ -411,8 +411,8 @@ public class MySQLDatabase {
     /**
      * Purpose: This method will update, insert, or delete data
      *
-     * @param SQL       Statement String
-     * @param Parameter values String[]
+     * @param sql       Statement String
+     * @param strvals values String[]
      * @return boolean depending on the success of the update, insert, or delete
      */
     public boolean setData(String sql, String[] strvals) {
@@ -428,8 +428,8 @@ public class MySQLDatabase {
     /**
      * Purpose: This method will execute a prepared statement
      *
-     * @param SQL       Statement String
-     * @param Parameter values String[]
+     * @param sql       Statement String
+     * @param strvals values String[]
      * @return results affected int
      */
     public int executeStmt(String sql, String[] strvals) {
@@ -443,4 +443,28 @@ public class MySQLDatabase {
         }
         return rc;
     }//end executeStmt
+
+    @Override
+    public synchronized void addObserver(Observer observer) {
+        super.addObserver(observer);
+    }
+
+    @Override
+    public synchronized void deleteObserver(Observer observer) {
+        super.deleteObserver(observer);
+    }
+
+    @Override
+    public synchronized boolean hasChanged() {
+        return super.hasChanged();
+    }
+
+    /**
+     * notifys
+     */
+    @Override
+    public void notifyObservers() {
+        setChanged();
+        super.notifyObservers();
+    }
 } // end program
