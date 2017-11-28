@@ -1,6 +1,7 @@
 //import Model.*;
 import Controller.Controller;
-import View.View;
+import Model.*;
+import View.*;
 /**
  * Main method class, used to instantiate whole fleet of programs/ classes.
  */
