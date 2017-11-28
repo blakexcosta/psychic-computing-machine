@@ -1,3 +1,5 @@
+package Model;
+
 /**
   * Blake Costa, Gavin Drabik, Matthew Turczmanovicz, Oswaldo Rosete-Garcia, and Quinn Bissen
   * Group 11
