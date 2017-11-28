@@ -21,9 +21,9 @@ public class View extends Application implements Observer{
     GridPane gp;
 
     //These class will have all of the functionality to make each scene.
-    FacultyView facultyView;
-    StaffView staffView;
-    StudentView studentView;
+    FacultyView facultyView = new FacultyView();
+    StaffView staffView = new StaffView();
+    StudentView studentView = new StudentView();
 
     @Override
     public void update(Observable o, Object arg) {
@@ -77,6 +77,9 @@ public class View extends Application implements Observer{
 
             if (loginSuccess){
                 //Make home view (either student, staff, or faculty by opening that class)
+                Scene sc = studentView.makeUserView();
+                window.setTitle("Capstone Tracker - User View");
+                window.setScene(sc);
             }
         });
 
