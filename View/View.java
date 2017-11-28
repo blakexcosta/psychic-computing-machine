@@ -27,8 +27,6 @@ public class View extends Application implements Observer{
     StaffView staffView = new StaffView();
     StudentView studentView = new StudentView();
 
-<<<<<<< HEAD
-=======
     @Override
     public void update(Observable o, Object arg) {
         if (arg instanceof MySQLDatabase) { //should be instance of this class
@@ -37,7 +35,6 @@ public class View extends Application implements Observer{
         }
     }
 
->>>>>>> 92b38d00de5360b9c09ad0c7e3f806045a98a176
 
 
     @Override
@@ -74,7 +71,6 @@ public class View extends Application implements Observer{
 
         //Login button click functionality
         loginButton.setOnAction(e -> {
-<<<<<<< HEAD
             //When button is clicked it will check to make sure the username and password are the same as the database.
             String[] vals = new String[1];
             boolean loginSuccess = false;
@@ -91,12 +87,11 @@ public class View extends Application implements Observer{
             catch (Exception ee) {
                 System.out.println("Incorrect Login");
             }
-=======
             System.out.println("Username: " + userNameField.getText());
             System.out.println("Password: " + passwordField.getText());
             System.out.println("if Hashted("+passwordField.getText()+") == 'SELECT Password FROM user WHERE UserName = "+userNameField.getText()+"' THEN LOGIN WAS  A SUCCESS");
-            boolean loginSuccess = true;
->>>>>>> 92b38d00de5360b9c09ad0c7e3f806045a98a176
+            loginSuccess = true;
+
 
             if (loginSuccess){
                 //Make home view (either student, staff, or faculty by opening that class)
@@ -131,14 +126,6 @@ public class View extends Application implements Observer{
         //show the window
         window.show();
     }
-
-
-    @Override
-    public void update(Observable o, Object arg) {
-
-
-    }
-
 
     public static void main(String[] args) {
 
