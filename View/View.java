@@ -2,6 +2,8 @@ package View;
 import Controller.Controller;
 import Model.MySQLDatabase;
 import javafx.application.*;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.stage.*;
@@ -78,7 +80,7 @@ public class View extends Application implements Observer{
             try{
                 vals[0] = userNameField.getText();
                 msdb.makeConnection();
-                String[][] rs = msdb.getData("SELECT Password, Role FROM User WHERE UserName in (?)", vals);
+                String[][] rs = msdb.getData("SELECT Password, Role FROM user WHERE UserName in (?)", vals);
                 String dbPassword = rs[0][0];
                 usrRole = rs[1][1];
                 if (passwordField.getText().equals(dbPassword)){
@@ -92,7 +94,6 @@ public class View extends Application implements Observer{
             System.out.println("Password: " + passwordField.getText());
             System.out.println("if Hashted("+passwordField.getText()+") == 'SELECT Password FROM user WHERE UserName = "+userNameField.getText()+"' THEN LOGIN WAS  A SUCCESS");
             loginSuccess = true;
-
 
             if (loginSuccess){
                 //Make home view (either student, staff, or faculty by opening that class)
@@ -112,7 +113,7 @@ public class View extends Application implements Observer{
                 window.setTitle("Capstone Tracker - User View");
                 window.setScene(sc);
             }
-            Controller controller = new Controller();
+
         });
 
 
@@ -128,6 +129,8 @@ public class View extends Application implements Observer{
         window.show();
     }
 
+    //Quick Question, Gavin, can you explain why there needs to be two mains? is this just a javafx thing? and does instances for the view need
+    //to be included in here, or can they be placed normally into the normal main method?
     public static void main(String[] args) {
 
         launch(args);

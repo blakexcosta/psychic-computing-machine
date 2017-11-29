@@ -1,8 +1,12 @@
 package View;
 
+import Controller.Controller;
 import Model.MySQLDatabase;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -31,6 +35,19 @@ public class StudentView {
         gp.add( new Label("Major: "), 0,4);
         gp.add( new Label("Role: "), 0,5);
 
+        //creating a new button
+        Button controllerActionButton = new Button("Accept");
+        //adding to pane
+        gp.add(controllerActionButton,1,4);
+        //setting a new action for the button
+        controllerActionButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                //creating a new controller instance
+                new Controller().actionPerformed(actionEvent);
+// TODO: 11/29/17 so I can get this to work, but am not sure now the method cleanup really works. will have to explore more. maybe make an attribute instance -Blake 
+            }
+        });
 
         Scene sc = new Scene(gp,600,400);
 
