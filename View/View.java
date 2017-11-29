@@ -31,10 +31,16 @@ public class View extends Application implements Observer{
     StudentView studentView = new StudentView();
 
     @Override
-    public void update(Observable o, Object arg) {
+    public void update(Observable observableObject, Object arg) {
+        if( observableObject != msdb ) { //a quick check to make sure observable object is an instance of the database
+            System.out.println("Observable object is not the object that is being observed, returning...");
+            return;
+        }
         if (arg instanceof MySQLDatabase) { //should be instance of this class
-            arg = (MySQLDatabase) arg;
-            userNameField.setPromptText(((MySQLDatabase) arg).getLoginUser());
+//            arg = (MySQLDatabase) arg;
+//            userNameField.setPromptText(((MySQLDatabase) arg).getLoginUser());
+            //use this to update your panels and shit.
+            //to do that you need to cast it as an object.
         }
     }
 
@@ -86,10 +92,14 @@ public class View extends Application implements Observer{
                 if (passwordField.getText().equals(dbPassword)){
                     loginSuccess = true;
                 }
+                System.out.println("here");
+                loginSuccess = true; //UNCOMMENT THIS TO MAKE IT LOG IN EVERY TIME
+
                 if (loginSuccess){
                     //Make home view (either student, staff, or faculty by opening that class)
                     System.out.println(usrRole);
                     Scene sc = null;
+                    //generating the associated views.
                     if (usrRole.equals("student")){
                         sc = studentView.makeUserView();//this one uses the controller. others will eventually
                     }
@@ -107,24 +117,18 @@ public class View extends Application implements Observer{
 //            System.out.println("Username: " + userNameField.getText());
 //            System.out.println("Password: " + passwordField.getText());
 //            System.out.println("if Hashted("+passwordField.getText()+") == 'SELECT Password FROM user WHERE UserName = "+userNameField.getText()+"' THEN LOGIN WAS  A SUCCESS");
-//            loginSuccess = true; UNCOMMENT THIS TO MAKE IT LOG IN EVERY TIME
-
 
             catch (Exception ee) {
                 System.out.println("Incorrect Login");
             }
 
         });
-
-
-
-        //make the view (scene) that will go into the window.
+        //make the view (scene
+        // 5f4dcc3b5aa765d61d8327deb882cf99) that will go into the window.
         //Made up of the gridpane (that contains all the elements) and dimensions
         Scene loginScene = new Scene( gp, 600, 400 );
-
         //Put view into the window
         window.setScene(loginScene);
-
         //show the window
         window.show();
     }
