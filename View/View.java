@@ -86,32 +86,32 @@ public class View extends Application implements Observer{
                 if (passwordField.getText().equals(dbPassword)){
                     loginSuccess = true;
                 }
+                if (loginSuccess){
+                    //Make home view (either student, staff, or faculty by opening that class)
+                    System.out.println(usrRole);
+                    Scene sc = null;
+                    if (usrRole.equals("student")){
+                        sc = studentView.makeUserView();//this one uses the controller. others will eventually
+                    }
+                    if (usrRole.equals("staff")){
+                        sc = staffView.makeUserView();
+                    }
+                    if (usrRole.equals("faculty")){
+                        sc = facultyView.makeUserView();
+                    }
+                    window.setTitle("Capstone Tracker - User View");
+                    window.setScene(sc);
+                }
             }
+
+//            System.out.println("Username: " + userNameField.getText());
+//            System.out.println("Password: " + passwordField.getText());
+//            System.out.println("if Hashted("+passwordField.getText()+") == 'SELECT Password FROM user WHERE UserName = "+userNameField.getText()+"' THEN LOGIN WAS  A SUCCESS");
+//            loginSuccess = true; UNCOMMENT THIS TO MAKE IT LOG IN EVERY TIME
+
+
             catch (Exception ee) {
                 System.out.println("Incorrect Login");
-            }
-            System.out.println("Username: " + userNameField.getText());
-            System.out.println("Password: " + passwordField.getText());
-            System.out.println("if Hashted("+passwordField.getText()+") == 'SELECT Password FROM user WHERE UserName = "+userNameField.getText()+"' THEN LOGIN WAS  A SUCCESS");
-            loginSuccess = true;
-
-            if (loginSuccess){
-                //Make home view (either student, staff, or faculty by opening that class)
-                System.out.println(usrRole);
-                Scene sc = null;
-                if (usrRole.equals("student")){
-
-                    sc = studentView.makeUserView();
-                }
-                if (usrRole.equals("staff")){
-                    sc = staffView.makeUserView();
-                }
-                if (usrRole.equals("faculty")){
-                    sc = facultyView.makeUserView();
-
-                }
-                window.setTitle("Capstone Tracker - User View");
-                window.setScene(sc);
             }
 
         });

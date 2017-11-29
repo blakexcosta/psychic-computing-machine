@@ -39,14 +39,10 @@ public class StudentView {
         Button controllerActionButton = new Button("Accept");
         //adding to pane
         gp.add(controllerActionButton,1,4);
-        //setting a new action for the button
-        controllerActionButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
+        //lambdas are sexy
+        controllerActionButton.setOnAction(e -> {
                 //creating a new controller instance
-                new Controller().actionPerformed(actionEvent);
-// TODO: 11/29/17 so I can get this to work, but am not sure now the method cleanup really works. will have to explore more. maybe make an attribute instance -Blake 
-            }
+                new Controller().actionPerformed(e);
         });
 
         Scene sc = new Scene(gp,600,400);
