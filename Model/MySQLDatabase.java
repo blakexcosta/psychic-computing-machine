@@ -371,7 +371,7 @@ public class MySQLDatabase extends Observable{
                 headers[i - 1] = rsmd.getColumnName(i);     //creates the column heading for chart
             }
             while (rs.next()) {
-                sqlArr = new String[2][columnCount];
+                sqlArr = new String[headers.length][columnCount];
                 for (int i = 0; i < 2; i++) {
                     for (int j = 1; j <= columnCount; j++) {
                         if (i == 0) {

@@ -89,13 +89,13 @@ public class LoginView extends Application implements Observer{
                     Scene sc = null;
                     //we need a way to pass the user information to the view. otherwise it's useless to make these separate views.
                     String[] userName = new String[1];
-                    userName[0] = "ab1234"; //CHANGE THIS, hardcoded string
+                    userName[0] = userNameField.getText(); //CHANGE THIS, hardcoded string
                     //getting information from the db.
-                    String[][] userInfo = msdb.getData("SELECT UserName, FirstName, LastName, Major FROM user WHERE UserName in (?);",userName);
+                    String[][] userInfo = msdb.getData("SELECT CONCAT(FirstName,' ', LastName) as 'Name', " +
+                            "UserName, Department, GraduationDate, major, role, Image FROM user WHERE UserName in (?);",userName);
                     //generating the associated views.
-                    System.out.println(userInfo.length);
                     if (usrRole.equals("student")){
-                        sc = studentView.makeUserView();//this one uses the controller. others will eventually
+                        sc = studentView.makeUserView(userInfo);//this one uses the controller. others will eventually
                     }
                     if (usrRole.equals("staff")){
                         sc = staffView.makeUserView();
@@ -114,9 +114,12 @@ public class LoginView extends Application implements Observer{
         //make the view (scene
         // 5f4dcc3b5aa765d61d8327deb882cf99) that will go into the window.
         //Made up of the gridpane (that contains all the elements) and dimensions
-        Scene loginScene = new Scene( gp, 600, 400 );
+        Scene loginScene = new Scene( gp, 1366, 768 );
         //Put view into the window
         // TODO: 11/29/17 Should we be using stages instead of scenes? Everything I have seen in regards to example code has been with stage usage -Blake
+        // TODO: There is one stage. The stage is the global window (line 19). the scene go inside the stage. fx is kinda odd with the naming -Gavin
+
+        // the global wi
         window.setScene(loginScene);
         //show the window
         window.show();
