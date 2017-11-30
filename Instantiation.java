@@ -1,6 +1,4 @@
 //import Model.*;
-import Controller.Controller;
-import Model.*;
 import View.*;
 /**
  * Main method class, used to instantiate whole fleet of programs/ classes.
@@ -13,7 +11,7 @@ public class Instantiation {
         new Thread() {
             @Override
             public void run() {
-                javafx.application.Application.launch(View.class);
+                javafx.application.Application.launch(LoginView.class);
             }
         }.start();
     }

@@ -1,9 +1,6 @@
 package View;
 
-import Controller.Controller;
-import Model.MySQLDatabase;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import Controller.LogController;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -12,13 +9,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
 public class StudentView {
-
     String[][] sqlData;
     TextField name, userName, department, gradDate, major, role;
     GridPane gp = new GridPane();
     String[][] rs;
+    private LogController logController = null; //creating new private instance of the controller, so don't have to create new controller instance every time.
 
-    public StudentView(){}
+    public StudentView(){
+        logController = new LogController();
+    }
 
     public Scene makeUserView(){
 
@@ -38,11 +37,11 @@ public class StudentView {
         //creating a new button
         Button controllerActionButton = new Button("Accept");
         //adding to pane
-        gp.add(controllerActionButton,1,4);
+        gp.add(controllerActionButton,4,6);
         //lambdas are sexy
         controllerActionButton.setOnAction(e -> {
                 //creating a new controller instance
-                new Controller().actionPerformed(e);
+                logController.actionPerformed(e);
         });
 
         Scene sc = new Scene(gp,600,400);
