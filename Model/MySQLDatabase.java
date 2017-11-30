@@ -11,11 +11,11 @@ import java.util.*;
  * November 10th, 2017
  */
 public class MySQLDatabase extends Observable{
-    String uri_, driver_, user_, password_, conn_;
-    String loginUser = null;
-    static Connection conn;
-    static String[][] sqlArr;
-
+    private String uri_, driver_, user_, password_, conn_;
+    private String loginUser = null;
+    private static Connection conn;
+    private static String[][] sqlArr;
+    private static MySQLDatabase msdb = new MySQLDatabase();
     /**
      * Purpose: Default Constructor
      */
@@ -28,6 +28,10 @@ public class MySQLDatabase extends Observable{
       
     }
 
+    public static MySQLDatabase getInstance() {
+        return msdb;
+    }
+
     /**
      * Purpose: Parameterized Constructor
      *
@@ -37,12 +41,10 @@ public class MySQLDatabase extends Observable{
      * @param password_ String
      */
     public MySQLDatabase(String uri_, String driver_, String user_, String password_) {
-
         this.uri_ = uri_;
         this.driver_ = driver_;
         this.user_ = user_;
         this.password_ = password_;
-
     }
 
     /**

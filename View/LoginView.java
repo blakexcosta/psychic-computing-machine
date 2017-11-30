@@ -20,7 +20,7 @@ public class LoginView extends Application implements Observer{
     TextField userNameField;
     PasswordField passwordField;
     GridPane gp;
-    MySQLDatabase msdb = new MySQLDatabase();
+    MySQLDatabase msdb = new MySQLDatabase(); //there is only one instance of a database.
     String usrRole;
 
     //These classes will have all of the functionality to make each scene.
@@ -75,21 +75,26 @@ public class LoginView extends Application implements Observer{
             try{
                 vals[0] = userNameField.getText();
                 msdb.makeConnection();
-                String[][] rs = msdb.getData("SELECT Password, Role FROM user WHERE UserName in (?)", vals); //getting the values from the database
+                String[][] rs = msdb.getData("SELECT Password, Role FROM user WHERE UserName in (?);", vals); //getting the values from the database
                 String dbPassword = rs[0][0]; //getting the password
                 usrRole = rs[1][1]; //getting the user role
-                System.out.println(dbPassword);
                 //if the password fields text that was inputed from the user equals the databases password,
                 // then set loginSuccess = true, then continue to the next block.
                 if (passwordField.getText().equals(dbPassword)){
                     loginSuccess = true;
                 }
-                System.out.println("here");
                 if (loginSuccess){
                     //Make home view (either student, staff, or faculty by opening that class)
-                    System.out.println(usrRole);
+                    System.out.println("User Role: "+ usrRole);
                     Scene sc = null;
+                    //we need a way to pass the user information to the view. otherwise it's useless to make these separate views.
+                    String[] userName = new String[1];
+                    userName[0] = "ab1234"; //CHANGE THIS, hardcoded string
+                    //getting information from the db.
+                    // TODO: 11/29/17 CAN SOMEONE TELL ME FOR THE LOVE OF GOD WHY THIS WILL NOT RETURN A STRING ARRAY OF SIZE 4. lol -with love <3. Blake.
+                    String[][] userInfo = msdb.getData("SELECT UserName, FirstName, LastName, Major FROM user WHERE UserName in (?);",userName);
                     //generating the associated views.
+                    System.out.println(userInfo.length);
                     if (usrRole.equals("student")){
                         sc = studentView.makeUserView();//this one uses the controller. others will eventually
                     }

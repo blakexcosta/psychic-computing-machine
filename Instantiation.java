@@ -8,6 +8,7 @@ public class Instantiation {
         //test login
         //ab1234 (al baker)
         //5f4dcc3b5aa765d61d8327deb882cf99
+        //runs the program
         new Thread() {
             @Override
             public void run() {
