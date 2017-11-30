@@ -53,6 +53,15 @@ CREATE TABLE IF NOT EXISTS `project_tracker`.`committee` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
+-- -----------------------------------------------------
+-- Create foreign key constraint
+-- -----------------------------------------------------
+-- ALTER TABLE `project_tracker`.`project`
+-- ADD CONSTRAINT `Project_Committee_Grade_FK` 
+-- 	FOREIGN KEY (`Grade`)
+-- 	REFERENCES `project_tracker`.`committee` (`ProjectGrade`)
+--  ON DELETE CASCADE
+--  ON UPDATE CASCADE;
 
 -- -----------------------------------------------------
 -- Table `project_tracker`.`user`
@@ -226,9 +235,9 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `project_tracker`;
-INSERT INTO `project_tracker`.`project` (`ID`, `Name`, `Summary`, `Topic`, `Type`, `StartDate`, `EndDate`, `DueDate`, `Completed`, `ProposalApproved`, `FinalDefenseDate`, `PlagiarismPercentage`, `Grade`, `CommitteeID`) VALUES (1, 'Project 01', 'Creating network cables by left or right handed technicians should not be used on the same network. This causes the network to implode if the streams are crossed.', 'Network implosion ', 'Thesis', '2017-08-20', '2017-04-28', '2017-05-20', TRUE, TRUE, '2017-05-10', 25, 'A', 1);
-INSERT INTO `project_tracker`.`project` (`ID`, `Name`, `Summary`, `Topic`, `Type`, `StartDate`, `EndDate`, `DueDate`, `Completed`, `ProposalApproved`, `FinalDefenseDate`, `PlagiarismPercentage`, `Grade`, `CommitteeID`) VALUES (2, 'Project 02', 'Do men that stroke their chins in contemplation, think smarter when they have a beard?', 'Program better with a beard', 'Capstone', '2016-08-16', '2017-05-01', '2017-05-20', TRUE, TRUE, '2017-05-12', 25, 'B', 2);
-INSERT INTO `project_tracker`.`project` (`ID`, `Name`, `Summary`, `Topic`, `Type`, `StartDate`, `EndDate`, `DueDate`, `Completed`, `ProposalApproved`, `FinalDefenseDate`, `PlagiarismPercentage`, `Grade`, `CommitteeID`) VALUES (3, 'Project 03', 'Recursively, this database.', 'Capstone tracking database', 'Capstone', '2015-08-14', '2016-05-06', '2016-05-17', TRUE, TRUE, '2016-05-08', 35, 'C', 3);
+INSERT INTO `project_tracker`.`project` (`ID`, `Name`, `Summary`, `Topic`, `Type`, `StartDate`, `EndDate`, `DueDate`, `Completed`, `ProposalApproved`, `FinalDefenseDate`, `PlagiarismPercentage`, `Grade`, `CommitteeID`) VALUES (1, 'Project 01', 'Creating network cables by left or right handed technicians should not be used on the same network. This causes the network to implode if the streams are crossed.', 'Network implosion ', 'Thesis', '2017-07-15', '2016-11-18', '2016-12-04', TRUE, TRUE, '2016-12-12', 25, 'A', 1);
+INSERT INTO `project_tracker`.`project` (`ID`, `Name`, `Summary`, `Topic`, `Type`, `StartDate`, `EndDate`, `DueDate`, `Completed`, `ProposalApproved`, `FinalDefenseDate`, `PlagiarismPercentage`, `Grade`, `CommitteeID`) VALUES (2, 'Project 02', 'Do men that stroke their chins in contemplation, think smarter when they have a beard?', 'Program better with a beard', 'Capstone', '2017-06-01', '1900-01-01', '2017-12-10', FALSE, TRUE, '2017-12-15', 25, '', 2);
+INSERT INTO `project_tracker`.`project` (`ID`, `Name`, `Summary`, `Topic`, `Type`, `StartDate`, `EndDate`, `DueDate`, `Completed`, `ProposalApproved`, `FinalDefenseDate`, `PlagiarismPercentage`, `Grade`, `CommitteeID`) VALUES (3, 'Project 03', 'Recursively, this database.', 'Capstone tracking database', 'Capstone', '2017-06-20', '1900-01-01', '2017-12-10', FALSE, TRUE, '2017-12-18', 35, '', 3);
 
 COMMIT;
 
@@ -253,64 +262,64 @@ USE `project_tracker`;
 INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('ab1234', 'Al', 'Baker', 'password', '', '2017-05-15', 'Grad', 'NSA', 'Student');
 INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('dn1234', 'Don', 'Novello', 'password', '', '2017-05-15', 'Grad', 'IST', 'Student');
 INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('gs1234', 'Guido', 'Sarducci', 'password', '', '2016-05-13', 'Grad', 'HCI', 'Student');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('txaics', 'Tanweer', 'Alam', 'password', '', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('gpavks', 'Garret', 'Arcoraci', 'password', 'https://ist.rit.edu/assets/img/people/gpavks.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('dlaics', 'Daniel', 'Ashbrook', 'password', 'https://ist.rit.edu/assets/img/people/dlaics.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('ciiics', 'Catherine', 'Beaton', 'password', 'https://ist.rit.edu/assets/img/people/ciiics.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('aobics', 'Alec', 'Berenbaum', 'password', '', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('tsbics', 'Todd', 'Bernhard', 'password', '', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('dsbics', 'Daniel', 'Bogaard', 'password', 'https://ist.rit.edu/assets/img/people/dsbics.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('cbbics', 'Charlie', 'Border', 'password', 'https://ist.rit.edu/assets/img/people/cbbics.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('spbics', 'Sean', 'Boyle', 'password', 'https://www.rit.edu/gccis/sites/rit.edu.gccis/files//Boyle%20Sean%20new%20headshot.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('mjcics', 'Michael', 'Carroll', 'password', '', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('mjcvks', 'Marco', 'Casale', 'password', '', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('mjfics', 'Michael', 'Floeser', 'password', 'https://ist.rit.edu/assets/img/people/mjfics.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('nffbbu', 'Nick', 'Francesco', 'password', '', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('bdfvks', 'Bryan', 'French', 'password', 'https://ist.rit.edu/assets/img/people/bdfvks.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('dmgics', 'Dean', 'Ganskop', 'password', '', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('efgics', 'Erik', 'Golen', 'password', 'https://ist.rit.edu/assets/img/people/efgics.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('jrhicsa', 'James', 'Habermas', 'password', '', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('vlhics', 'Vicki', 'Hanson', 'password', 'https://ist.rit.edu/assets/img/people/vlhics.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('bhhics', 'Bruce', 'Hartpence', 'password', 'https://ist.rit.edu/assets/img/people/bhhics.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('amhgss', 'Andrew', 'Herbert', 'password', 'https://ist.rit.edu/assets/img/people/amhgss.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('lwhfac', 'Larry', 'Hill', 'password', 'https://ist.rit.edu/assets/img/people/lwhfac.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('ephics', 'Ed', 'Holden', 'password', 'https://ist.rit.edu/assets/img/people/ephics.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('mphics', 'Matt', 'Huenerfauth', 'password', 'https://ist.rit.edu/assets/img/people/mphics.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('jcjics', 'Jeffrey', 'Jockel', 'password', 'https://www.rit.edu/gccis/sites/rit.edu.gccis/files//Jeff%20IST%20small.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('mrjics', 'Mark', 'Juba', 'password', '', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('jwkics', 'Jai', 'Kang', 'password', 'https://ist.rit.edu/assets/img/people/jwkics.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('drkisd', 'Dan', 'Kennedy', 'password', 'https://ist.rit.edu/assets/img/people/drkisd.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('hnkics', 'Heidi', 'Klossner', 'password', '', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('mxkics1', 'Mitel', 'Kuliner', 'password', '', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('dmlics', 'Deborah', 'LaBelle', 'password', 'https://ist.rit.edu/assets/img/people/dmlics.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('jalics', 'Jeffrey', 'Lasky', 'password', 'https://ist.rit.edu/assets/img/people/jalics.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('jalvks', 'Jim', 'Leone', 'password', 'https://ist.rit.edu/assets/img/people/jalvks.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('jxlics', 'Joseph', 'Loporcaro', 'password', '', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('phlics', 'Peter', 'Lutz', 'password', 'https://ist.rit.edu/assets/img/people/phlics.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('spmics', 'Sharon', 'Mason', 'password', 'https://ist.rit.edu/assets/img/people/spmics.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('mjmics', 'Michael', 'McQuaid', 'password', 'https://ist.rit.edu/assets/img/people/mjmics.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('thoics', 'Tae', 'Oh', 'password', 'https://ist.rit.edu/assets/img/people/thoics.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('sphics', 'Sylvia', 'Perez-Hardy', 'password', 'https://ist.rit.edu/assets/img/people/sphics.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('djpihst', 'Jerry', 'Powell', 'password', 'https://ist.rit.edu/assets/img/people/djpihst.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('sarics', 'Scott', 'Root II', 'password', '', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('ldrics', 'Lawrence', 'Roth', 'password', '', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('kmsics', 'Katie', 'Sabourin', 'password', '', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('cxsics', 'Charles', 'Schneider', 'password', '', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('nxsvks', 'Nirmala', 'Shenoy', 'password', 'https://ist.rit.edu/assets/img/people/nxsvks.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('aesfaa', 'Adam', 'Smith', 'password', 'https://ist.rit.edu/assets/img/people/aesfaa.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('jxtadm', 'John-Paul', 'Takats', 'password', '', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('bmtski', 'Brian', 'Tomaszewski', 'password', 'https://ist.rit.edu/assets/img/people/bmtski.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('rpvvks', 'Ronald', 'Vullo', 'password', 'https://ist.rit.edu/assets/img/people/rpvvks.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('axgvks', 'Ann', 'Warren', 'password', 'https://www.rit.edu/gccis/sites/rit.edu.gccis/files//ann.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('emwics', 'Elissa', 'Weeden', 'password', 'https://ist.rit.edu/assets/img/people/emwics.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('jswics', 'Jonathan', 'Weissman', 'password', 'https://www.rit.edu/gccis/sites/rit.edu.gccis/files//jweissman%5B1%5D.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('mayici', 'Michael', 'Yacci', 'password', 'https://www.rit.edu/gccis//sites/rit.edu.gccis/files//yacci%20new%20headshot.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('qyuvks', 'Qi', 'Yu', 'password', 'https://ist.rit.edu/assets/img/people/qyuvks.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('sjzics', 'Steve', 'Zilora', 'password', 'https://ist.rit.edu/assets/img/people/sjzics.jpg', '1970-01-01', 'Faculty', '', 'Faculty');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('rdbcst', 'Rhonda', 'Baker-Smith', 'password', 'https://ist.rit.edu/assets/img/people/rdbcst.jpg', '1970-01-01', 'Staff', '', 'Staff');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('GradCoord', 'Qi', 'Yu', 'password', 'https://ist.rit.edu/assets/img/people/qyuvks.jpg', '1970-01-01', 'Staff', '', 'Staff');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('mchics', 'Melissa', 'Hanna', 'password', 'https://ist.rit.edu/assets/img/people/mchics.jpg', '1970-01-01', 'Staff', '', 'Staff');
-INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('jmpics', 'Jill', 'Persson', 'password', 'https://ist.rit.edu/assets/img/people/jmpics.jpg', '1970-01-01', 'Staff', '', 'Staff');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('txaics', 'Tanweer', 'Alam', 'password', '', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('gpavks', 'Garret', 'Arcoraci', 'password', 'https://ist.rit.edu/assets/img/people/gpavks.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('dlaics', 'Daniel', 'Ashbrook', 'password', 'https://ist.rit.edu/assets/img/people/dlaics.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('ciiics', 'Catherine', 'Beaton', 'password', 'https://ist.rit.edu/assets/img/people/ciiics.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('aobics', 'Alec', 'Berenbaum', 'password', '', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('tsbics', 'Todd', 'Bernhard', 'password', '', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('dsbics', 'Daniel', 'Bogaard', 'password', 'https://ist.rit.edu/assets/img/people/dsbics.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('cbbics', 'Charlie', 'Border', 'password', 'https://ist.rit.edu/assets/img/people/cbbics.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('spbics', 'Sean', 'Boyle', 'password', 'https://www.rit.edu/gccis/sites/rit.edu.gccis/files//Boyle%20Sean%20new%20headshot.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('mjcics', 'Michael', 'Carroll', 'password', '', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('mjcvks', 'Marco', 'Casale', 'password', '', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('mjfics', 'Michael', 'Floeser', 'password', 'https://ist.rit.edu/assets/img/people/mjfics.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('nffbbu', 'Nick', 'Francesco', 'password', '', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('bdfvks', 'Bryan', 'French', 'password', 'https://ist.rit.edu/assets/img/people/bdfvks.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('dmgics', 'Dean', 'Ganskop', 'password', '', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('efgics', 'Erik', 'Golen', 'password', 'https://ist.rit.edu/assets/img/people/efgics.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('jrhicsa', 'James', 'Habermas', 'password', '', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('vlhics', 'Vicki', 'Hanson', 'password', 'https://ist.rit.edu/assets/img/people/vlhics.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('bhhics', 'Bruce', 'Hartpence', 'password', 'https://ist.rit.edu/assets/img/people/bhhics.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('amhgss', 'Andrew', 'Herbert', 'password', 'https://ist.rit.edu/assets/img/people/amhgss.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('lwhfac', 'Larry', 'Hill', 'password', 'https://ist.rit.edu/assets/img/people/lwhfac.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('ephics', 'Ed', 'Holden', 'password', 'https://ist.rit.edu/assets/img/people/ephics.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('mphics', 'Matt', 'Huenerfauth', 'password', 'https://ist.rit.edu/assets/img/people/mphics.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('jcjics', 'Jeffrey', 'Jockel', 'password', 'https://www.rit.edu/gccis/sites/rit.edu.gccis/files//Jeff%20IST%20small.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('mrjics', 'Mark', 'Juba', 'password', '', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('jwkics', 'Jai', 'Kang', 'password', 'https://ist.rit.edu/assets/img/people/jwkics.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('drkisd', 'Dan', 'Kennedy', 'password', 'https://ist.rit.edu/assets/img/people/drkisd.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('hnkics', 'Heidi', 'Klossner', 'password', '', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('mxkics1', 'Mitel', 'Kuliner', 'password', '', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('dmlics', 'Deborah', 'LaBelle', 'password', 'https://ist.rit.edu/assets/img/people/dmlics.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('jalics', 'Jeffrey', 'Lasky', 'password', 'https://ist.rit.edu/assets/img/people/jalics.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('jalvks', 'Jim', 'Leone', 'password', 'https://ist.rit.edu/assets/img/people/jalvks.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('jxlics', 'Joseph', 'Loporcaro', 'password', '', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('phlics', 'Peter', 'Lutz', 'password', 'https://ist.rit.edu/assets/img/people/phlics.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('spmics', 'Sharon', 'Mason', 'password', 'https://ist.rit.edu/assets/img/people/spmics.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('mjmics', 'Michael', 'McQuaid', 'password', 'https://ist.rit.edu/assets/img/people/mjmics.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('thoics', 'Tae', 'Oh', 'password', 'https://ist.rit.edu/assets/img/people/thoics.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('sphics', 'Sylvia', 'Perez-Hardy', 'password', 'https://ist.rit.edu/assets/img/people/sphics.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('djpihst', 'Jerry', 'Powell', 'password', 'https://ist.rit.edu/assets/img/people/djpihst.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('sarics', 'Scott', 'Root II', 'password', '', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('ldrics', 'Lawrence', 'Roth', 'password', '', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('kmsics', 'Katie', 'Sabourin', 'password', '', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('cxsics', 'Charles', 'Schneider', 'password', '', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('nxsvks', 'Nirmala', 'Shenoy', 'password', 'https://ist.rit.edu/assets/img/people/nxsvks.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('aesfaa', 'Adam', 'Smith', 'password', 'https://ist.rit.edu/assets/img/people/aesfaa.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('jxtadm', 'John-Paul', 'Takats', 'password', '', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('bmtski', 'Brian', 'Tomaszewski', 'password', 'https://ist.rit.edu/assets/img/people/bmtski.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('rpvvks', 'Ronald', 'Vullo', 'password', 'https://ist.rit.edu/assets/img/people/rpvvks.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('axgvks', 'Ann', 'Warren', 'password', 'https://www.rit.edu/gccis/sites/rit.edu.gccis/files//ann.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('emwics', 'Elissa', 'Weeden', 'password', 'https://ist.rit.edu/assets/img/people/emwics.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('jswics', 'Jonathan', 'Weissman', 'password', 'https://www.rit.edu/gccis/sites/rit.edu.gccis/files//jweissman%5B1%5D.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('mayici', 'Michael', 'Yacci', 'password', 'https://www.rit.edu/gccis//sites/rit.edu.gccis/files//yacci%20new%20headshot.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('qyuvks', 'Qi', 'Yu', 'password', 'https://ist.rit.edu/assets/img/people/qyuvks.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('sjzics', 'Steve', 'Zilora', 'password', 'https://ist.rit.edu/assets/img/people/sjzics.jpg', '1900-01-01', 'Faculty', '', 'Faculty');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('rdbcst', 'Rhonda', 'Baker-Smith', 'password', 'https://ist.rit.edu/assets/img/people/rdbcst.jpg', '1900-01-01', 'Staff', '', 'Staff');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('GradCoord', 'Qi', 'Yu', 'password', 'https://ist.rit.edu/assets/img/people/qyuvks.jpg', '1900-01-01', 'Staff', '', 'Staff');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('mchics', 'Melissa', 'Hanna', 'password', 'https://ist.rit.edu/assets/img/people/mchics.jpg', '1900-01-01', 'Staff', '', 'Staff');
+INSERT INTO `project_tracker`.`user` (`UserName`, `FirstName`, `LastName`, `Password`, `Image`, `GraduationDate`, `Department`, `Major`, `Role`) VALUES ('jmpics', 'Jill', 'Persson', 'password', 'https://ist.rit.edu/assets/img/people/jmpics.jpg', '1900-01-01', 'Staff', '', 'Staff');
 
 COMMIT;
 
@@ -404,6 +413,56 @@ INSERT INTO `project_tracker`.`statuses` (`Code`, `Description`) VALUES (1300, '
 INSERT INTO `project_tracker`.`statuses` (`Code`, `Description`) VALUES (1400, '8. Revise the final report based on committee feedback. (if committee requires revisions)');
 INSERT INTO `project_tracker`.`statuses` (`Code`, `Description`) VALUES (1500, '9. After getting the final approval from the committee');
 INSERT INTO `project_tracker`.`statuses` (`Code`, `Description`) VALUES (1600, '10. Committee chair report the capstone grade to the IST department office.');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `project_tracker`.`milestone`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `project_tracker`;
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (1, 100, 'Our first milestone.', 1, '2016-08-05', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (2, 200, 'Our second milestone', 2, '2016-08-08', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (3, 300, 'Our third milestone', 3, '2016-08-12', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (4, 400, 'Our fourth milestone', 4, '2016-08-25', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (5, 500, 'Our fifth milestone', 5, '2016-08-29', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (6, 600, 'Our sixth milestone', 6, '2016-09-02', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (7, 700, 'Our seventh milestone', 7, '2016-09-05', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (8, 800, 'Our eighth milestone', 8, '2016-09-07', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (9, 900, 'Our ninth milestone', 9, '2016-09-12', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (10, 1000, 'Our tenth milestone', 10, '2016-09-14', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (11, 1100, 'Our eleventh milestone', 11, '2016-09-18', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (12, 1200, 'Our twelfth milestone', 12, '2016-10-16', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (13, 1300, 'Our thirteenth milestone', 13, '2016-10-28', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (14, 1400, 'Our fourteenth milestone', 14, '2016-11-08', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (15, 1500, 'Our fifteenth milestone', 15, '2016-11-22', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (16, 1600, 'Our sixteenth milestone', 16, '2016-12-08', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (17, 100, 'Milestone #1', 1, '2017-06-08', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (18, 200, 'Milestone #2', 2, '2017-06-19', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (19, 300, 'Milestone #3', 3, '2017-06-19', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (20, 400, 'Milestone #4', 4, '2017-06-23', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (21, 500, 'Milestone #5', 5, '2017-06-28', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (22, 600, 'Milestone #6', 6, '2017-07-19', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (23, 700, 'Milestone #7', 7, '2017-08-07', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (24, 800, 'Milestone #8', 8, '2017-08-30', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (25, 900, 'Milestone #9', 9, '2017-09-01', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (26, 1000, 'Milestone #10', 10, '2017-09-25', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (27, 1100, 'Milestone #11', 11, '2017-10-02', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (28, 1200, 'Milestone #12', 12, '2017-10-18', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (29, 1300, 'Milestone #13', 13, '2017-11-03', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (30, 1400, 'Milestone #14', 14, '2017-11-20', FALSE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (31, 100, '1st Milestone', 1, '2017-06-28', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (32, 200, '2nd Milestone', 2, '2017-07-14', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (33, 300, '3rd Milestone', 3, '2017-08-02', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (34, 400, '4th Milestone', 4, '2017-08-22', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (35, 500, '5th Milestone', 5, '2017-09-10', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (36, 600, '6th Milestone', 6, '2017-09-22', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (37, 700, '7th Milestone', 7, '2017-10-05', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (38, 800, '8th Milestone', 8, '2017-10-24', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (39, 900, '9th Milestone', 9, '2017-11-10', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (40, 1000, '10th Milestone', 10, '2017-11-17', TRUE);
+INSERT INTO `project_tracker`.`milestone` (`ID`, `StatusCode`, `Name`, `Number`, `DueDate`, `Approved`) VALUES (41, 1100, '11th Milestone', 11, '2017-11-27', FALSE);
 
 COMMIT;
 
@@ -540,6 +599,56 @@ INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) V
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('sjzics', '585-475-7643', 'Office');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('rdbcst', '585-475-7924', 'Office');
 INSERT INTO `project_tracker`.`phone` (`UserName`, `PhoneNumber`, `PhoneType`) VALUES ('GradCoord', '585-475-6929', 'Office');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `project_tracker`.`project_milestone_link`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `project_tracker`;
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (1, 1);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (1, 2);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (1, 3);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (1, 4);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (1, 5);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (1, 6);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (1, 7);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (1, 8);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (1, 9);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (1, 10);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (1, 11);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (1, 12);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (1, 13);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (1, 14);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (1, 15);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (1, 16);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (2, 17);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (2, 18);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (2, 19);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (2, 20);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (2, 21);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (2, 22);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (2, 23);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (2, 24);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (2, 25);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (2, 26);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (2, 27);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (2, 28);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (2, 29);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (2, 30);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (3, 31);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (3, 32);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (3, 33);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (3, 34);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (3, 35);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (3, 36);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (3, 37);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (3, 38);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (3, 39);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (3, 40);
+INSERT INTO `project_tracker`.`project_milestone_link` (`ProjectID`, `MilestoneID`) VALUES (3, 41);
 
 COMMIT;
 
