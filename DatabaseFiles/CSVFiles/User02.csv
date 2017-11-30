@@ -1,0 +1,62 @@
+UserName,FirstName,LastName,Password,Image,GraduationDate,usertitle,Major,Role
+ab1234,Al,Baker,password,,2018-05-15,NSA grad student,NSA,Student
+dn1234,Don,Novello,password,,2018-05-15,IST grad student,IST,Student
+gs1234,Guido,Sarducci,password,,2017-05-13,HCI grad student,HCI,Student
+txaics,Tanweer,Alam,password,,,UNKNOWN,,Faculty
+gpavks,Garret,Arcoraci,password,https://ist.rit.edu/assets/img/people/gpavks.jpg,,Lecturer,,Faculty
+dlaics,Daniel,Ashbrook,password,https://ist.rit.edu/assets/img/people/dlaics.jpg,,Assistant Professor,,Faculty
+ciiics,Catherine,Beaton,password,https://ist.rit.edu/assets/img/people/ciiics.jpg,,Associate Professor,,Faculty
+aobics,Alec,Berenbaum,password,,,UNKNOWN,,Faculty
+tsbics,Todd,Bernhard,password,,,UNKNOWN,,Faculty
+dsbics,Daniel,Bogaard,password,https://ist.rit.edu/assets/img/people/dsbics.jpg,,Associate Professor,,Faculty
+cbbics,Charlie,Border,password,https://ist.rit.edu/assets/img/people/cbbics.jpg,,Associate Professor,,Faculty
+spbics,Sean,Boyle,password,https://www.rit.edu/gccis/sites/rit.edu.gccis/files//Boyle%20Sean%20new%20headshot.jpg,,UNKNOWN,,Faculty
+mjcics,Michael,Carroll,password,,,UNKNOWN,,Faculty
+mjcvks,Marco,Casale,password,,,UNKNOWN,,Faculty
+mjfics,Michael,Floeser,password,https://ist.rit.edu/assets/img/people/mjfics.jpg,,Senior Lecturer,,Faculty
+nffbbu,Nick,Francesco,password,,,UNKNOWN,,Faculty
+bdfvks,Bryan,French,password,https://ist.rit.edu/assets/img/people/bdfvks.jpg,,Lecturer,,Faculty
+dmgics,Dean,Ganskop,password,,,UNKNOWN,,Faculty
+efgics,Erik,Golen,password,https://ist.rit.edu/assets/img/people/efgics.jpg,,Visiting Assistant Professor,,Faculty
+jrhicsa,James,Habermas,password,,,UNKNOWN,,Faculty
+vlhics,Vicki,Hanson,password,https://ist.rit.edu/assets/img/people/vlhics.jpg,,Distinguished Professor,,Faculty
+bhhics,Bruce,Hartpence,password,https://ist.rit.edu/assets/img/people/bhhics.jpg,,Professor,,Faculty
+amhgss,Andrew,Herbert,password,https://ist.rit.edu/assets/img/people/amhgss.jpg,,Professor,,Faculty
+lwhfac,Larry,Hill,password,https://ist.rit.edu/assets/img/people/lwhfac.jpg,,Associate Professor,,Faculty
+ephics,Ed,Holden,password,https://ist.rit.edu/assets/img/people/ephics.jpg,,Associate Professor,,Faculty
+mphics,Matt,Huenerfauth,password,https://ist.rit.edu/assets/img/people/mphics.jpg,,Professor,,Faculty
+jcjics,Jeffrey,Jockel,password,https://www.rit.edu/gccis/sites/rit.edu.gccis/files//Jeff%20IST%20small.jpg,,UNKNOWN,,Faculty
+mrjics,Mark,Juba,password,,,UNKNOWN,,Faculty
+jwkics,Jai,Kang,password,https://ist.rit.edu/assets/img/people/jwkics.jpg,,Associate Professor,,Faculty
+drkisd,Dan,Kennedy,password,https://ist.rit.edu/assets/img/people/drkisd.jpg,,Lecturer,,Faculty
+hnkics,Heidi,Klossner,password,,,UNKNOWN,,Faculty
+mxkics1,Mitel,Kuliner,password,,,UNKNOWN,,Faculty
+dmlics,Deborah,LaBelle,password,https://ist.rit.edu/assets/img/people/dmlics.jpg,,Lecturer,,Faculty
+jalics,Jeffrey,Lasky,password,https://ist.rit.edu/assets/img/people/jalics.jpg,,Professor,,Faculty
+jalvks,Jim,Leone,password,https://ist.rit.edu/assets/img/people/jalvks.jpg,,Professor,,Faculty
+jxlics,Joseph,Loporcaro,password,,,UNKNOWN,,Faculty
+phlics,Peter,Lutz,password,https://ist.rit.edu/assets/img/people/phlics.jpg,,Professor,,Faculty
+spmics,Sharon,Mason,password,https://ist.rit.edu/assets/img/people/spmics.jpg,,Professor,,Faculty
+mjmics,Michael,McQuaid,password,https://ist.rit.edu/assets/img/people/mjmics.jpg,,Lecturer,,Faculty
+thoics,Tae,Oh,password,https://ist.rit.edu/assets/img/people/thoics.jpg,,Associate Professor,,Faculty
+sphics,Sylvia,Perez-Hardy,password,https://ist.rit.edu/assets/img/people/sphics.jpg,,Associate Professor,,Faculty
+djpihst,Jerry,Powell,password,https://ist.rit.edu/assets/img/people/djpihst.jpg,,Visiting Assistant Professor,,Faculty
+sarics,Scott,Root II,password,,,UNKNOWN,,Faculty
+ldrics,Lawrence,Roth,password,,,UNKNOWN,,Faculty
+kmsics,Katie,Sabourin,password,,,UNKNOWN,,Faculty
+cxsics,Charles,Schneider,password,,,UNKNOWN,,Faculty
+nxsvks,Nirmala,Shenoy,password,https://ist.rit.edu/assets/img/people/nxsvks.jpg,,Professor,,Faculty
+aesfaa,Adam,Smith,password,https://ist.rit.edu/assets/img/people/aesfaa.jpg,,Associate Professor,,Faculty
+jxtadm,John-Paul,Takats,password,,,UNKNOWN,,Faculty
+bmtski,Brian,Tomaszewski,password,https://ist.rit.edu/assets/img/people/bmtski.jpg,,Associate Professor,,Faculty
+rpvvks,Ronald,Vullo,password,https://ist.rit.edu/assets/img/people/rpvvks.jpg,,Associate Professor,,Faculty
+axgvks,Ann,Warren,password,https://www.rit.edu/gccis/sites/rit.edu.gccis/files//ann.jpg,,UNKNOWN,,Faculty
+emwics,Elissa,Weeden,password,https://ist.rit.edu/assets/img/people/emwics.jpg,,Associate Professor,,Faculty
+jswics,Jonathan,Weissman,password,https://www.rit.edu/gccis/sites/rit.edu.gccis/files//jweissman%5B1%5D.jpg,,UNKNOWN,,Faculty
+mayici,Michael,Yacci,password,https://www.rit.edu/gccis//sites/rit.edu.gccis/files//yacci%20new%20headshot.jpg,,UNKNOWN,,Faculty
+qyuvks,Qi,Yu,password,https://ist.rit.edu/assets/img/people/qyuvks.jpg,,Associate Professor,,Faculty
+sjzics,Steve,Zilora,password,https://ist.rit.edu/assets/img/people/sjzics.jpg,,Professor,,Faculty
+rdbcst,Rhonda,Baker-Smith,password,https://ist.rit.edu/assets/img/people/rdbcst.jpg,,IST Office Manager,,Staff
+GradCoord,Qi,Yu,password,https://ist.rit.edu/assets/img/people/qyuvks.jpg,,Associate Professor,,Staff
+mchics,Melissa,Hanna,password,https://ist.rit.edu/assets/img/people/mchics.jpg,,Senior Staff Assistant,,Staff
+jmpics,Jill,Persson,password,https://ist.rit.edu/assets/img/people/jmpics.jpg,,Graduate Academic Advisor,,Staff
