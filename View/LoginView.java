@@ -91,7 +91,6 @@ public class LoginView extends Application implements Observer{
                     String[] userName = new String[1];
                     userName[0] = "ab1234"; //CHANGE THIS, hardcoded string
                     //getting information from the db.
-                    // TODO: 11/29/17 CAN SOMEONE TELL ME FOR THE LOVE OF GOD WHY THIS WILL NOT RETURN A STRING ARRAY OF SIZE 4. lol -with love <3. Blake.
                     String[][] userInfo = msdb.getData("SELECT UserName, FirstName, LastName, Major FROM user WHERE UserName in (?);",userName);
                     //generating the associated views.
                     System.out.println(userInfo.length);
@@ -117,6 +116,7 @@ public class LoginView extends Application implements Observer{
         //Made up of the gridpane (that contains all the elements) and dimensions
         Scene loginScene = new Scene( gp, 600, 400 );
         //Put view into the window
+        // TODO: 11/29/17 Should we be using stages instead of scenes? Everything I have seen in regards to example code has been with stage usage -Blake
         window.setScene(loginScene);
         //show the window
         window.show();
