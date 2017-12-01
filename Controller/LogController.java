@@ -28,8 +28,12 @@ public class LogController {
 
     public void actionPerformed(ActionEvent ae) {
         //some model method called here
-        //TODO: Check where the action event is coming from (ae.getSource). Based on that call the correct model method?
+        //TODO: Check where the action event is coming from (ae.getSource). Based on that call the correct model method? -Gavin
+        //TODO: Look into where the model is calling notifyObservers. How to make updates with getData not calling notify? -Gavin
+
         //--Get data, how does the information get back to the view?
+        System.out.println(ae.getSource());
+        System.out.println(msdb.getAllData("user"));
         System.out.println("LogController method fired, Yay!");
     }
 }
