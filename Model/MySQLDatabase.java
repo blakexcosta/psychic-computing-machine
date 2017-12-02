@@ -26,9 +26,12 @@ public class MySQLDatabase extends Observable{
       user_   = "root";
       password_ = "student";
       conn_ = null;
-      
     }
 
+    /**
+     * get the MySQLDatabase instance
+     * @return
+     */
     public static MySQLDatabase getInstance() {
         return msdb;
     }
@@ -497,10 +500,13 @@ public class MySQLDatabase extends Observable{
             }
             if (loginSuccess) {
                 setChanged();
-                notifyObservers("This is a test from the login method from the database to make sure things are being sent back.");
+                String[][] userInfo = msdb.getData("SELECT CONCAT(FirstName,' ', LastName) as 'Name', " +
+                        "UserName, Department, GraduationDate, major, role, Image FROM user WHERE UserName in (?);", vals);
+                // TODO: 12/2/17 come up with generalized message information for changing a views information, state, etc. basicially how to differentiate between logging in and updating a form -Blake
+                notifyObservers(userInfo);//"StudentView,SomeMessage".split(","));
             } else {
                 setChanged();
-                notifyObservers("Dat ");
+                notifyObservers("Login Unsuccessful.");
             }
 
         } catch (Exception e) {

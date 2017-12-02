@@ -24,6 +24,7 @@ public class MasterView extends Application implements Observer{
     //TODO: Constructor should have MySQLDatabase passed into it. Giving error when I try to do that, I think because of how it is being ran in Instantiation. -Gavin
     public MasterView(){}
 
+    // TODO: 12/2/17 For the object arg, make sure that a collection is being passed in from the database so we can populate information. -Blake
     @Override
     public void update(Observable observableObject, Object arg) {
         //TODO: Figure out how to make it so this does something? From here it just needs to call the correct make method in the correct view class. EX: studentView.makeUserView -Gavin
@@ -31,14 +32,26 @@ public class MasterView extends Application implements Observer{
             System.out.println("Observable object is not the object that is being observed, returning...");
             return;
         }
-        System.out.println("Update successful");
-        System.out.println((String) arg);
+        //casting the object to different instances. making sure it does not fail.
+        //if instanceof String
+        System.out.println("HERE");
+        System.out.println(arg);
+        //System.out.println((String[][]) arg[1][1]);
+        if (arg instanceof String[][]) {
+            if (arg.equals("Login Successful.")) {
+                System.out.println("Here");
+                window.setScene(studentView.makeUserView((String[][]) arg));
+            }
+        }
+
+        // TODO: 12/2/17 stop the insane eventual pileup of if statement checks in the future. -Blake
+        //switching
+        //studentView.makeUserView();
     }
 
     @Override
     public void start(Stage myStage) throws Exception {
         msdb.addObserver(this);
-        msdb.addObserver(loginView);
         window.setTitle("Capstone Tracker - Login");
         window.setScene(loginView.makeLoginView());
         window.show();
