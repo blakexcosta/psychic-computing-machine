@@ -20,7 +20,7 @@ public class FacultyView {
         gp.setVgap( 5 );
         gp.setAlignment( Pos.CENTER );
 
-        //TODO: loop through all of the results of selecting * for that user name and add them after the label
+
 
         gp.add( new Label("Name: "), 0,0);
         gp.add( new Label("User Name: "), 0,1);
