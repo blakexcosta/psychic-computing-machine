@@ -60,18 +60,6 @@ public class StudentView {
             gp.add(new Text(userInfo[1][i]),1,i+1);
         }
         gp.setGridLinesVisible(true);
-        //creating a new button
-        Button controllerActionButton = new Button("Accept");
-        //adding to pane
-        gp.add(controllerActionButton,0,7);
-        //lambdas are sexy
-        controllerActionButton.setOnAction(e -> { logController.actionPerformed(e);});
-
-        //making and addind a new menu.
-        // --- Menu File
-
-
-
         //menuBar.getMenus().addAll(menuFile, menuEdit, menuView);
         //((VBox) sc.getRoot()).getChildren().addAll(menuBar);
         return sc;
