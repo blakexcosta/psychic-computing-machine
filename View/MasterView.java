@@ -34,14 +34,12 @@ public class MasterView extends Application implements Observer{
         }
         //casting the object to different instances. making sure it does not fail.
         //if instanceof String
-        System.out.println("HERE");
-        System.out.println(arg);
+
+        String[][] loginPassArg;
+        loginPassArg = (String[][]) arg;
         //System.out.println((String[][]) arg[1][1]);
-        if (arg instanceof String[][]) {
-            if (arg.equals("Login Successful.")) {
-                System.out.println("Here");
-                window.setScene(studentView.makeUserView((String[][]) arg));
-            }
+        if (loginPassArg instanceof String[][]) {
+            window.setScene(studentView.makeUserView(loginPassArg));
         }
 
         // TODO: 12/2/17 stop the insane eventual pileup of if statement checks in the future. -Blake
