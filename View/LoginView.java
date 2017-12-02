@@ -91,6 +91,7 @@ public class LoginView extends Application implements Observer{
                     String[] userName = new String[1];
                     userName[0] = "ab1234"; //CHANGE THIS, hardcoded string
                     //getting information from the db.
+                    // TODO: 11/29/17 Stuck on this, array wont populate with the new data from the database.
                     String[][] userInfo = msdb.getData("SELECT UserName, FirstName, LastName, Major FROM user WHERE UserName in (?);",userName);
                     //generating the associated views.
                     System.out.println(userInfo.length);

@@ -12,12 +12,12 @@ import java.util.Observer;
  * controller class handles all the logic passed from
  * the database to here, then updates the view.
  */
-public class LogController {
+public class BusinessLayer extends ActionEvent{
     //private DatabaseConnection mySqlDB;
     private Object info;
     //private MySQLDatabase = new MySQLDatabase();
 
-    public LogController() {
+    public BusinessLayer() {
 
     }
 
@@ -28,6 +28,6 @@ public class LogController {
 
     public void actionPerformed(ActionEvent actionEvent) {
         //some model method called here
-        System.out.println("LogController method fired, Yay!");
+        System.out.println("BusinessLayer method fired, Yay!");
     }
 }

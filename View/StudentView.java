@@ -1,23 +1,21 @@
 package View;
 
-import Controller.LogController;
-import Model.MySQLDatabase;
+import Controller.BusinessLayer;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 
 public class StudentView {
     private String[][] sqlData;
     private TextField name, userName, department, gradDate, major, role;
     private GridPane gp = new GridPane();
     private String[][] rs;
-    private LogController logController = null; //creating new private instance of the controller, so don't have to create new controller instance every time.
+    private BusinessLayer logController = null; //creating new private instance of the controller, so don't have to create new controller instance every time.
 
     public StudentView(){
-        logController = new LogController();
+        logController = new BusinessLayer();
     }
 
     public Scene makeUserView(){
@@ -28,7 +26,6 @@ public class StudentView {
         gp.setHgap( 5 );
         gp.setVgap( 5 );
         gp.setAlignment( Pos.CENTER );
-        //TODO: loop through all of the results of selecting * for that user name and add them after the label
 
         //make the connection to the database
         //MySQLDatabase.getInstance().makeConnection();
