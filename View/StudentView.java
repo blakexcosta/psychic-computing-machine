@@ -1,10 +1,7 @@
 package View;
 
-import Controller.BusinessLayer;
-import Model.MySQLDatabase;
-import javafx.fxml.FXMLLoader;
+import Controller.BusinessLayerLogin;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 
@@ -18,10 +15,10 @@ public class StudentView {
     private TextField name, userName, department, gradDate, major, role;
     private GridPane gp = new GridPane();
     private String[][] rs;
-    private BusinessLayer logController = null; //creating new private instance of the controller, so don't have to create new controller instance every time.
+    private BusinessLayerLogin logController = null; //creating new private instance of the controller, so don't have to create new controller instance every time.
 
     public StudentView(){
-        logController = new BusinessLayer();
+        logController = new BusinessLayerLogin();
     }
 
     public Scene makeUserView(String[][] userInfo){
