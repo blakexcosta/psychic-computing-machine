@@ -7,17 +7,20 @@ import javafx.stage.*;
 import javafx.scene.layout.*;
 import javafx.geometry.*;
 
+import java.util.Observable;
+import java.util.Observer;
+
 /**
  * LoginView class serves as the default template that holds all the functionality of the jpanels
  * individual components
  */
-public class LoginView{
+public class LoginView implements Observer{
 
     Stage window = new Stage();
     TextField userNameField;
     PasswordField passwordField;
     GridPane gp;
-    MySQLDatabase msdb = new MySQLDatabase(); //there is only one instance of a database.
+    MySQLDatabase msdb = MySQLDatabase.getInstance(); //there is only one instance of a database.
     String usrRole;
     private BusinessLayerLogin controller = null;
 
@@ -52,12 +55,17 @@ public class LoginView{
         loginButton.setOnAction(e -> { new BusinessLayerLogin().login(userNameField.getText(), passwordField.getText());});
 //        loginButton.setOnAction(e -> {
 //            //TODO: All login functionality as well as populating with the user info. THIS SHOULD ALL BE IN THE CONTROLLER....I think -Gavin
-
         Scene loginScene = new Scene( gp, 1366, 768 );
         return loginScene;
 
     }
 
+    @Override
+    public void update(Observable observable, Object o) {
+        System.out.println("Object received in LoginView");
+        String str = (String) o;
+        System.out.println(str);
+    }
 //    String[] vals = new String[1];
 //    boolean loginSuccess = false;
 //        try{

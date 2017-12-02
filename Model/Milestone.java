@@ -17,7 +17,7 @@ public class Milestone
    private int milestoneNumber;
    private String milestoneDueDate;
    private boolean milestoneApproved;
-   MySQLDatabase dbClass = new MySQLDatabase();
+   MySQLDatabase dbClass = MySQLDatabase.getInstance();
    
    //Default Constructor
    public Milestone()

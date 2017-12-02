@@ -16,10 +16,11 @@ public class MySQLDatabase extends Observable{
     private static Connection conn;
     private static String[][] sqlArr;
     private static MySQLDatabase msdb = new MySQLDatabase();
+
     /**
      * Purpose: Default Constructor
      */
-    public MySQLDatabase() {
+    private MySQLDatabase() {
       uri_    = "jdbc:mysql://localhost/project_tracker?autoReconnect=true&useSSL=false";
       driver_ = "com.mysql.jdbc.Driver";
       user_   = "root";
@@ -494,8 +495,14 @@ public class MySQLDatabase extends Observable{
             if (password.equals(dbPassword)) {
                 loginSuccess = true;
             }
-            setChanged();
-            notifyObservers("This is a test from the login method from the database to make sure things are being sent back.");
+            if (loginSuccess) {
+                setChanged();
+                notifyObservers("This is a test from the login method from the database to make sure things are being sent back.");
+            } else {
+                setChanged();
+                notifyObservers("Dat ");
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

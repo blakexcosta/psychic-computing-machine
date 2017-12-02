@@ -15,7 +15,7 @@ public class Office
    private String userName;
    private String officeNumber;
    private String resultSet[][];
-   private MySQLDatabase msdb= new MySQLDatabase();
+   private MySQLDatabase msdb= MySQLDatabase.getInstance();
 
    /**
     * Purpose: Default constructor

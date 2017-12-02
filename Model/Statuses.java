@@ -13,7 +13,7 @@ public class Statuses
    //Attributes
    private int statusCode;
    private String statusDescription;
-   private MySQLDatabase msdb = new MySQLDatabase();
+   private MySQLDatabase msdb = MySQLDatabase.getInstance();
    private String[][] resultSet;
 
    /**

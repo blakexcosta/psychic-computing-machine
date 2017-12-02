@@ -15,7 +15,7 @@ import java.util.Observer;
 public class BusinessLayerLogin {//extends ActionEvent{
     //private DatabaseConnection mySqlDB;
     private Object info;
-    private MySQLDatabase msdb= new MySQLDatabase();
+    private MySQLDatabase msdb= MySQLDatabase.getInstance();
 
     public BusinessLayerLogin() {
 

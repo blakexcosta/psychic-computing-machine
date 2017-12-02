@@ -18,7 +18,7 @@ public class Email
    private String emailAddress;
    private String emailType;
    private String[][] resultSet;
-   private MySQLDatabase dbClass = new MySQLDatabase();
+   private MySQLDatabase dbClass = MySQLDatabase.getInstance();
    
    //Default Constructor
    public Email()

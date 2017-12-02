@@ -26,7 +26,7 @@ public class Project
    private String projectGrade;
    private int committeeID;
    private String[][] resultSet;
-   private MySQLDatabase databaseClass = new MySQLDatabase();
+   private MySQLDatabase databaseClass = MySQLDatabase.getInstance();
 
 
    /**

@@ -15,7 +15,7 @@ public class Phone
    private String phoneNumber;
    private String phoneType;
    private String[][] resultSet;
-   private MySQLDatabase msdb = new MySQLDatabase();
+   private MySQLDatabase msdb = MySQLDatabase.getInstance();
 
    /**
     * Purpose: default constructor

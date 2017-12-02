@@ -25,7 +25,7 @@ public class User
    private String major;
    private String role;
    private String[][] resultSet; 
-   private MySQLDatabase databaseClassObj = new MySQLDatabase();
+   private MySQLDatabase databaseClassObj = MySQLDatabase.getInstance();
 
 
    /**
