@@ -1,0 +1,31 @@
+The keys to everything.
+    All user information - UserName
+    All milestone information - Milestone ID
+    All project information - Project ID
+    All statuses - Status Code
+    All committees - Committee ID
+    Email - UserName
+    Phone - UserName
+    Office - UserName
+    
+**User Info**
+SELECT UserName, FirstName, LastName, Image, GraduationDate, Department, Major, Role FROM user WHERE UserName = *enter valid UserName*
+
+**User Project Info**
+SELECT Name, Summary, Topic, Type, StartDate, EndDate, DueDate, Completed, ProposalApproved, FinalDefenseDate, PlagiarismPercentage, Grade FROM project JOIN user_project_link ON project.ID = user_project_link.ProjectID JOIN user USING (UserName) WHERE user.UserName = *enter valid UserName* 
+
+**User Email**
+SELECT EmailAddress, EmailType FROM Email WHERE UserName = *enter valid UserName*
+
+**User Phone**
+SELECT PhoneNumber, PhoneType FROM Phone WHERE UserName = *enter valid UserName*
+
+**User Office**
+SELECT OfficeNumber FROM Office WHERE UserName = *enter valid UserName*
+
+**All Projects**
+SELECT Name, Summary, Topic, Type, StartDate, EndDate, DueDate, Completed, ProposalApproved, FinalDefenseDate, PlagiarismPercentage, Grade FROM project JOIN user_project_link ON project.ID = user_project_link.ProjectID JOIN user USING (UserName);
+
+**Milestones**
+SELECT Name, Number, StatusCode, DueDate, Approved FROM Milestone JOIN project_milestone_link ON Milestone.ID = project_milestone_link.MilestoneID JOIN project ON Project.ID = project_milestone_link.projectID JOIN user_project_link ON Project.ID = user_project_link.ProjectID JOIN user USING (UserName) WHERE user.UserName = *enter valid UserName*
+

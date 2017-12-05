@@ -7,6 +7,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 -- Schema project_tracker
 -- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `project_tracker` ;
 
 -- -----------------------------------------------------
 -- Schema project_tracker
@@ -15,8 +16,121 @@ CREATE SCHEMA IF NOT EXISTS `project_tracker` DEFAULT CHARACTER SET utf8 ;
 USE `project_tracker` ;
 
 -- -----------------------------------------------------
+-- Table `project_tracker`.`user`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `project_tracker`.`user` ;
+
+CREATE TABLE IF NOT EXISTS `project_tracker`.`user` (
+  `UserName` VARCHAR(20) NOT NULL,
+  `FirstName` VARCHAR(20) NULL,
+  `LastName` VARCHAR(20) NULL,
+  `Password` VARCHAR(50) NULL,
+  `Image` VARCHAR(150) NULL,
+  `GraduationDate` DATE NULL,
+  `Department` VARCHAR(50) NULL,
+  `Major` VARCHAR(50) NULL,
+  `Role` ENUM('student', 'faculty', 'adjunct', 'staff') NULL,
+  PRIMARY KEY (`UserName`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `project_tracker`.`email`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `project_tracker`.`email` ;
+
+CREATE TABLE IF NOT EXISTS `project_tracker`.`email` (
+  `UserName` VARCHAR(20) NOT NULL,
+  `EmailAddress` VARCHAR(30) NOT NULL,
+  `EmailType` ENUM('work', 'school', 'personal', 'none') NULL DEFAULT 'none',
+  PRIMARY KEY (`UserName`, `EmailAddress`),
+  CONSTRAINT `User_Email_FK`
+    FOREIGN KEY (`UserName`)
+    REFERENCES `project_tracker`.`user` (`UserName`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `project_tracker`.`statuses`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `project_tracker`.`statuses` ;
+
+CREATE TABLE IF NOT EXISTS `project_tracker`.`statuses` (
+  `Code` INT(11) NOT NULL,
+  `Description` VARCHAR(250) NULL,
+  PRIMARY KEY (`Code`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `project_tracker`.`milestone`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `project_tracker`.`milestone` ;
+
+CREATE TABLE IF NOT EXISTS `project_tracker`.`milestone` (
+  `ID` INT(11) NOT NULL AUTO_INCREMENT,
+  `StatusCode` INT(11) NULL,
+  `Name` VARCHAR(30) NULL,
+  `Number` INT(11) NULL,
+  `DueDate` DATE NULL,
+  `Approved` TINYINT(4) NULL,
+  PRIMARY KEY (`ID`),
+  CONSTRAINT `Milestone_Status_FK`
+    FOREIGN KEY (`StatusCode`)
+    REFERENCES `project_tracker`.`statuses` (`Code`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `project_tracker`.`office`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `project_tracker`.`office` ;
+
+CREATE TABLE IF NOT EXISTS `project_tracker`.`office` (
+  `UserName` VARCHAR(20) NOT NULL,
+  `OfficeNumber` VARCHAR(15) NOT NULL,
+  PRIMARY KEY (`UserName`, `OfficeNumber`),
+  CONSTRAINT `User_Office_FK`
+    FOREIGN KEY (`UserName`)
+    REFERENCES `project_tracker`.`user` (`UserName`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `project_tracker`.`phone`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `project_tracker`.`phone` ;
+
+CREATE TABLE IF NOT EXISTS `project_tracker`.`phone` (
+  `UserName` VARCHAR(20) NOT NULL,
+  `PhoneNumber` VARCHAR(20) NOT NULL,
+  `PhoneType` ENUM('cell', 'home', 'office', 'other', 'none') NULL DEFAULT 'none',
+  PRIMARY KEY (`UserName`, `PhoneNumber`),
+  CONSTRAINT `User_Phone_FK`
+    FOREIGN KEY (`UserName`)
+    REFERENCES `project_tracker`.`user` (`UserName`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
 -- Table `project_tracker`.`project`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `project_tracker`.`project` ;
+
 CREATE TABLE IF NOT EXISTS `project_tracker`.`project` (
   `ID` INT(11) NOT NULL AUTO_INCREMENT,
   `Name` VARCHAR(50) NULL,
@@ -38,133 +152,10 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `project_tracker`.`committee`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `project_tracker`.`committee` (
-  `ID` INT(11) NOT NULL AUTO_INCREMENT,
-  `ProjectID` INT(11) NOT NULL,
-  `ProjectGrade` VARCHAR(4) NULL,
-  PRIMARY KEY (`ID`, `ProjectID`),
-  CONSTRAINT `ProjectID_Committee_FK`
-    FOREIGN KEY (`ProjectID`)
-    REFERENCES `project_tracker`.`project` (`ID`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
--- -----------------------------------------------------
--- Create foreign key constraint
--- -----------------------------------------------------
--- ALTER TABLE `project_tracker`.`project`
--- ADD CONSTRAINT `Project_Committee_Grade_FK` 
---  FOREIGN KEY (`Grade`)
---  REFERENCES `project_tracker`.`committee` (`ProjectGrade`)
---  ON DELETE CASCADE
---  ON UPDATE CASCADE;
-
--- -----------------------------------------------------
--- Table `project_tracker`.`user`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `project_tracker`.`user` (
-  `UserName` VARCHAR(20) NOT NULL,
-  `FirstName` VARCHAR(20) NULL,
-  `LastName` VARCHAR(20) NULL,
-  `Password` VARCHAR(50) NULL,
-  `Image` VARCHAR(150) NULL,
-  `GraduationDate` DATE NULL,
-  `Department` VARCHAR(50) NULL,
-  `Major` VARCHAR(50) NULL,
-  `Role` ENUM('student', 'faculty', 'adjunct', 'staff') NULL,
-  PRIMARY KEY (`UserName`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `project_tracker`.`email`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `project_tracker`.`email` (
-  `UserName` VARCHAR(20) NOT NULL,
-  `EmailAddress` VARCHAR(30) NOT NULL,
-  `EmailType` ENUM('work', 'school', 'personal', 'none') NULL DEFAULT 'none',
-  PRIMARY KEY (`UserName`, `EmailAddress`),
-  CONSTRAINT `User_Email_FK`
-    FOREIGN KEY (`UserName`)
-    REFERENCES `project_tracker`.`user` (`UserName`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `project_tracker`.`statuses`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `project_tracker`.`statuses` (
-  `Code` INT(11) NOT NULL,
-  `Description` VARCHAR(250) NULL,
-  PRIMARY KEY (`Code`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `project_tracker`.`milestone`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `project_tracker`.`milestone` (
-  `ID` INT(11) NOT NULL AUTO_INCREMENT,
-  `StatusCode` INT(11) NULL,
-  `Name` VARCHAR(30) NULL,
-  `Number` INT(11) NULL,
-  `DueDate` DATE NULL,
-  `Approved` TINYINT(4) NULL,
-  PRIMARY KEY (`ID`),
-  CONSTRAINT `Milestone_Status_FK`
-    FOREIGN KEY (`StatusCode`)
-    REFERENCES `project_tracker`.`statuses` (`Code`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `project_tracker`.`office`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `project_tracker`.`office` (
-  `UserName` VARCHAR(20) NOT NULL,
-  `OfficeNumber` VARCHAR(15) NOT NULL,
-  PRIMARY KEY (`UserName`, `OfficeNumber`),
-  CONSTRAINT `User_Office_FK`
-    FOREIGN KEY (`UserName`)
-    REFERENCES `project_tracker`.`user` (`UserName`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `project_tracker`.`phone`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `project_tracker`.`phone` (
-  `UserName` VARCHAR(20) NOT NULL,
-  `PhoneNumber` VARCHAR(20) NOT NULL,
-  `PhoneType` ENUM('cell', 'home', 'office', 'other', 'none') NULL DEFAULT 'none',
-  PRIMARY KEY (`UserName`, `PhoneNumber`),
-  CONSTRAINT `User_Phone_FK`
-    FOREIGN KEY (`UserName`)
-    REFERENCES `project_tracker`.`user` (`UserName`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
 -- Table `project_tracker`.`project_milestone_link`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `project_tracker`.`project_milestone_link` ;
+
 CREATE TABLE IF NOT EXISTS `project_tracker`.`project_milestone_link` (
   `ProjectID` INT(11) NOT NULL,
   `MilestoneID` INT(11) NOT NULL,
@@ -184,33 +175,14 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `project_tracker`.`user_committee_link`
+-- Table `project_tracker`.`committee`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `project_tracker`.`user_committee_link` (
-  `UserName` VARCHAR(20) NOT NULL,
-  `CommitteID` INT(11) NOT NULL,
-  `Role` ENUM('chair', 'reader', 'other') NULL,
-  PRIMARY KEY (`UserName`, `CommitteID`),
-  CONSTRAINT `UserID_Committee_FK`
-    FOREIGN KEY (`UserName`)
-    REFERENCES `project_tracker`.`user` (`UserName`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `User_CommitteeID_FK`
-    FOREIGN KEY (`CommitteID`)
-    REFERENCES `project_tracker`.`committee` (`ID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
+DROP TABLE IF EXISTS `project_tracker`.`committee` ;
 
-
--- -----------------------------------------------------
--- Table `project_tracker`.`user_project_link`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `project_tracker`.`user_project_link` (
+CREATE TABLE IF NOT EXISTS `project_tracker`.`committee` (
   `UserName` VARCHAR(20) NOT NULL,
   `ProjectID` INT(11) NOT NULL,
+  `Role` ENUM('chair', 'reader', 'other') NULL,
   PRIMARY KEY (`UserName`, `ProjectID`),
   CONSTRAINT `UserID_Project_FK`
     FOREIGN KEY (`UserName`)
@@ -229,30 +201,6 @@ DEFAULT CHARACTER SET = utf8;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-
--- -----------------------------------------------------
--- Data for table `project_tracker`.`project`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `project_tracker`;
-INSERT INTO `project_tracker`.`project` (`ID`, `Name`, `Summary`, `Topic`, `Type`, `StartDate`, `EndDate`, `DueDate`, `Completed`, `ProposalApproved`, `FinalDefenseDate`, `PlagiarismPercentage`, `Grade`, `CommitteeID`) VALUES (1, 'Project 01', 'Creating network cables by left or right handed technicians should not be used on the same network. This causes the network to implode if the streams are crossed.', 'Network implosion ', 'Thesis', '2016-07-15', '2016-12-08', '2016-12-12', TRUE, TRUE, '2016-12-16', 25, 'A', 1);
-INSERT INTO `project_tracker`.`project` (`ID`, `Name`, `Summary`, `Topic`, `Type`, `StartDate`, `EndDate`, `DueDate`, `Completed`, `ProposalApproved`, `FinalDefenseDate`, `PlagiarismPercentage`, `Grade`, `CommitteeID`) VALUES (2, 'Project 02', 'Do men that stroke their chins in contemplation, think smarter when they have a beard?', 'Program better with a beard', 'Capstone', '2017-06-01', '1900-01-01', '2017-12-10', FALSE, TRUE, '2017-12-15', 25, '', 2);
-INSERT INTO `project_tracker`.`project` (`ID`, `Name`, `Summary`, `Topic`, `Type`, `StartDate`, `EndDate`, `DueDate`, `Completed`, `ProposalApproved`, `FinalDefenseDate`, `PlagiarismPercentage`, `Grade`, `CommitteeID`) VALUES (3, 'Project 03', 'Recursively, this database.', 'Capstone tracking database', 'Capstone', '2017-06-20', '1900-01-01', '2017-12-10', FALSE, TRUE, '2017-12-18', 35, '', 3);
-
-COMMIT;
-
-
--- -----------------------------------------------------
--- Data for table `project_tracker`.`committee`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `project_tracker`;
-INSERT INTO `project_tracker`.`committee` (`ID`, `ProjectID`, `ProjectGrade`) VALUES (1, 1, 'A');
-INSERT INTO `project_tracker`.`committee` (`ID`, `ProjectID`, `ProjectGrade`) VALUES (2, 2, 'B');
-INSERT INTO `project_tracker`.`committee` (`ID`, `ProjectID`, `ProjectGrade`) VALUES (3, 3, 'C');
-
-COMMIT;
-
 
 -- -----------------------------------------------------
 -- Data for table `project_tracker`.`user`
@@ -604,6 +552,18 @@ COMMIT;
 
 
 -- -----------------------------------------------------
+-- Data for table `project_tracker`.`project`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `project_tracker`;
+INSERT INTO `project_tracker`.`project` (`ID`, `Name`, `Summary`, `Topic`, `Type`, `StartDate`, `EndDate`, `DueDate`, `Completed`, `ProposalApproved`, `FinalDefenseDate`, `PlagiarismPercentage`, `Grade`, `CommitteeID`) VALUES (1, 'Project 01', 'Creating network cables by left or right handed technicians should not be used on the same network. This causes the network to implode if the streams are crossed.', 'Network implosion ', 'Thesis', '2016-07-15', '2016-12-08', '2016-12-12', TRUE, TRUE, '2016-12-16', 25, 'A', 1);
+INSERT INTO `project_tracker`.`project` (`ID`, `Name`, `Summary`, `Topic`, `Type`, `StartDate`, `EndDate`, `DueDate`, `Completed`, `ProposalApproved`, `FinalDefenseDate`, `PlagiarismPercentage`, `Grade`, `CommitteeID`) VALUES (2, 'Project 02', 'Do men that stroke their chins in contemplation, think smarter when they have a beard?', 'Program better with a beard', 'Capstone', '2017-06-01', '1900-01-01', '2017-12-10', FALSE, TRUE, '2017-12-15', 25, '', 2);
+INSERT INTO `project_tracker`.`project` (`ID`, `Name`, `Summary`, `Topic`, `Type`, `StartDate`, `EndDate`, `DueDate`, `Completed`, `ProposalApproved`, `FinalDefenseDate`, `PlagiarismPercentage`, `Grade`, `CommitteeID`) VALUES (3, 'Project 03', 'Recursively, this database.', 'Capstone tracking database', 'Capstone', '2017-06-20', '1900-01-01', '2017-12-10', FALSE, TRUE, '2017-12-18', 35, '', 3);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
 -- Data for table `project_tracker`.`project_milestone_link`
 -- -----------------------------------------------------
 START TRANSACTION;
@@ -654,29 +614,17 @@ COMMIT;
 
 
 -- -----------------------------------------------------
--- Data for table `project_tracker`.`user_committee_link`
+-- Data for table `project_tracker`.`committee`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `project_tracker`;
-INSERT INTO `project_tracker`.`user_committee_link` (`UserName`, `CommitteID`, `Role`) VALUES ('mjfics', 1, 'Reader');
-INSERT INTO `project_tracker`.`user_committee_link` (`UserName`, `CommitteID`, `Role`) VALUES ('mjfics', 2, 'Reader');
-INSERT INTO `project_tracker`.`user_committee_link` (`UserName`, `CommitteID`, `Role`) VALUES ('ephics', 3, 'Reader');
-INSERT INTO `project_tracker`.`user_committee_link` (`UserName`, `CommitteID`, `Role`) VALUES ('drkisd', 1, 'Chair');
-INSERT INTO `project_tracker`.`user_committee_link` (`UserName`, `CommitteID`, `Role`) VALUES ('drkisd', 2, 'Chair');
-INSERT INTO `project_tracker`.`user_committee_link` (`UserName`, `CommitteID`, `Role`) VALUES ('mjfics', 3, 'Chair');
-INSERT INTO `project_tracker`.`user_committee_link` (`UserName`, `CommitteID`, `Role`) VALUES ('thoics', 1, 'Reader');
-
-COMMIT;
-
-
--- -----------------------------------------------------
--- Data for table `project_tracker`.`user_project_link`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `project_tracker`;
-INSERT INTO `project_tracker`.`user_project_link` (`UserName`, `ProjectID`) VALUES ('ab1234', 1);
-INSERT INTO `project_tracker`.`user_project_link` (`UserName`, `ProjectID`) VALUES ('dn1234', 2);
-INSERT INTO `project_tracker`.`user_project_link` (`UserName`, `ProjectID`) VALUES ('gs1234', 3);
+INSERT INTO `project_tracker`.`committee` (`UserName`, `ProjectID`, `Role`) VALUES ('mjfics', 1, 'Reader');
+INSERT INTO `project_tracker`.`committee` (`UserName`, `ProjectID`, `Role`) VALUES ('mjfics', 2, 'Reader');
+INSERT INTO `project_tracker`.`committee` (`UserName`, `ProjectID`, `Role`) VALUES ('ephics', 3, 'Reader');
+INSERT INTO `project_tracker`.`committee` (`UserName`, `ProjectID`, `Role`) VALUES ('drkisd', 1, 'Chair');
+INSERT INTO `project_tracker`.`committee` (`UserName`, `ProjectID`, `Role`) VALUES ('drkisd', 2, 'Chair');
+INSERT INTO `project_tracker`.`committee` (`UserName`, `ProjectID`, `Role`) VALUES ('mjfics', 3, 'Chair');
+INSERT INTO `project_tracker`.`committee` (`UserName`, `ProjectID`, `Role`) VALUES ('thoics', 1, 'Reader');
 
 COMMIT;
 
