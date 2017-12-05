@@ -184,18 +184,40 @@ CREATE TABLE IF NOT EXISTS `project_tracker`.`committee` (
   `ProjectID` INT(11) NOT NULL,
   `Role` ENUM('chair', 'reader', 'other') NULL,
   PRIMARY KEY (`UserName`, `ProjectID`),
+  CONSTRAINT `Committee_User_FK`
+    FOREIGN KEY (`UserName`)
+    REFERENCES `project_tracker`.`user` (`UserName`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `Committee_Project_FK`
+    FOREIGN KEY (`ProjectID`)
+    REFERENCES `project_tracker`.`project` (`ID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `project_tracker`.`user_project_link`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `project_tracker`.`user_project_link` ;
+
+CREATE TABLE IF NOT EXISTS `project_tracker`.`user_project_link` (
+  `UserName` VARCHAR(20) NOT NULL,
+  `ProjectID` INT(11) NOT NULL,
+  PRIMARY KEY (`UserName`, `ProjectID`),
   CONSTRAINT `UserID_Project_FK`
     FOREIGN KEY (`UserName`)
     REFERENCES `project_tracker`.`user` (`UserName`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT `User_ProjectID_FK`
+  CONSTRAINT `ProjectID_User_FK`
     FOREIGN KEY (`ProjectID`)
     REFERENCES `project_tracker`.`project` (`ID`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
+ENGINE = InnoDB;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
@@ -625,6 +647,18 @@ INSERT INTO `project_tracker`.`committee` (`UserName`, `ProjectID`, `Role`) VALU
 INSERT INTO `project_tracker`.`committee` (`UserName`, `ProjectID`, `Role`) VALUES ('drkisd', 2, 'Chair');
 INSERT INTO `project_tracker`.`committee` (`UserName`, `ProjectID`, `Role`) VALUES ('mjfics', 3, 'Chair');
 INSERT INTO `project_tracker`.`committee` (`UserName`, `ProjectID`, `Role`) VALUES ('thoics', 1, 'Reader');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `project_tracker`.`user_project_link`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `project_tracker`;
+INSERT INTO `project_tracker`.`user_project_link` (`UserName`, `ProjectID`) VALUES ('ab1234', 1);
+INSERT INTO `project_tracker`.`user_project_link` (`UserName`, `ProjectID`) VALUES ('dn1234', 2);
+INSERT INTO `project_tracker`.`user_project_link` (`UserName`, `ProjectID`) VALUES ('gs1234', 3);
 
 COMMIT;
 
