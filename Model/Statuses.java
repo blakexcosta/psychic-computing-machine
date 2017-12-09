@@ -57,7 +57,6 @@ public class Statuses
     /**
      * Purpose: Mutators
      * @param statusCode int
-     * @param statusDescription String
      */
    public void setStatusCode(int statusCode) { this.statusCode = statusCode; }
    public void setStatusDescription(String statusDescription) { this.statusDescription = statusDescription; }
@@ -102,8 +101,7 @@ public class Statuses
          msdb.makeConnection();
 
          //String[] params = { getStatusCode() };
-         resultSet = MySQLDatabase.getData("SELECT * FROM statuses WHERE Code = " +Integer.toString(getStatusCode()) +";");
-         
+
          setStatusCode(Integer.parseInt(resultSet[0][0]));
          setStatusDescription(resultSet[0][1]);
          msdb.closeConnection();
@@ -127,7 +125,6 @@ public class Statuses
          msdb.makeConnection();
 
          String[] params = { getStatusDescription()};
-         msdb.setData("UPDATE statuses SET Code = " + Integer.toString(getStatusCode() ) + ", Description = ? WHERE Code = " + Integer.toString(getStatusCode()) + ";", params);
          msdb.closeConnection();
 
          return true;
@@ -171,7 +168,6 @@ public class Statuses
       {
          msdb.makeConnection();
          //String[] params = { getStatusCode() };
-         msdb.setData("DELETE FROM statuses WHERE Code = "+Integer.toString(getStatusCode() ) +";");
          msdb.closeConnection();
          return true;
       }

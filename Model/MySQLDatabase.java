@@ -283,31 +283,10 @@ public class MySQLDatabase extends Observable{
       return rc;
    }//end executeStmt
 
-   // TODO: 12/8/17 Can remove these override methods from Observable, do not need them -Blake
-    @Override
-    public synchronized void addObserver(Observer observer) {
-      super.addObserver(observer);
+    
     }
 
-    @Override
-    public synchronized void deleteObserver(Observer observer) {
-      super.deleteObserver(observer);
     }
-
-    @Override
-    public synchronized boolean hasChanged() {
-      return super.hasChanged();
-    }
-
-    /**
-     * notifies observers
-     */
-    @Override
-    public void notifyObservers() {
-      setChanged();
-      super.notifyObservers();
-    }
-
    public void login(String username, String password){
       //creating new string array for the username
       String[] vals = new String[1];
