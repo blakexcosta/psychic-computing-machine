@@ -168,7 +168,6 @@ public class Statuses
       {
          msdb.makeConnection();
          //String[] params = { getStatusCode() };
-         msdb.setData("DELETE FROM statuses WHERE Code = "+Integer.toString(getStatusCode() ) +";");
          msdb.closeConnection();
          return true;
       }
