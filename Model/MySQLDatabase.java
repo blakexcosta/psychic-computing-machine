@@ -1,5 +1,7 @@
 package Model;
 
+import View.MasterView;
+
 import java.sql.*;
 import java.util.*;
 
@@ -20,7 +22,9 @@ public class MySQLDatabase extends Observable{
     private static Connection conn;
     private static String[][] sqlArr;
     private static String[][] userInfo = null;
+    private static String usrRole = null;
     private static MySQLDatabase msdb = new MySQLDatabase();
+
 
     /**
      * Purpose: Default Constructor
@@ -289,8 +293,8 @@ public class MySQLDatabase extends Observable{
     * helper by login.
     * @param _info
     */
-   private void setUserInfo(String[][] _info) {
-      userInfo = _info;
+   private static void setUserInfo(String[][] _info) {
+      MySQLDatabase.userInfo = _info;
    }
 
    /**
@@ -303,6 +307,25 @@ public class MySQLDatabase extends Observable{
       return userInfo;
    }
 
+   /**
+    * setter
+    * @param usrRole
+    */
+   private static void setUserRole(String usrRole) {
+      MySQLDatabase.usrRole = usrRole;
+   }
+
+   /**
+    * get user role
+    * @return
+    */
+   public String getUserRole() {
+      return usrRole;
+   }
+
+   //get the login information passed.
+
+
    public void login(String username, String password){
       //creating new string array for the username
       String[] vals = new String[1];
@@ -313,12 +336,12 @@ public class MySQLDatabase extends Observable{
          String[][] rs = msdb.getData("SELECT Password, Role FROM user WHERE UserName in (?);", vals); //getting the values from the database
          String dbPassword = rs[0][0]; //getting the password
          String usrRole = rs[1][1]; //getting the user role
+         setUserRole(usrRole); //setting the user role.
          //if the password fields text that was inputed from the user equals the databases password,
          // then set loginSuccess = true, then continue to the next block.
          if (password.equals(dbPassword)) {
             loginSuccess = true;
          }
-         
          if (loginSuccess) {
             setChanged();
             userInfo = msdb.getData("SELECT CONCAT(FirstName,' ', LastName) as 'Name', " +
@@ -326,6 +349,7 @@ public class MySQLDatabase extends Observable{
             setUserInfo(userInfo); //setting the user info, again this functions as a private setter
             //calling setUserInfo, setting the new values.
             notifyObservers();//"StudentView,SomeMessage".split(","));
+            new MasterView().setWindow();//set the window
          } else {
             setChanged();
             notifyObservers("Login Unsuccessful.");

@@ -1,6 +1,7 @@
 package View;
 
 import Controller.BusinessLayerLogin;
+import Model.MySQLDatabase;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -8,7 +9,12 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import static javafx.fxml.FXMLLoader.load;
+import java.util.Observable;
+
 
 /**
  * Blake Costa, Gavin Drabik, Matthew Turczmanovicz, Oswaldo Rosete-Garcia, and Quinn Bissen
@@ -19,7 +25,7 @@ import static javafx.fxml.FXMLLoader.load;
  */
 
 // TODO: 12/8/17 Document and Fix indentation -Blake 
-public class StudentView {
+public class StudentView implements Observer{
    private String[][] sqlData;
    private TextField name, userName, department, gradDate, major, role;
    private GridPane gp = new GridPane();
@@ -27,6 +33,14 @@ public class StudentView {
   
    public StudentView(){
     
+   }
+
+   @Override
+   public void update(Observable observable, Object o) {
+      System.out.println("StudentView update method called.");
+      //update state information here.
+
+
    }
 
    public Scene makeUserView(String[][] userInfo){

@@ -1,5 +1,6 @@
 package View;
 
+import Controller.BusinessLayerLogin;
 import Model.MySQLDatabase;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -23,61 +24,41 @@ import java.util.Observer;
  * MasterView serves as the home base for the views, as it instantiates
  * new views.
  */
-public class MasterView extends Application implements Observer{
+public class MasterView extends Application{
    //These classes will have all of the functionality to make each scene.
    //todo: MAYBE- make this abstract? then all of the other views extend it. Each view alone will have an update method that updates their panel.
    // TODO: 12/8/17 Cleanup this class, make it look nice. -Blake
    private Stage window = new Stage();
    private Scene currScene;
-   private FacultyView facultyView = new FacultyView();
-   private StaffView staffView = new StaffView();
-   private StudentView studentView = new StudentView();
-   private LoginView loginView = new LoginView();
+   private FacultyView facultyView = null;
+   private StaffView staffView = null;
+   private StudentView studentView = null;
+   private LoginView loginView = null;
    private MySQLDatabase msdb = MySQLDatabase.getInstance();//Need a model instance to add as an observer
+
    //TODO: Constructor should have MySQLDatabase passed into it. Giving error when I try to do that, I think because of how it is being ran in Instantiation. -Gavin
    public MasterView(){}
 
-    /**
-     * update functions as a way to get state information from the model, it is done when
-     * the model calls setChanged() followed by notifyObservers(), and then this update
-     * function can call getters from the model to get its information. It IS assumed
-     * that the model updates its state information before notifyObservers() is called.
-     * It is usually recommended that this is done by making setters in the model, to be
-     * used privately.
-     * @param observableObject
-     * @param arg
-     */
-   @Override
-   public void update(Observable observableObject, Object arg) {
-
-      // we want the subclasses to be able to implement deal with the flexibility of system wide changes.
-      // TODO: 12/9/17 make methods in subclasses to handle updation. -Blake
-      // TODO: 12/9/17 Switching between views when update is called -Blake
-      if (observableObject != msdb) { //a quick check to make sure observable object is an instance of the database
-         System.out.println("Observable object is not the object that is being observed, returning...");
-         return;
-      }
-      System.out.println("update called");
-      //casting the object to different instances. making sure it does not fail.
-      //if instanceof String
-
-      //gets the user info, as info has already been set in the model
-      String[][] loginPassArg = msdb.getUserInfo();
-      //System.out.println((String[][]) arg[1][1]);
-
-      //if the role == student,
-      window.setScene(studentView.makeUserView(loginPassArg));
-      //if the role == faculty, set the faculty view.
-      //switching
-      //studentView.makeUserView();
-   }
-
    @Override
    public void start(Stage myStage) throws Exception {
-      msdb.addObserver(this);
+      //remove observer, make classes implement it.
       window.setTitle("Capstone Tracker - Login");
       window.setScene(loginView.makeLoginView());
+      //get the login information.
       window.show();
+   }
+
+   /**
+    * used by the model to set a state check,
+    */
+   public void setWindow() {
+      //checks for which window to initially use, instead of having to use
+      if (msdb.getUserRole().equals("student")) {
+         System.out.println("student found");
+         window.setScene(studentView.makeUserView(msdb.getUserInfo()));
+      } else if (msdb.getUserRole().equals("faculty")) {
+         
+      }
    }
 
     //Quick Question, Gavin, can you explain why there needs to be two mains? is this just a javafx thing? and does instances for the view need

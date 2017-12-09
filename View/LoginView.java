@@ -60,6 +60,7 @@ public class LoginView implements Observer{
       gp.setHalignment(loginButton, HPos.LEFT);//position to the left
       //Login button click functionality
 
+      //calls the login.
       loginButton.setOnAction(e -> { new BusinessLayerLogin(userNameField.getText(), passwordField.getText()); });
       //loginButton.setOnAction(e -> {
       //TODO: All login functionality as well as populating with the user info. THIS SHOULD ALL BE IN THE CONTROLLER....I think -Gavin
