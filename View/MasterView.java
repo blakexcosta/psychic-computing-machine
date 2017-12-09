@@ -63,6 +63,7 @@ public class MasterView extends Application implements Observer{
         loginPassArg = (String[][]) arg;
         //System.out.println((String[][]) arg[1][1]);
         if (loginPassArg instanceof String[][]) {
+            // TODO: 12/9/17 Set the scenes appropriatly in here. 
             window.setScene(studentView.makeUserView(loginPassArg));
         }
 
