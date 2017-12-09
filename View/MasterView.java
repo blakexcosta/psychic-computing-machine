@@ -50,8 +50,9 @@ public class MasterView extends Application implements Observer{
    @Override
    public void update(Observable observableObject, Object arg) {
 
-      // TODO: 12/8/17 make the subclasses implement Observer, and have it get an instance of the model, instead of in here.
       // we want the subclasses to be able to implement deal with the flexibility of system wide changes.
+      // TODO: 12/9/17 make methods in subclasses to handle updation. -Blake
+      // TODO: 12/9/17 Switching between views when update is called -Blake 
       if (observableObject != msdb) { //a quick check to make sure observable object is an instance of the database
          System.out.println("Observable object is not the object that is being observed, returning...");
          return;
