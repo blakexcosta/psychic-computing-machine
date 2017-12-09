@@ -19,6 +19,7 @@ public class MySQLDatabase extends Observable{
     private String loginUser = null;
     private static Connection conn;
     private static String[][] sqlArr;
+    private static String[][] userInfo = null;
     private static MySQLDatabase msdb = new MySQLDatabase();
 
     /**
@@ -283,8 +284,24 @@ public class MySQLDatabase extends Observable{
       return rc;
    }//end executeStmt
 
-    
+   /**
+    * a private setter to set the user info, used as a private
+    * helper by login.
+    * @param _info
+    */
+   private void setUserInfo(String[][] _info) {
+      userInfo = _info;
+   }
 
+   /**
+    * public getter to return user info, it may
+    * return null if the login failed, so check to make
+    * sure of that. used by the view that needs it.
+    * @return
+    */
+   public String[][] getUserInfo() {
+      return userInfo;
+   }
 
    public void login(String username, String password){
       //creating new string array for the username
@@ -304,10 +321,11 @@ public class MySQLDatabase extends Observable{
          
          if (loginSuccess) {
             setChanged();
-            String[][] userInfo = msdb.getData("SELECT CONCAT(FirstName,' ', LastName) as 'Name', " +
+            userInfo = msdb.getData("SELECT CONCAT(FirstName,' ', LastName) as 'Name', " +
                "UserName, Department, GraduationDate, major, role, Image FROM user WHERE UserName in (?);", vals);
-            // TODO: 12/2/17 come up with generalized message information for changing a views information, state, etc. basicially how to differentiate between logging in and updating a form -Blake
-            notifyObservers(userInfo);//"StudentView,SomeMessage".split(","));
+            setUserInfo(userInfo); //setting the user info, again this functions as a private setter
+            //calling setUserInfo, setting the new values.
+            notifyObservers();//"StudentView,SomeMessage".split(","));
          } else {
             setChanged();
             notifyObservers("Login Unsuccessful.");

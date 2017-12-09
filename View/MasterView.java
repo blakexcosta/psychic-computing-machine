@@ -52,22 +52,22 @@ public class MasterView extends Application implements Observer{
 
       // we want the subclasses to be able to implement deal with the flexibility of system wide changes.
       // TODO: 12/9/17 make methods in subclasses to handle updation. -Blake
-      // TODO: 12/9/17 Switching between views when update is called -Blake 
+      // TODO: 12/9/17 Switching between views when update is called -Blake
       if (observableObject != msdb) { //a quick check to make sure observable object is an instance of the database
          System.out.println("Observable object is not the object that is being observed, returning...");
          return;
       }
-      
+      System.out.println("update called");
       //casting the object to different instances. making sure it does not fail.
       //if instanceof String
 
-      String[][] loginPassArg;
-      loginPassArg = (String[][]) arg;
+      //gets the user info, as info has already been set in the model
+      String[][] loginPassArg = msdb.getUserInfo();
       //System.out.println((String[][]) arg[1][1]);
-      if (loginPassArg instanceof String[][]) {
-         window.setScene(studentView.makeUserView(loginPassArg));
-      }
 
+      //if the role == student,
+      window.setScene(studentView.makeUserView(loginPassArg));
+      //if the role == faculty, set the faculty view.
       //switching
       //studentView.makeUserView();
    }
