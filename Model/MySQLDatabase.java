@@ -11,7 +11,6 @@ import java.util.*;
  * December 18th, 2017
  */
 // TODO: 12/8/17 Documentation and Indentation, clean it up -Blake
-// TODO: 12/8/17 MySQLDatabase is huge. at this state it's bigger than nearly our entire code base. We should break this up before it gets even more out of hand -Blake
 // TODO: 12/8/17 Implement the DataLayer table classes, and determine where to place them in respect to this class -Blake 
 // TODO: 12/8/17 all the dl classes minus this one use the same put,post,delete,fetch methods. Consider making an interface -Blake
 public class MySQLDatabase extends Observable{

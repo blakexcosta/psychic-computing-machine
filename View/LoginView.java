@@ -24,18 +24,16 @@ import java.util.Observer;
  */
 // TODO: 12/8/17 Document and fix indentation -Blake 
 public class LoginView implements Observer{
-    // TODO: 12/8/17 Make attributes private -Blake
-    Stage window = new Stage();
-    TextField userNameField;
-    PasswordField passwordField;
-    GridPane gp;
+    private Stage window = new Stage();
+    private TextField userNameField;
+    private PasswordField passwordField;
+    private GridPane gp;
     // TODO: 12/8/17 my point continues to stand, remove MasterView update/ class instance, especially if it exists in the subclasses -Blake
-    MySQLDatabase msdb = MySQLDatabase.getInstance(); //there is only one instance of a database.
-    String usrRole;
-    // TODO: 12/8/17 Remove controller, controllers instances do not exists class wide, only instance based -Blake 
-    private BusinessLayerLogin controller = null;
+    private MySQLDatabase msdb = MySQLDatabase.getInstance(); //there is only one instance of a database.
+    private String usrRole;
+
     public LoginView(){
-        controller = new BusinessLayerLogin();
+
     }
 
     public Scene makeLoginView(){
@@ -62,7 +60,7 @@ public class LoginView implements Observer{
         gp.setHalignment(loginButton, HPos.LEFT);//position to the left
         //Login button click functionality
 
-        loginButton.setOnAction(e -> { new BusinessLayerLogin().login(userNameField.getText(), passwordField.getText());});
+        loginButton.setOnAction(e -> { new BusinessLayerLogin(userNameField.getText(), passwordField.getText()); });
 //        loginButton.setOnAction(e -> {
 //            //TODO: All login functionality as well as populating with the user info. THIS SHOULD ALL BE IN THE CONTROLLER....I think -Gavin
         Scene loginScene = new Scene( gp, 1366, 768 );

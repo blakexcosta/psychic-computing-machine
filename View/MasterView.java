@@ -26,15 +26,14 @@ import java.util.Observer;
 public class MasterView extends Application implements Observer{
     //These classes will have all of the functionality to make each scene.
     //todo: MAYBE- make this abstract? then all of the other views extend it. Each view alone will have an update method that updates their panel.
-    // TODO: 12/8/17 make these attributes private -Blake 
     // TODO: 12/8/17 Cleanup this class, make it look nice. -Blake
-    Stage window = new Stage();
-    Scene currScene;
-    FacultyView facultyView = new FacultyView();
-    StaffView staffView = new StaffView();
-    StudentView studentView = new StudentView();
-    LoginView loginView = new LoginView();
-    MySQLDatabase msdb = MySQLDatabase.getInstance();//Need a model instance to add as an observer
+    private Stage window = new Stage();
+    private Scene currScene;
+    private FacultyView facultyView = new FacultyView();
+    private StaffView staffView = new StaffView();
+    private StudentView studentView = new StudentView();
+    private LoginView loginView = new LoginView();
+    private MySQLDatabase msdb = MySQLDatabase.getInstance();//Need a model instance to add as an observer
     //TODO: Constructor should have MySQLDatabase passed into it. Giving error when I try to do that, I think because of how it is being ran in Instantiation. -Gavin
     public MasterView(){}
 

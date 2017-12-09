@@ -26,7 +26,6 @@ public class User
    private String[][] resultSet; 
    private MySQLDatabase databaseClassObj = MySQLDatabase.getInstance();
 
-
    /**
     * Purpose: default constructor
     */

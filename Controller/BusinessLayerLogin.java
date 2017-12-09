@@ -25,10 +25,9 @@ public class BusinessLayerLogin {//extends ActionEvent{
     //private DatabaseConnection mySqlDB;
     private Object info;
     private MySQLDatabase msdb= MySQLDatabase.getInstance();
-
-    // TODO: 12/8/17 BusinessLayerLogin should only created upon login, make a constructor that takes 2 strings and calls login -Blake 
-    public BusinessLayerLogin() {
-        
+   
+    public BusinessLayerLogin(String username, String password) {
+        login(username, password);
     }
 
     /**

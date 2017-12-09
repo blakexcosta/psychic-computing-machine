@@ -24,11 +24,9 @@ public class StudentView {
     private TextField name, userName, department, gradDate, major, role;
     private GridPane gp = new GridPane();
     private String[][] rs;
-    // TODO: 12/8/17 Remove logController, instances of controllers do not exist in here -Blake 
-    private BusinessLayerLogin logController = null; //creating new private instance of the controller, so don't have to create new controller instance every time.
-
+  
     public StudentView(){
-        logController = new BusinessLayerLogin();
+    
     }
 
     public Scene makeUserView(String[][] userInfo){

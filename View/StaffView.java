@@ -16,11 +16,10 @@ import javafx.scene.layout.GridPane;
 
 // TODO: 12/8/17 Add Documentation and Fix Indentation -Blake
 public class StaffView {
-    // TODO: 12/8/17 Make these attributes private -Blake
-    String[][] sqlData;
-    TextField name, userName, department, gradDate, major, role;
-    GridPane gp = new GridPane();
-    String[][] rs;
+    private String[][] sqlData;
+    private TextField name, userName, department, gradDate, major, role;
+    private GridPane gp = new GridPane();
+    private String[][] resultSet;
 
     public StaffView(){}
 

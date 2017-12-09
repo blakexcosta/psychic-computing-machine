@@ -15,11 +15,10 @@ import javafx.scene.layout.GridPane;
  */
 
 public class FacultyView {
-    // TODO: 12/8/17 Make these private -Blake
-    String[][] sqlData;
-    TextField name, userName, department, gradDate, major, role;
-    GridPane gp = new GridPane();
-    String[][] rs; // TODO: 12/8/17 Rename this attribute -Blake
+    private String[][] sqlData;
+    private TextField name, userName, department, gradDate, major, role;
+    private GridPane gp = new GridPane();
+    private String[][] resultSet;
 
     public FacultyView(){}
 
@@ -29,8 +28,6 @@ public class FacultyView {
         gp.setHgap( 5 );
         gp.setVgap( 5 );
         gp.setAlignment( Pos.CENTER );
-
-
 
         gp.add( new Label("Name: "), 0,0);
         gp.add( new Label("User Name: "), 0,1);
