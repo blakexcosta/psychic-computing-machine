@@ -284,9 +284,8 @@ public class MySQLDatabase extends Observable{
    }//end executeStmt
 
     
-    }
 
-    }
+
    public void login(String username, String password){
       //creating new string array for the username
       String[] vals = new String[1];
