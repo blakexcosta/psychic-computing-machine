@@ -6,6 +6,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
+/**
+ * Blake Costa, Gavin Drabik, Matthew Turczmanovicz, Oswaldo Rosete-Garcia, and Quinn Bissen
+ * Group 11
+ * ISTE-330
+ * Professor Floeser
+ * December 18th, 2017
+ */
+
 public class FacultyView {
     // TODO: 12/8/17 Make these private -Blake
     String[][] sqlData;

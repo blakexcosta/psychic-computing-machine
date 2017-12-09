@@ -8,9 +8,8 @@ import java.util.*;
  * Group 11
  * ISTE-330
  * Professor Floeser
- * November 10th, 2017
+ * December 18th, 2017
  */
-
 
 public class User
 {

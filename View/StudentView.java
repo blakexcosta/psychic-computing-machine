@@ -10,6 +10,14 @@ import javafx.scene.text.Text;
 
 import static javafx.fxml.FXMLLoader.load;
 
+/**
+ * Blake Costa, Gavin Drabik, Matthew Turczmanovicz, Oswaldo Rosete-Garcia, and Quinn Bissen
+ * Group 11
+ * ISTE-330
+ * Professor Floeser
+ * December 18th, 2017
+ */
+
 // TODO: 12/8/17 Document and Fix indentation -Blake 
 public class StudentView {
     private String[][] sqlData;

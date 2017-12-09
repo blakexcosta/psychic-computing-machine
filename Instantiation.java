@@ -1,6 +1,15 @@
 //import Model.*;
 import Model.MySQLDatabase;
 import View.*;
+
+/**
+ * Blake Costa, Gavin Drabik, Matthew Turczmanovicz, Oswaldo Rosete-Garcia, and Quinn Bissen
+ * Group 11
+ * ISTE-330
+ * Professor Floeser
+ * December 18th, 2017
+ */
+
 /**
  * Main method class, used to instantiate whole fleet of programs/ classes.
  */

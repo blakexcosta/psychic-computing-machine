@@ -9,6 +9,14 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
+ * Blake Costa, Gavin Drabik, Matthew Turczmanovicz, Oswaldo Rosete-Garcia, and Quinn Bissen
+ * Group 11
+ * ISTE-330
+ * Professor Floeser
+ * December 18th, 2017
+ */
+
+/**
  * controller class handles all the logic passed from
  * the database to here, then updates the view.
  */
