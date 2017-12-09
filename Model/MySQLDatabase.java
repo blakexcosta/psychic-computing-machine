@@ -321,7 +321,7 @@ public class MySQLDatabase extends Observable{
                 notifyObservers(userInfo);//"StudentView,SomeMessage".split(","));
             } else {
                 setChanged();
-                notifyObservers("Login Unsuccessful.");
+                notifyObservers();
             }
 
         } catch (Exception e) {

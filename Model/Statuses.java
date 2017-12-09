@@ -102,7 +102,7 @@ public class Statuses
          msdb.makeConnection();
 
          //String[] params = { getStatusCode() };
-         resultSet = MySQLDatabase.getData("SELECT * FROM statuses WHERE Code = " +Integer.toString(getStatusCode()) +";");
+         //resultSet = MySQLDatabase.getData("SELECT * FROM statuses WHERE Code = " +Integer.toString(getStatusCode()) +";");
          
          setStatusCode(Integer.parseInt(resultSet[0][0]));
          setStatusDescription(resultSet[0][1]);
@@ -171,7 +171,7 @@ public class Statuses
       {
          msdb.makeConnection();
          //String[] params = { getStatusCode() };
-         msdb.setData("DELETE FROM statuses WHERE Code = "+Integer.toString(getStatusCode() ) +";");
+         //msdb.setData("DELETE FROM statuses WHERE Code = "+Integer.toString(getStatusCode() ) +";");
          msdb.closeConnection();
          return true;
       }
