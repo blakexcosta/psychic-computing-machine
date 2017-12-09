@@ -6,7 +6,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
+// TODO: 12/8/17 Add Documentation and Fix Indentation -Blake
 public class StaffView {
+    // TODO: 12/8/17 Make these attributes private -Blake
     String[][] sqlData;
     TextField name, userName, department, gradDate, major, role;
     GridPane gp = new GridPane();

@@ -14,16 +14,18 @@ import java.util.Observer;
  * LoginView class serves as the default template that holds all the functionality of the jpanels
  * individual components
  */
+// TODO: 12/8/17 Document and fix indentation -Blake 
 public class LoginView implements Observer{
-
+    // TODO: 12/8/17 Make attributes private -Blake
     Stage window = new Stage();
     TextField userNameField;
     PasswordField passwordField;
     GridPane gp;
+    // TODO: 12/8/17 my point continues to stand, remove MasterView update/ class instance, especially if it exists in the subclasses -Blake
     MySQLDatabase msdb = MySQLDatabase.getInstance(); //there is only one instance of a database.
     String usrRole;
+    // TODO: 12/8/17 Remove controller, controllers instances do not exists class wide, only instance based -Blake 
     private BusinessLayerLogin controller = null;
-
     public LoginView(){
         controller = new BusinessLayerLogin();
     }

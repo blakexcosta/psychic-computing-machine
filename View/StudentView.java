@@ -10,11 +10,13 @@ import javafx.scene.text.Text;
 
 import static javafx.fxml.FXMLLoader.load;
 
+// TODO: 12/8/17 Document and Fix indentation -Blake 
 public class StudentView {
     private String[][] sqlData;
     private TextField name, userName, department, gradDate, major, role;
     private GridPane gp = new GridPane();
     private String[][] rs;
+    // TODO: 12/8/17 Remove logController, instances of controllers do not exist in here -Blake 
     private BusinessLayerLogin logController = null; //creating new private instance of the controller, so don't have to create new controller instance every time.
 
     public StudentView(){

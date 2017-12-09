@@ -12,13 +12,15 @@ import java.util.Observer;
  * controller class handles all the logic passed from
  * the database to here, then updates the view.
  */
+// TODO: 12/8/17 Documentation and formatting, make it nice -Blake
 public class BusinessLayerLogin {//extends ActionEvent{
     //private DatabaseConnection mySqlDB;
     private Object info;
     private MySQLDatabase msdb= MySQLDatabase.getInstance();
 
+    // TODO: 12/8/17 BusinessLayerLogin should only created upon login, make a constructor that takes 2 strings and calls login -Blake 
     public BusinessLayerLogin() {
-
+        
     }
 
     /**

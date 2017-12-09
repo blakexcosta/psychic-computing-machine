@@ -10,6 +10,10 @@ import java.util.*;
  * Professor Floeser
  * November 10th, 2017
  */
+// TODO: 12/8/17 Documentation and Indentation, clean it up -Blake
+// TODO: 12/8/17 MySQLDatabase is huge. at this state it's bigger than nearly our entire code base. We should break this up before it gets even more out of hand -Blake
+// TODO: 12/8/17 Implement the DataLayer table classes, and determine where to place them in respect to this class -Blake 
+// TODO: 12/8/17 all the dl classes minus this one use the same put,post,delete,fetch methods. Consider making an interface -Blake
 public class MySQLDatabase extends Observable{
     private String uri_, driver_, user_, password_, conn_;
     private String loginUser = null;
@@ -91,7 +95,6 @@ public class MySQLDatabase extends Observable{
             while (rs.next()) { //while the resultSet has a next row of data
                 sqlArr = new String[rowNum][columnCount]; //sqlArr static attribute = a new String array of the rowNumber and the column count
                 for (int i = 0; i < rowNum; i++) { //iterating over the number of rows
-                //TODO: edit this line, remove j=1 and make it j=0, adds unneccessary level of confusion with array indexing. -Blake
                     for (int j = 1; j <= columnCount; j++) { //for each row, iterated over the columns
                         if (i == 0) { //if i==0 it must be the header of the row, hence add it to the sqlArr
                             sqlArr[i][j - 1] = headers[j - 1]; //loop through column data from list(?) and populate this row with column headers
@@ -165,13 +168,13 @@ public class MySQLDatabase extends Observable{
         return false;
     }// end  closeConnection()
 
-//TODO: Please document this. Ty :) -Blake
 //****************************************** descTable() ***************************************
     /**
      * Purpose: Describe the table
      *
      * @param statement SQL Statement String
      */
+    // TODO: 12/8/17 This is huge, consider separating out, good work but document this. -Blake 
     public void descTable(String statement) {
         try {
             Statement stmt = conn.createStatement(); //creating a new statement
@@ -302,6 +305,7 @@ public class MySQLDatabase extends Observable{
      * @param strvals       Statement String
      * @return SQL Statement PreparedStatement
      */
+    // TODO: 12/8/17 After thinking more on this, I do not believe we need static instances of the methods, remove the static tag -Blake 
     public static PreparedStatement prepare(String sql, String[] strvals) {
         PreparedStatement ps = null;
         String preparedStr = sql; //sql string must contain ?
@@ -459,6 +463,7 @@ public class MySQLDatabase extends Observable{
         return rc;
     }//end executeStmt
 
+    // TODO: 12/8/17 Can remove these override methods from Observable, do not need them -Blake
     @Override
     public synchronized void addObserver(Observer observer) {
         super.addObserver(observer);

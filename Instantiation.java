@@ -10,7 +10,7 @@ public class Instantiation {
         //ab1234 (al baker)
         //5f4dcc3b5aa765d61d8327deb882cf99
         //runs the program
-
+        //creates a new thread to run the javafx application, goes to MasterView
         new Thread() {
             @Override
             public void run(){

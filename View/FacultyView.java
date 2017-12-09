@@ -7,13 +7,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
 public class FacultyView {
+    // TODO: 12/8/17 Make these private -Blake
     String[][] sqlData;
     TextField name, userName, department, gradDate, major, role;
     GridPane gp = new GridPane();
-    String[][] rs;
+    String[][] rs; // TODO: 12/8/17 Rename this attribute -Blake
 
     public FacultyView(){}
 
+    // TODO: 12/8/17 Document and fix indentation -Blake
     public Scene makeUserView(){
 
         gp.setHgap( 5 );

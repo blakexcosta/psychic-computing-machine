@@ -11,9 +11,15 @@ import javafx.stage.Stage;
 import java.util.Observable;
 import java.util.Observer;
 
+/**
+ * MasterView serves as the home base for the views, as it instantiates
+ * new views.
+ */
 public class MasterView extends Application implements Observer{
     //These classes will have all of the functionality to make each scene.
     //todo: MAYBE- make this abstract? then all of the other views extend it. Each view alone will have an update method that updates their panel.
+    // TODO: 12/8/17 make these attributes private -Blake 
+    // TODO: 12/8/17 Cleanup this class, make it look nice. -Blake
     Stage window = new Stage();
     Scene currScene;
     FacultyView facultyView = new FacultyView();
@@ -24,10 +30,21 @@ public class MasterView extends Application implements Observer{
     //TODO: Constructor should have MySQLDatabase passed into it. Giving error when I try to do that, I think because of how it is being ran in Instantiation. -Gavin
     public MasterView(){}
 
-    // TODO: 12/2/17 For the object arg, make sure that a collection is being passed in from the database so we can populate information. -Blake
+    /**
+     * update functions as a way to get state information from the model, it is done when
+     * the model calls setChanged() followed by notifyObservers(), and then this update
+     * function can call getters from the model to get its information. It IS assumed
+     * that the model updates its state information before notifyObservers() is called.
+     * It is usually recommended that this is done by making setters in the model, to be
+     * used privately.
+     * @param observableObject
+     * @param arg
+     */
     @Override
     public void update(Observable observableObject, Object arg) {
-        //TODO: Figure out how to make it so this does something? From here it just needs to call the correct make method in the correct view class. EX: studentView.makeUserView -Gavin
+
+        // TODO: 12/8/17 make the subclasses implement Observer, and have it get an instance of the model, instead of in here.
+        // we want the subclasses to be able to implement deal with the flexibility of system wide changes.
         if( observableObject != msdb) { //a quick check to make sure observable object is an instance of the database
             System.out.println("Observable object is not the object that is being observed, returning...");
             return;
@@ -42,7 +59,6 @@ public class MasterView extends Application implements Observer{
             window.setScene(studentView.makeUserView(loginPassArg));
         }
 
-        // TODO: 12/2/17 stop the insane eventual pileup of if statement checks in the future. -Blake
         //switching
         //studentView.makeUserView();
     }
