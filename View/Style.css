@@ -6,3 +6,7 @@
     -fx-font: 3em "Serif" !important;
     -fx-padding: 2em;
 }
+
+.navButton{
+    -fx-padding-left: 2em;
+}

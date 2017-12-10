@@ -1,12 +1,10 @@
 package View;
 
 import Model.MySQLDatabase;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.geometry.*;
-import javafx.scene.text.Text;
 
 import java.util.Observable;
 
@@ -74,20 +72,11 @@ public class LoginView extends Observable {
         notifyObservers(sc);
     }
 
-    public void loginButtonClick(){
-
-        if (msdb.login(userNameField.getText(), passwordField.getText())) {//if login was successful
-            if (msdb.getRole().equals("student")) {
-                mv.getStudentInfoView().makeView();
-            }
-        }
-    }
-
     private void addControllers(){
         loginButton.setOnAction(e -> {
-            if (msdb.login(userNameField.getText(), passwordField.getText())) {//if login was successful
+              if (msdb.login(userNameField.getText(), passwordField.getText())) {//if login was successful
                 if (msdb.getRole().equals("student")) {
-                    mv.getStudentInfoView().makeView();
+                    mv.getInfoView().makeStudentView();
                 }
             }
         });
