@@ -35,19 +35,18 @@ public class InfoView extends Observable {
 
     //TODO: Build out student info view (make it look nice. also add the information in loadStudentDBInfo)
     public void makeStudentView() {
+        //this scene object comes from masterView. it has a border pane in it. The top object of the border pane has been set to the nav bar
+        //the borderpane can be referenced by casting an object seen below
+        Scene sc = mv.getBaseScene();
+        BorderPane bp = (BorderPane) sc.getRoot();
 
-        BorderPane root = new BorderPane(); //Main layout is a border pane
-        Scene sc = new Scene(root, 1366, 768);//put main pane is a scene
         sc.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());//add css files
 
         Label userInfoHeaderLabel = new Label("User Information ");//Bigger header on top
         userInfoHeaderLabel.getStyleClass().add("mainHeader");
         userInfoHeaderLabel.setAlignment(Pos.CENTER);
 
-        HBox menuButtons = mv.makeMenuButtons();//Use function to make the menu buttons. Decides which to show as clicked.
-
-        root.setTop(menuButtons);//Put menu buttons at top of page
-        root.setCenter(gp);//set center of page to grid pane (class attribute)
+        bp.setCenter(gp);//set center of page to grid pane (class attribute)
         gp.setHgap(5);
         gp.setVgap(5);
         gp.setAlignment(Pos.CENTER);
@@ -69,6 +68,9 @@ public class InfoView extends Observable {
         notifyObservers(sc);
     }
 
+    /**
+     * gets all of the data to be put next to the labels in the grid.
+     */
     public void loadStudentDBInfo() {
         String[] userNameAL = {msdb.getUserName()};
         returnData = msdb.getData("SELECT CONCAT(FirstName, ' ',  LastName) as 'Name' , UserName, Department, GraduationDate,Major, Role FROM user where UserName in (?)", userNameAL);
@@ -76,22 +78,26 @@ public class InfoView extends Observable {
 
     //TODO: Build out staff info view
     public void makeStaffView() {
-        //make the scene and store everything in this object
-        Scene returnScene = null;
+        //this scene object comes from masterView. it has a border pane in it. The top object of the border pane has been set to the nav bar
+        //the borderpane can be referenced by casting an object seen below
+        Scene sc = mv.getBaseScene();
+        BorderPane bp = (BorderPane) sc.getRoot();
 
         //After the scene is made completely these two methods run which will update the master view to our new view
         setChanged();
-        notifyObservers(returnScene);
+        notifyObservers(sc);
     }
 
     //TODO: Build out faculty info view
     public void makeFacultyView() {
-        //make the scene and store everything in this object
-        Scene returnScene = null;
+        //this scene object comes from masterView. it has a border pane in it. The top object of the border pane has been set to the nav bar
+        //the borderpane can be referenced by casting an object seen below
+        Scene sc = mv.getBaseScene();
+        BorderPane bp = (BorderPane) sc.getRoot();
 
         //After the scene is made completely, these two methods run which will update the master view to our new view
         setChanged();
-        notifyObservers(returnScene);
+        notifyObservers(sc);
     }
 
 

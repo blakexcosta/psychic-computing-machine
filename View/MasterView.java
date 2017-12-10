@@ -4,6 +4,7 @@ import Model.MySQLDatabase;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
@@ -28,10 +29,19 @@ public class MasterView extends Application implements Observer{
     private LoginView loginView = new LoginView(this);
     private InfoView infoView = new InfoView(this);
     private ProjectView projectView = new ProjectView(this);
+    private MilestoneView milestoneView = new MilestoneView(this);
     private MySQLDatabase msdb = MySQLDatabase.getInstance();//Need a model instance to add as an observer
 
     public InfoView getInfoView() {
         return infoView;
+    }
+
+    public ProjectView getProjectView() {
+        return projectView;
+    }
+
+    public MilestoneView getMilestoneView() {
+        return milestoneView;
     }
 
     public LoginView getLoginView() {
@@ -43,8 +53,14 @@ public class MasterView extends Application implements Observer{
      * At the start of each stage being made (in the various views) you call mv.makeMenuButtons then add it to the top of the border pane.
      * You can see an example in the making of the student info view.
      */
+    public Scene getBaseScene(){
+        BorderPane bp = new BorderPane();
+        bp.setTop(makeMenuButtons());
+        return new Scene(bp,1280,800);
+    }
+
     public HBox makeMenuButtons() {
-        HBox returnMenu = new HBox(500);
+        HBox returnMenu = new HBox(400);
         Button userInfoButton = new Button("User Information");
         userInfoButton.setOnAction(e -> {
             if (msdb.getRole().equals("student")){
@@ -108,6 +124,7 @@ public class MasterView extends Application implements Observer{
         loginView.addObserver(this);
         infoView.addObserver(this);
         projectView.addObserver(this);
+        milestoneView.addObserver(this);
         loginView.makeLoginView();
         window.show();
     }

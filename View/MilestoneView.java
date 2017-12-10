@@ -3,6 +3,7 @@ package View;
 import Model.MySQLDatabase;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
+import javafx.scene.layout.BorderPane;
 
 import java.util.Observable;
 
@@ -11,36 +12,43 @@ public class MilestoneView extends Observable{
     private MasterView mv;//this is passed in through the constructor
     private ComboBox milestoneDropdown;
 
+    public MilestoneView(MasterView _mv){
+        this.mv = _mv;
+    }
+
     //TODO: Build out student milestoneView
     public void makeStudentView(){
-        //make the scene and store everyting in this object
-        //You have access to the database using the msdb object (but it would be a good idea to break things into separate methods)
-        Scene returnScene = null;
+        //this scene object comes from masterView. it has a border pane in it. The top object of the border pane has been set to the nav bar.
+        //the borderpane can be referenced by casting an object seen below
+        Scene sc = mv.getBaseScene();
+        BorderPane bp = (BorderPane) sc.getRoot();
 
         //After the scene is made completely these two methods run which will update the master view to our new view
         setChanged();
-        notifyObservers(returnScene);
+        notifyObservers(sc);
     }
      //TODO: Build out staff milestoneView
     public void makeStaffView(){
-        //make the scene and store everyting in this object
-        //You have access to the database using the msdb object (but it would be a good idea to break things into separate methods)
-        Scene returnScene = null;
+        //this scene object comes from masterView. it has a border pane in it. The top object of the border pane has been set to the nav bar
+        //the borderpane can be referenced by casting an object seen below
+        Scene sc = mv.getBaseScene();
+        BorderPane bp = (BorderPane) sc.getRoot();
 
         //After the scene is made completely these two methods run which will update the master view to our new view
 
         setChanged();
-        notifyObservers(returnScene);
+        notifyObservers(sc);
     }
     //TODO: Build out faculty milestoneView
     public void makeFacultyView(){
-        //make the scene and store everyting in this object
-        //You have access to the database using the msdb object (but it would be a good idea to break things into separate methods)
-        Scene returnScene = null;
+        //this scene object comes from masterView. it has a border pane in it. The top object of the border pane has been set to the nav bar
+        //the borderpane can be referenced by casting an object seen below
+        Scene sc = mv.getBaseScene();
+        BorderPane bp = (BorderPane) sc.getRoot();
 
         //After the scene is made completely these two methods run which will update the master view to our new view
         setChanged();
-        notifyObservers(returnScene);
+        notifyObservers(sc);
     }
 
     //TODO: Functionality to switch between milestones based on value of dropdown.

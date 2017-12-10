@@ -74,6 +74,7 @@ public class LoginView extends Observable {
 
     /**
      * **THIS ACTION LISTENER SHOWS HOW TO MAKE A FUNCTION CALL TO ANOTHER VIEW**
+     *
      */
     private void addControllers(){
         loginButton.setOnAction(e -> {
