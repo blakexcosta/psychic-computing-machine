@@ -1,5 +1,7 @@
-package Model;
+package DB_Files;
 // import com.sun.corba.se.pept.transport.ConnectionCache;
+
+import Model.MySQLDatabase;
 
 import java.sql.Connection;
 

@@ -1,4 +1,6 @@
-package Model;
+package DB_Files;
+
+import Model.MySQLDatabase;
 
 /**
  * Blake Costa, Gavin Drabik, Matthew Turczmanovicz, Oswaldo Rosete-Garcia, and Quinn Bissen
@@ -75,7 +77,7 @@ public class Office
          //Connect MySQL:
          msdb.makeConnection();
       
-         resultSet = msdb.getAllData(tableName);
+        // resultSet = msdb.getAllData(tableName);
          
          //Close MySQL:
          msdb.closeConnection();

@@ -1,4 +1,6 @@
-package Model;
+package DB_Files;
+
+import Model.MySQLDatabase;
 
 import java.sql.*;
 import java.util.*;

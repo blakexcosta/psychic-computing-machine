@@ -1,12 +1,15 @@
 package View;
 
 import Controller.BusinessLayerLogin;
+import Model.MySQLDatabase;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
+
+import java.util.Observable;
 
 import static javafx.fxml.FXMLLoader.load;
 
@@ -19,17 +22,21 @@ import static javafx.fxml.FXMLLoader.load;
  */
 
 // TODO: 12/8/17 Document and Fix indentation -Blake 
-public class StudentView {
+public class StudentInfoView extends Observable{
+    //both of these are in ALL the view classes
+    private MySQLDatabase msdb = MySQLDatabase.getInstance(); //there is only one instance of the database.
+    private MasterView mv;//this is passed in through the constructor
+
     private String[][] sqlData;
     private TextField name, userName, department, gradDate, major, role;
     private GridPane gp = new GridPane();
     private String[][] rs;
   
-    public StudentView(){
-    
+    public StudentInfoView(MasterView _mv){
+        this.mv = _mv;
     }
 
-    public Scene makeUserView(String[][] userInfo){
+    public void makeView(){
 
         BorderPane root = new BorderPane(); //Main layout is a border pane
         Scene sc = new Scene(root,1366,768);//put main pane is a scene
@@ -43,13 +50,6 @@ public class StudentView {
         gp.setVgap( 5 );
         gp.setAlignment( Pos.CENTER );
 
-        String[] tempAr = new String[1];
-
-//        for (int x =0; x < userInfo.length; x++) {
-//            for (int y = 0; y < userInfo[x].length; y++) {
-//                System.out.println("X: " + x + " Y: " + y + " " + userInfo[x][y]);
-//            }
-//        }
 
         Label userInfoHeaderLabel = new Label("User Information ");//Bigger header on top
         userInfoHeaderLabel.getStyleClass().add("mainHeader");
@@ -63,14 +63,14 @@ public class StudentView {
         gp.add( new Label("Major: "), 0,5);
         gp.add( new Label("Role: "), 0,6);
 
+        loadDBInfo();//this sets the labels to the proper info using the local class instance of MSDB
         //loop through each of the user fields that we have and put them next to the label. They come in in the correct order
-        for (int i=0; i < userInfo[1].length; i++){
-            gp.add(new Text(userInfo[1][i]),1,i+1);
-        }
-        gp.setGridLinesVisible(true);
-        //menuBar.getMenus().addAll(menuFile, menuEdit, menuView);
-        //((VBox) sc.getRoot()).getChildren().addAll(menuBar);
-        return sc;
+        setChanged();
+        notifyObservers(sc);
+    }
+
+    public void loadDBInfo(){
+        
     }
 
 

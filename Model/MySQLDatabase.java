@@ -13,9 +13,10 @@ import java.util.*;
 // TODO: 12/8/17 Documentation and Indentation, clean it up -Blake
 // TODO: 12/8/17 Implement the DataLayer table classes, and determine where to place them in respect to this class -Blake 
 // TODO: 12/8/17 all the dl classes minus this one use the same put,post,delete,fetch methods. Consider making an interface -Blake
-public class MySQLDatabase extends Observable{
+public class MySQLDatabase extends Observable {
     private String uri_, driver_, user_, password_, conn_;
-    private String loginUser = null;
+    private String userName = null;
+    private String role = null;
     private static Connection conn;
     private static String[][] sqlArr;
     private static MySQLDatabase msdb = new MySQLDatabase();
@@ -24,15 +25,16 @@ public class MySQLDatabase extends Observable{
      * Purpose: Default Constructor
      */
     private MySQLDatabase() {
-      uri_    = "jdbc:mysql://localhost/project_tracker?autoReconnect=true&useSSL=false";
-      driver_ = "com.mysql.jdbc.Driver";
-      user_   = "root";
-      password_ = "student";
-      conn_ = null;
+        uri_ = "jdbc:mysql://localhost/project_tracker?autoReconnect=true&useSSL=false";
+        driver_ = "com.mysql.jdbc.Driver";
+        user_ = "root";
+        password_ = "student";
+        conn_ = null;
     }
 
     /**
      * get the MySQLDatabase instance
+     *
      * @return
      */
     public static MySQLDatabase getInstance() {
@@ -55,67 +57,22 @@ public class MySQLDatabase extends Observable{
     }
 
     /**
-     * gets the login user. set from getData
-     * @return
+     * @return A string of the logged in UserName
      */
-    public String getLoginUser() {
-        return this.loginUser;
+    public String getUserName() {
+        return this.userName;
     }
 
     /**
-     * Purpose: This method execute a SELECT SQL Statement on the table submitted
-     *
-     * @param tableName name String
-     * @return String[][] of all the data
+     * @return A string of the logged in user role
      */
-    public String[][] getAllData(String tableName) {
-        try {
-            //*******************get row count***************
-            String sql = "SELECT * FROM " + tableName + ";";
-            //String sql = "SELECT * FROM " +
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-            System.out.println("\n");
-            int rowNum = 0;
-            //get row count
-            if (rs.last()) {
-                rowNum = rs.getRow(); //int representation of the row being selected from the result set
-                rs.beforeFirst();
-            }
-            //************************************************
-            ResultSetMetaData rsmd = rs.getMetaData();
-            //boolean yesNo = colnames;                           ///NEW
-            int columnCount = rsmd.getColumnCount(); //getting columnCount
-            String headers[] = new String[columnCount]; //making new String header array based upon the column count
-            //new
-            for (int i = 1; i <= columnCount; i++) {          //loops through and collects headings and their lengths
-                headers[i - 1] = rsmd.getColumnName(i);     //creates the column heading for chart
-            }
-            while (rs.next()) { //while the resultSet has a next row of data
-                sqlArr = new String[rowNum][columnCount]; //sqlArr static attribute = a new String array of the rowNumber and the column count
-                for (int i = 0; i < rowNum; i++) { //iterating over the number of rows
-                    for (int j = 1; j <= columnCount; j++) { //for each row, iterated over the columns
-                        if (i == 0) { //if i==0 it must be the header of the row, hence add it to the sqlArr
-                            sqlArr[i][j - 1] = headers[j - 1]; //loop through column data from list(?) and populate this row with column headers
-                        } else {
-                            sqlArr[i][j - 1] = rs.getString(j); //otherwise it's just a normal row of data. set the sql array row
-                        }
-                    }
-                }
-            }
-            System.out.println("Number of Rows retrieved: " + rowNum);
-        } catch (SQLException sqle) {
-            System.out.println(sqle);
-            //System.out.println("Error in getData(): SQL Statement not valid (?) ");
-        } catch (NullPointerException npe) {
-            System.out.println(npe);
-        }
-        loginUser = sqlArr[0][0];
-        notifyObservers(this);
-        return sqlArr;
-    } // end getData();
+    public String getRole() {
+        return role;
+    }
+
 
     //*************************************** CONNECT *********************************
+
     /**
      * Purpose: Connect to the database
      *
@@ -170,12 +127,12 @@ public class MySQLDatabase extends Observable{
     /**
      * Purpose: This method will prepare a SQL Statement
      *
-     * @param sql values String[]
-     * @param strvals       Statement String
+     * @param sql     values String[]
+     * @param strvals Statement String
      * @return SQL Statement PreparedStatement
      */
     // TODO: 12/8/17 After thinking more on this, I do not believe we need static instances of the methods, remove the static tag -Blake 
-    public static PreparedStatement prepare(String sql, String[] strvals) {
+    public PreparedStatement prepare(String sql, String[] strvals) {
         PreparedStatement ps = null;
         String preparedStr = sql; //sql string must contain ?
         //strvals list must contain values in order of ?
@@ -200,7 +157,7 @@ public class MySQLDatabase extends Observable{
     /**
      * Purpose: This method execute a SELECT SQL Statement on the table submitted
      *
-     * @param sql        Statement String
+     * @param sql     Statement String
      * @param strvals values String[]
      * @return String[][] of all the data
      */
@@ -240,7 +197,7 @@ public class MySQLDatabase extends Observable{
     /**
      * Purpose: This method will update, insert, or delete data
      *
-     * @param sql       Statement String
+     * @param sql     Statement String
      * @param strvals values String[]
      * @return boolean depending on the success of the update, insert, or delete
      */
@@ -257,7 +214,7 @@ public class MySQLDatabase extends Observable{
     /**
      * Purpose: This method will execute a prepared statement
      *
-     * @param sql       Statement String
+     * @param sql     Statement String
      * @param strvals values String[]
      * @return results affected int
      */
@@ -273,59 +230,34 @@ public class MySQLDatabase extends Observable{
         return rc;
     }//end executeStmt
 
-    // TODO: 12/8/17 Can remove these override methods from Observable, do not need them -Blake
-    @Override
-    public synchronized void addObserver(Observer observer) {
-        super.addObserver(observer);
-    }
-
-    @Override
-    public synchronized void deleteObserver(Observer observer) {
-        super.deleteObserver(observer);
-    }
-
-    @Override
-    public synchronized boolean hasChanged() {
-        return super.hasChanged();
-    }
 
     /**
-     * notifies observers
+     * Uses the parameters passed in from the view. If it is correct then it sets the database variables of the username and role.
+     * @param username
+     * @param password
+     * @return
      */
-    @Override
-    public void notifyObservers() {
-        setChanged();
-        super.notifyObservers();
-    }
-
-    public void login(String username, String password){
+    public Boolean login(String username, String password) {
         //creating new string array for the username
-        String[] vals = new String[1];
-        boolean loginSuccess = false;
+        String[] userNameAL = new String[1];
         try {
-            vals[0] = username; //setting the string array to the username.
+            userNameAL[0] = username; //setting the string array to the username.
             msdb.makeConnection(); //making a connection
-            String[][] rs = msdb.getData("SELECT Password, Role FROM user WHERE UserName in (?);", vals); //getting the values from the database
+            String[][] rs = msdb.getData("SELECT Password, Role FROM user WHERE UserName in (?);", userNameAL); //getting the values from the database
             String dbPassword = rs[0][0]; //getting the password
             String usrRole = rs[1][1]; //getting the user role
             //if the password fields text that was inputed from the user equals the databases password,
             // then set loginSuccess = true, then continue to the next block.
             if (password.equals(dbPassword)) {
-                loginSuccess = true;
-            }
-            if (loginSuccess) {
-                setChanged();
-                String[][] userInfo = msdb.getData("SELECT CONCAT(FirstName,' ', LastName) as 'Name', " +
-                        "UserName, Department, GraduationDate, major, role, Image FROM user WHERE UserName in (?);", vals);
-                // TODO: 12/2/17 come up with generalized message information for changing a views information, state, etc. basicially how to differentiate between logging in and updating a form -Blake
-                notifyObservers(userInfo);//"StudentView,SomeMessage".split(","));
-            } else {
-                setChanged();
-                notifyObservers();
+                this.userName = username;
+                this.role = usrRole;
+                return true;
             }
 
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
+        return false;
     }
 } // end program

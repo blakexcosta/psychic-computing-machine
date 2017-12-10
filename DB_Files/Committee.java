@@ -1,4 +1,6 @@
-package Model;
+package DB_Files;
+
+import Model.MySQLDatabase;
 
 /**
  * Blake Costa, Gavin Drabik, Matthew Turczmanovicz, Oswaldo Rosete-Garcia, and Quinn Bissen
