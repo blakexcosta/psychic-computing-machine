@@ -38,35 +38,6 @@ public class MasterView extends Application implements Observer{
         return loginView;
     }
 
-    public MasterView(){}
-
-    /**
-     * update functions as a way to get state information from the model, it is done when
-     * the model calls setChanged() followed by notifyObservers(), and then this update
-     * function can call getters from the model to get its information. It IS assumed
-     * that the model updates its state information before notifyObservers() is called.
-     * It is usually recommended that this is done by making setters in the model, to be
-     * used privately.
-     * @param observableObject
-     * @param arg
-     */
-    @Override
-    public void update(Observable observableObject, Object arg) {
-        System.out.println("Updating the view to: " + observableObject);
-        window.setScene((Scene) arg);
-    }
-
-    @Override
-    public void start(Stage myStage) throws Exception {
-        window.setTitle("Capstone Tracker - Login");
-        //master view needs to observe all of the different views separately
-        loginView.addObserver(this);
-        infoView.addObserver(this);
-        projectView.addObserver(this);
-        loginView.makeLoginView();
-        window.show();
-    }
-
     /**
      * this is used by all of the views to make the nav bar at the top so I decided to move it to the master view.
      * At the start of each stage being made (in the various views) you call mv.makeMenuButtons then add it to the top of the border pane.
@@ -109,5 +80,37 @@ public class MasterView extends Application implements Observer{
         returnMenu.getChildren().addAll(userInfoButton, projectInfoButton, logOutButton);
         return returnMenu;
     }
+
+    public MasterView(){}
+
+    /**
+     * The master view is observing each of the view classes individually. So whenever a view class is done making the
+     * necessary view it calls setChanged and NotifyObservers which notifys this to switch the view to whichever one is
+     * passed in to notifyObservers
+     * @param observableObject
+     * @param arg
+     */
+    @Override
+    public void update(Observable observableObject, Object arg) {
+        System.out.println("Updating the view to: " + observableObject);
+        window.setScene((Scene) arg);
+    }
+
+    /**
+     * When the program first runs
+     * @param myStage
+     * @throws Exception
+     */
+    @Override
+    public void start(Stage myStage) throws Exception {
+        window.setTitle("Capstone Tracker - Login");
+        //master view needs to observe all of the different views separately
+        loginView.addObserver(this);
+        infoView.addObserver(this);
+        projectView.addObserver(this);
+        loginView.makeLoginView();
+        window.show();
+    }
+
 
 }

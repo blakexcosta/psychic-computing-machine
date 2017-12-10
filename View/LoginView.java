@@ -72,6 +72,9 @@ public class LoginView extends Observable {
         notifyObservers(sc);
     }
 
+    /**
+     * **THIS ACTION LISTENER SHOWS HOW TO MAKE A FUNCTION CALL TO ANOTHER VIEW**
+     */
     private void addControllers(){
         loginButton.setOnAction(e -> {
               if (msdb.login(userNameField.getText(), passwordField.getText())) {//if login was successful

@@ -11,7 +11,6 @@ import java.util.*;
  * December 18th, 2017
  */
 // TODO: 12/8/17 Documentation and Indentation, clean it up -Blake
-// TODO: 12/8/17 Implement the DataLayer table classes, and determine where to place them in respect to this class -Blake 
 // TODO: 12/8/17 all the dl classes minus this one use the same put,post,delete,fetch methods. Consider making an interface -Blake
 public class MySQLDatabase extends Observable {
     private String uri_, driver_, user_, password_, conn_;
@@ -131,7 +130,6 @@ public class MySQLDatabase extends Observable {
      * @param strvals Statement String
      * @return SQL Statement PreparedStatement
      */
-    // TODO: 12/8/17 After thinking more on this, I do not believe we need static instances of the methods, remove the static tag -Blake 
     public PreparedStatement prepare(String sql, String[] strvals) {
         PreparedStatement ps = null;
         String preparedStr = sql; //sql string must contain ?
@@ -233,6 +231,7 @@ public class MySQLDatabase extends Observable {
 
     /**
      * Uses the parameters passed in from the view. If it is correct then it sets the database variables of the username and role.
+     *
      * @param username
      * @param password
      * @return

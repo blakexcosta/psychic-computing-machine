@@ -1,20 +1,13 @@
 package View;
 
-import Controller.BusinessLayerLogin;
 import Model.MySQLDatabase;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
-import javafx.scene.text.Text;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Observable;
 
 /**
@@ -40,12 +33,16 @@ public class InfoView extends Observable {
         this.mv = _mv;
     }
 
-    //TODO: Build out student info view (make it look nice. also add the information)
+    //TODO: Build out student info view (make it look nice. also add the information in loadStudentDBInfo)
     public void makeStudentView() {
 
         BorderPane root = new BorderPane(); //Main layout is a border pane
         Scene sc = new Scene(root, 1366, 768);//put main pane is a scene
         sc.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());//add css files
+
+        Label userInfoHeaderLabel = new Label("User Information ");//Bigger header on top
+        userInfoHeaderLabel.getStyleClass().add("mainHeader");
+        userInfoHeaderLabel.setAlignment(Pos.CENTER);
 
         HBox menuButtons = mv.makeMenuButtons();//Use function to make the menu buttons. Decides which to show as clicked.
 
@@ -56,11 +53,6 @@ public class InfoView extends Observable {
         gp.setAlignment(Pos.CENTER);
         gp.setPrefWidth(600);
         gp.setPrefHeight(800);
-
-
-        Label userInfoHeaderLabel = new Label("User Information ");//Bigger header on top
-        userInfoHeaderLabel.getStyleClass().add("mainHeader");
-        userInfoHeaderLabel.setAlignment(Pos.CENTER);
 
         gp.add(userInfoHeaderLabel, 0, 0, 2, 1);
         gp.add(new Label("Name: "), 0, 1);
@@ -83,7 +75,7 @@ public class InfoView extends Observable {
     }
 
     //TODO: Build out staff info view
-    public void makeStaffView(){
+    public void makeStaffView() {
         //make the scene and store everything in this object
         Scene returnScene = null;
 
@@ -93,7 +85,7 @@ public class InfoView extends Observable {
     }
 
     //TODO: Build out faculty info view
-    public void makeFacultyView(){
+    public void makeFacultyView() {
         //make the scene and store everything in this object
         Scene returnScene = null;
 
@@ -101,7 +93,6 @@ public class InfoView extends Observable {
         setChanged();
         notifyObservers(returnScene);
     }
-
 
 
 }
