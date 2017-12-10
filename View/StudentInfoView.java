@@ -9,6 +9,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Observable;
 
 import static javafx.fxml.FXMLLoader.load;
@@ -30,7 +32,7 @@ public class StudentInfoView extends Observable{
     private String[][] sqlData;
     private TextField name, userName, department, gradDate, major, role;
     private GridPane gp = new GridPane();
-    private String[][] rs;
+    private String[][] returnData;
   
     public StudentInfoView(MasterView _mv){
         this.mv = _mv;
@@ -49,6 +51,8 @@ public class StudentInfoView extends Observable{
         gp.setHgap( 5 );
         gp.setVgap( 5 );
         gp.setAlignment( Pos.CENTER );
+        gp.setPrefWidth(600);
+        gp.setPrefHeight(800);
 
 
         Label userInfoHeaderLabel = new Label("User Information ");//Bigger header on top
@@ -62,6 +66,7 @@ public class StudentInfoView extends Observable{
         gp.add( new Label("Graduation Date: "), 0,4);
         gp.add( new Label("Major: "), 0,5);
         gp.add( new Label("Role: "), 0,6);
+        gp.gridLinesVisibleProperty().setValue(true);
 
         loadDBInfo();//this sets the labels to the proper info using the local class instance of MSDB
         //loop through each of the user fields that we have and put them next to the label. They come in in the correct order
@@ -70,7 +75,9 @@ public class StudentInfoView extends Observable{
     }
 
     public void loadDBInfo(){
-        
+        String[] userNameAL = {msdb.getUserName()};
+        returnData = msdb.getData("SELECT CONCAT(FirstName, ' ',  LastName) as 'Name' , UserName, Department, GraduationDate,Major, Role FROM user where UserName in (?)",userNameAL);
+        System.out.println(convertToAL(returnData));
     }
 
 
@@ -91,5 +98,13 @@ public class StudentInfoView extends Observable{
         }
 
         return returnMenu;
+    }
+
+    public ArrayList<String> convertToAL(String [][] arr){
+        ArrayList<String> lst = new ArrayList<>();
+        for (String[] array : arr){
+            lst.addAll(Arrays.asList(array));
+        }
+        return lst;
     }
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<SplitPane dividerPositions="0.3116883116883117" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.LoginView">
+    <items>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="208.0" prefWidth="1918.0">
+            <children>
+                <Text layoutX="323.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Capstone Tracker">
+                    <font>
+                        <Font size="96.0" />
+                    </font>
+                </Text>
+            </children></AnchorPane>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+            <children>
+                <TextField layoutX="548.0" layoutY="83.0" promptText="Username" />
+                <Button fx:id="loginButton" layoutX="595.0" layoutY="212.0" mnemonicParsing="false" onAction="#loginButtonClick" text="login" />
+                <PasswordField layoutX="548.0" layoutY="138.0" promptText="Password" />
+            </children></AnchorPane>
+    </items>
+</SplitPane>

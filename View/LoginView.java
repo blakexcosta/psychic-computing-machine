@@ -1,10 +1,12 @@
 package View;
 
 import Model.MySQLDatabase;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.geometry.*;
+import javafx.scene.text.Text;
 
 import java.util.Observable;
 
@@ -36,11 +38,19 @@ public class LoginView extends Observable {
     }
 
     public void makeLoginView() {
-        //make gridpane
         gp = new GridPane();
+
+        Scene sc = new Scene(gp,1280,800);//put main pane is a scene
+        sc.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());//add css files
+        //make gridpane
         gp.setHgap(5);
         gp.setVgap(5);
         gp.setAlignment(Pos.CENTER);
+
+        //add main header
+        Label loginHeader = new Label("Capstone Tracker");
+        gp.add(loginHeader,0,0,2,1);
+
         //make user name text field
         userNameField = new TextField();
         userNameField.setPromptText("User Name");
@@ -48,11 +58,11 @@ public class LoginView extends Observable {
         passwordField = new PasswordField();
         passwordField.setPromptText("Password");
         //Add User Name label / Textfield to grid pane
-        gp.add(new Label("User Name:"), 0, 0);
-        gp.add(userNameField, 1, 0);
+        gp.add(new Label("User Name:"), 0, 1);
+        gp.add(userNameField, 1, 1);
         //Add Password label / Textfield to grid pane
-        gp.add(new Label("Password:"), 0, 1);
-        gp.add(passwordField, 1, 1);
+        gp.add(new Label("Password:"), 0, 2);
+        gp.add(passwordField, 1, 2);
         //add button to grid pane
         loginButton = new Button("Log In");
         gp.add(loginButton, 1, 3);
@@ -60,9 +70,17 @@ public class LoginView extends Observable {
 
         addControllers();
         //Login button click functionality
-        Scene loginScene = new Scene(gp, 1366, 768);
         setChanged();
-        notifyObservers(loginScene);
+        notifyObservers(sc);
+    }
+
+    public void loginButtonClick(){
+
+        if (msdb.login(userNameField.getText(), passwordField.getText())) {//if login was successful
+            if (msdb.getRole().equals("student")) {
+                mv.getStudentInfoView().makeView();
+            }
+        }
     }
 
     private void addControllers(){
