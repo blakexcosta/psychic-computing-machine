@@ -32,6 +32,8 @@ public class MasterView extends Application implements Observer{
     private MilestoneView milestoneView = new MilestoneView(this);
     private MySQLDatabase msdb = MySQLDatabase.getInstance();//Need a model instance to add as an observer
 
+    private String buttonStyle ="-fx-padding: 2em;-fx-background-color:linear-gradient(#dddddd 0%, #f6f6f6 50%);-fx-background-radius: 8,7,6; -fx-background-insets: 0,1,2; -fx-text-fill: black; -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );";
+
     public InfoView getInfoView() {
         return infoView;
     }
@@ -48,6 +50,10 @@ public class MasterView extends Application implements Observer{
         return loginView;
     }
 
+    public String getButtonStyle() {
+        return buttonStyle;
+    }
+
     /**
      * this is used by all of the views to make the nav bar at the top so I decided to move it to the master view.
      * At the start of each stage being made (in the various views) you call mv.makeMenuButtons then add it to the top of the border pane.
@@ -60,8 +66,10 @@ public class MasterView extends Application implements Observer{
     }
 
     public HBox makeMenuButtons() {
-        HBox returnMenu = new HBox(400);
+        HBox returnMenu = new HBox(430);
         Button userInfoButton = new Button("User Information");
+        userInfoButton.setPrefHeight(50);
+        userInfoButton.setStyle(buttonStyle);
         userInfoButton.setOnAction(e -> {
             if (msdb.getRole().equals("student")){
                 infoView.makeStudentView();
@@ -74,6 +82,9 @@ public class MasterView extends Application implements Observer{
             }
         });//end action listener for user info button
         Button projectInfoButton = new Button("Project Information");
+        projectInfoButton.setPrefHeight(50);
+        projectInfoButton.setStyle(buttonStyle);
+
         projectInfoButton.setOnAction(e -> {
             if (msdb.getRole().equals("student")){
                 projectView.makeStudentView();
@@ -86,6 +97,9 @@ public class MasterView extends Application implements Observer{
             }
         });//end action listener for project button
         Button logOutButton = new Button("Log Out");
+        logOutButton.setPrefHeight(50);
+        logOutButton.setStyle(buttonStyle);
+
         logOutButton.setOnAction(e -> {
             //todo: Implement logging out.
             //remake the login view. Get rid of stored database variables?

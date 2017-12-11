@@ -5,6 +5,7 @@ import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.geometry.*;
+import javafx.scene.text.Font;
 
 import java.util.Observable;
 
@@ -26,6 +27,7 @@ public class LoginView extends Observable {
     private MySQLDatabase msdb = MySQLDatabase.getInstance(); //there is only one instance of the database.
     private MasterView mv;//this is passed in through the constructor
 
+    private Label labUserName, labPassword;
     private TextField userNameField;
     private PasswordField passwordField;
     private GridPane gp;
@@ -38,7 +40,7 @@ public class LoginView extends Observable {
     public void makeLoginView() {
         gp = new GridPane();
 
-        Scene sc = new Scene(gp,1280,800);//put main pane is a scene
+        Scene sc = new Scene(gp, 1280, 800);//put main pane is a scene
         sc.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());//add css files
         //make gridpane
         gp.setHgap(5);
@@ -47,41 +49,60 @@ public class LoginView extends Observable {
 
         //add main header
         Label loginHeader = new Label("Capstone Tracker");
-        gp.add(loginHeader,0,0,2,1);
+        loginHeader.getStyleClass().add("loginHeader");
+
+        gp.add(loginHeader, 0, 0, 2, 1);
 
         //make user name text field
         userNameField = new TextField();
         userNameField.setPromptText("User Name");
+        userNameField.setFont(new Font(20));
         //make password text field
         passwordField = new PasswordField();
         passwordField.setPromptText("Password");
+        passwordField.setFont(new Font(20));
+
+
+        //set username label properties
+        labUserName = new Label("User Name: ");
+        labUserName.getStyleClass().add("loginLabel");
+
+        //set password label properties
+        labPassword = new Label("Password: ");
+        labPassword.getStyleClass().add("loginLabel");
+
         //Add User Name label / Textfield to grid pane
-        gp.add(new Label("User Name:"), 0, 1);
+        gp.add(labUserName, 0, 1);
         gp.add(userNameField, 1, 1);
         //Add Password label / Textfield to grid pane
-        gp.add(new Label("Password:"), 0, 2);
+        gp.add(labPassword, 0, 2);
         gp.add(passwordField, 1, 2);
         //add button to grid pane
         loginButton = new Button("Log In");
-        gp.add(loginButton, 1, 3);
+        loginButton.setPrefWidth(220);
+        loginButton.setStyle(mv.getButtonStyle());
+        loginButton.setPrefHeight(30);
+
+        gp.add(loginButton, 1, 3, 2, 1);
         gp.setHalignment(loginButton, HPos.LEFT);//position to the left
 
         addControllers();
-        //Login button click functionality
+        //Notify the master view to show the login view
         setChanged();
         notifyObservers(sc);
     }
 
     /**
      * **THIS ACTION LISTENER SHOWS HOW TO MAKE A FUNCTION CALL TO ANOTHER VIEW**
-     *
      */
-    private void addControllers(){
+    private void addControllers() {
         loginButton.setOnAction(e -> {
-              if (msdb.login(userNameField.getText(), passwordField.getText())) {//if login was successful
+            if (msdb.login(userNameField.getText(), passwordField.getText())) {//if login was successful
                 if (msdb.getRole().equals("student")) {
                     mv.getInfoView().makeStudentView();
                 }
+            } else {//login was not successful
+                passwordField.setText("");
             }
         });
     }

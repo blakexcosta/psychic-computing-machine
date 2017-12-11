@@ -239,6 +239,8 @@ public class MySQLDatabase extends Observable {
     public Boolean login(String username, String password) {
         //creating new string array for the username
         String[] userNameAL = new String[1];
+        if (username.isEmpty() || password.isEmpty()){return false;}
+
         try {
             userNameAL[0] = username; //setting the string array to the username.
             msdb.makeConnection(); //making a connection
@@ -254,7 +256,7 @@ public class MySQLDatabase extends Observable {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Incorrect username or password");
             return false;
         }
         return false;

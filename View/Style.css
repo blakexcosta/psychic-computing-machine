@@ -1,12 +1,27 @@
-.label{
-    -fx-font: 2em "Serif";
-}
-
 .mainHeader{
-    -fx-font: 3em "Serif" !important;
+    -fx-font: 4em "cursive" !important;
     -fx-padding: 2em;
 }
+.loginHeader{
+    -fx-font: 6em "Serif" !important;
+    -fx-padding: 2em;
+}
+.loginLabel{
+    -fx-font: 3em "Sans-Serif";
+
+}
+.infoLabel{
+    -fx-font: 3em "Serif";
+}
+
+.infoDataLabel{
+    -fx-font: 2.5em "Serif";
+
+}
+
 
 .navButton{
     -fx-padding-left: 2em;
+    -fx-padding: 2em;
+
 }
