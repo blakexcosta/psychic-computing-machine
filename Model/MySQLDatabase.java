@@ -331,8 +331,50 @@ public class MySQLDatabase extends Observable{
             notifyObservers("Login Unsuccessful.");
          }
 
+<<<<<<< HEAD
+    /**
+     * notifies observers
+     */
+    @Override
+    public void notifyObservers() {
+        setChanged();
+        super.notifyObservers();
+    }
+
+    public void login(String username, String password){
+        //creating new string array for the username
+        String[] vals = new String[1];
+        boolean loginSuccess = false;
+        try {
+            vals[0] = username; //setting the string array to the username.
+            msdb.makeConnection(); //making a connection
+            String[][] rs = msdb.getData("SELECT Password, Role FROM user WHERE UserName in (?);", vals); //getting the values from the database
+            String dbPassword = rs[0][0]; //getting the password
+            String usrRole = rs[1][1]; //getting the user role
+            //if the password fields text that was inputed from the user equals the databases password,
+            // then set loginSuccess = true, then continue to the next block.
+            if (password.equals(dbPassword)) {
+                loginSuccess = true;
+            }
+            if (loginSuccess) {
+                setChanged();
+                String[][] userInfo = msdb.getData("SELECT CONCAT(FirstName,' ', LastName) as 'Name', " +
+                        "UserName, Department, GraduationDate, major, role, Image FROM user WHERE UserName in (?);", vals);
+                // TODO: 12/2/17 come up with generalized message information for changing a views information, state, etc. basicially how to differentiate between logging in and updating a form -Blake
+                notifyObservers(userInfo);//"StudentView,SomeMessage".split(","));
+            } else {
+                setChanged();
+                notifyObservers();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+=======
       } catch (Exception e) {
          e.printStackTrace();
       }
    }
+>>>>>>> develop
 } // end program

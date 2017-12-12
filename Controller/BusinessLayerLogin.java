@@ -26,9 +26,9 @@ public class BusinessLayerLogin {//extends ActionEvent{
    private Object info;
    private MySQLDatabase msdb= MySQLDatabase.getInstance();
    
-   public BusinessLayerLogin(String username, String password) {
-      login(username, password);
-   }
+    public BusinessLayerLogin(String username, String password) {
+        login(username, password);
+    }
 
     /**
      * when an instance is created, it will call this method from actionPerformed, and then will call a model mehod
