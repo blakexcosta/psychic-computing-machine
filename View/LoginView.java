@@ -18,12 +18,10 @@ import java.util.Observable;
  * Professor Floeser
  * December 18th, 2017
  */
-
 /**
  * LoginView class serves as the default template that holds all the functionality of the jpanels
  * individual components
  */
-
 public class LoginView extends Observable {
     //both of these are in ALL the view classes
     private MySQLDatabase msdb = MySQLDatabase.getInstance(); //there is only one instance of the database.
@@ -100,13 +98,22 @@ public class LoginView extends Observable {
     private void addControllers() {
         loginButton.setOnAction(e -> {
             if (msdb.login(userNameField.getText(), passwordField.getText())) {//if login was successful
+<<<<<<< HEAD
                 //store the user in the master view for later
                 mv.setCurrUserName(userNameField.getText());
+=======
+                //if the role is a student, make the student view from the get info view.
+>>>>>>> ffa5355ecd39ae4e093a5bb65f7d70cadac20bc4
                 if (msdb.getRole().equals("student")) {
                     mv.getInfoView().makeStudentView();
+                } else if (msdb.getRole().equals("staff")) {
+                    mv.getInfoView().makeStaffView();//make the staff view.
+                } else if (msdb.getRole().equals("faculty")) {
+                    // TODO: 12/12/17 This is where you create a faculty view. lookie here. -Blake 
+                    System.out.println("Faculty clicked");
                 }
             } else {//login was not successful
-                passwordField.setText("");
+                passwordField.setText(""); //reset the text
             }
         });
     }

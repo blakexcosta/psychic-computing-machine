@@ -19,6 +19,7 @@ public class Instantiation {
         //ab1234 (al baker)
         //5f4dcc3b5aa765d61d8327deb882cf99
         //runs the program
+        //| GradCoord | Qi        | Yu          | Password | https://ist.rit.edu/assets/img/people/qyuvks.jpg                                       | 1900-01-01     | Associate Professor          |       | staff   |
         //creates a new thread to run the javafx application, goes to MasterView
         new Thread() {
             @Override
