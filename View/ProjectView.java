@@ -166,8 +166,8 @@ public class ProjectView extends Observable {
                     inputStartDate.getText(), inputEndDate.getText(), "0", "0"};
 
             //TODO: it says it is inserting but there is no new data going into the DB
-//            System.out.println(msdb.setData(projectLinkQuery,projectLinkVals));
             System.out.println(msdb.setData(newProjectQuery,newProjectVals));
+            System.out.println(msdb.setData(projectLinkQuery,projectLinkVals));
             String[][] rs = msdb.getData("Select * from user_project_link where UserName in (?)",new String[]{msdb.getUserName()});
             System.out.println("here");
 

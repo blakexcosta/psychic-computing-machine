@@ -141,7 +141,7 @@ public class MySQLDatabase extends Observable {
             //TODO: same issue as getAllData todo -Blake
             for (int i = 0; i < strvals.length; i++) {
                 //todo: Set to the correct datatype rather than sring every time
-                
+
                 if (Character.isDigit(strvals[i].charAt(0)) && strvals[i].length() == 1) {
                     ps.setInt(i + 1, Integer.parseInt(strvals[i]));
                 } else {
@@ -223,12 +223,9 @@ public class MySQLDatabase extends Observable {
         int rc = 0;
         try {
             PreparedStatement stmt = prepare(sql, strvals);
-            //ResultSet rs = stmt.executeUpdate();
-            //todo: Why is the row count coming back 0 when trying to add a user to the user_project_link table.
             rc = stmt.executeUpdate();
         } catch (SQLException sqle) {
         } catch (NullPointerException npe) {
-            System.out.println(npe);
         }
         return rc;
     }//end executeStmt
