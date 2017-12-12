@@ -120,7 +120,6 @@ public class ProjectView extends Observable {
         //todo: why is it erroring to get the project ID for the curr user;
         ArrayList<String> userNameAL = new ArrayList<String>();
         userNameAL.add(mv.getCurrUserName());
-        System.out.println(rs);
         //rs = new String[2][1];
         rs = msdb.getData("select * from user_project_link where UserName in (?)",userNameAL);
         //mv.setCurrProjectID(rs[1][1]);

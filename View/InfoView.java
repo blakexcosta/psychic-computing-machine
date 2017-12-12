@@ -106,7 +106,6 @@ public class InfoView extends Observable {
         //{
             for (int i = 0; i < str.size(); i++)
             {
-               System.out.println(str.get(i));
                Label lab = new Label(str.get(i));
                lab.getStyleClass().add("infoDataLabel");
                gp.add(lab,1,++rowCount);
