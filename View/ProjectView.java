@@ -53,6 +53,18 @@ public class ProjectView extends Observable {
         //add  header the grid pane
         gp.add(mainHeader, 0, 0, 2, 1);
 
+        //add the milestone button
+        showMilestones = new Button();
+        showMilestones.setText("Show Project Milestones");
+
+        showMilestones.setOnAction(e -> {
+            //on click make the milestone view.
+            mv.getMilestoneView().makeStudentView();
+        });
+        gp.add(showMilestones, 0, 6);
+
+
+
         //initialize all of the buttons and add them to the grid
         labName = new Label("Name: ");
         labSummary = new Label("Summary: ");
@@ -64,11 +76,6 @@ public class ProjectView extends Observable {
         gp.add(labTopic, 0, 3);
         gp.add(labDueDate, 0, 4);
         gp.add(labGrade, 0, 5);
-        //put all the database info next to the buttons
-
-        //add the milestone button
-        showMilestones = new Button();
-        showMilestones.setText("Show Project Milestones");
 
         //After the scene is made completely these two methods run which will update the master view to our new view
         setChanged();
@@ -108,9 +115,16 @@ public class ProjectView extends Observable {
      * @return
      */
     public Boolean loadStudentDBInfo() {
-        String[] userNameAL = {msdb.getUserName()};
+        //todo: get the project ID for the curr user;
+        String[] userNameAL = {mv.getCurrUserName()};
+        System.out.println("here");
+        System.out.println(userNameAL[0]);
+        rs = msdb.getData("select ProjectID from user_project_link where UserName in (?)",userNameAL);
+        System.out.println("here");
+        System.out.println(rs);
+        String[] projectIDAL = {mv.getCurrUserName()};
         //get the project info for the current user
-        rs = msdb.getData("Select Name, Summary, Topic, DueDate, Grade from  project where ID in (select ProjectID from user_project_link where UserName in (?))", userNameAL);
+        //rs = msdb.getData("Select Name, Summary, Topic, DueDate, Grade from  project where ID in (?)", projectIDAL);
 
         if (!rs[0][1].equals("Summary")) {//They do not have any project info, so we need to make the view to add a project.
             //TODO: notify the user that they have no projects before the new view is made.
@@ -157,26 +171,28 @@ public class ProjectView extends Observable {
 
         submit.setOnAction(e -> {
             //get the new project ID value
-            int newMaxID = Integer.parseInt(msdb.getMaxProjectID())+1;
+            int newMaxID = Integer.parseInt(msdb.getMaxProjectID()) + 1;
             //TODO: check form to validate input
             //query to add to user_project_link
             String projectLinkQuery = "INSERT INTO user_project_link (UserName,ProjectID) VALUES (?,?)";
 
             //Values to go in user_project_link query
-            String[] projectLinkVals = {msdb.getUserName(),Integer.toString(newMaxID)};
+            String[] projectLinkVals = {mv.getCurrUserName(), Integer.toString(newMaxID)};
 
             //query to add a new project
             String newProjectQuery = "INSERT INTO project (ID,Name,Summary,Topic,Type,StartDate,EndDate,Completed,ProposalApproved)" +
                     " VALUES (?,?,?,?,?,?,?,?,?)";
 
             //Values to go in new project query
-            String[] newProjectVals = {Integer.toString(newMaxID),inputName.getText(), inputSummary.getText(), inputTopic.getText(), inputType.getText(),
+            String[] newProjectVals = {Integer.toString(newMaxID), inputName.getText(), inputSummary.getText(), inputTopic.getText(), inputType.getText(),
                     inputStartDate.getText(), inputEndDate.getText(), "0", "0"};
 
             //make the two calls to put it into the database
             //TODO: put this in a transaction?
-            msdb.setData(newProjectQuery,newProjectVals);
-            msdb.setData(projectLinkQuery,projectLinkVals);
+            msdb.setData(newProjectQuery, newProjectVals);
+            msdb.setData(projectLinkQuery, projectLinkVals);
+            //store the current projectID in the master view
+            mv.setCurrProjectID(Integer.toString(newMaxID));
 
         });
 

@@ -4,6 +4,7 @@ import Model.MySQLDatabase;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 
 import java.util.Observable;
 
@@ -22,6 +23,11 @@ public class MilestoneView extends Observable{
         //the borderpane can be referenced by casting an object seen below
         Scene sc = mv.getBaseScene();
         BorderPane bp = (BorderPane) sc.getRoot();
+        GridPane gp = new GridPane();
+        bp.setCenter(gp);
+
+        gp.add(makeMilestoneDropdown(),0,0);
+
 
         //After the scene is made completely these two methods run which will update the master view to our new view
         setChanged();
@@ -59,9 +65,14 @@ public class MilestoneView extends Observable{
     }
 
     //TODO: Finish functionality to make dropdown
-    public void makeMilestoneDropdown(){
+    public ComboBox makeMilestoneDropdown(){
         milestoneDropdown = new ComboBox<String>();
         //how ever many milestones there are, that should be the length of the combo box
+        String[][] rs = msdb.getData("select MilestoneID from project_milestone_link where ProjectID in (?)", new String[] {mv.getCurrProjectID()});
+        for (String curr : rs[1]){
+            System.out.println(curr);
+        }
+
         milestoneDropdown.getItems().add("Milestone (loop counter)");
 
         //this fires when the dropdown changes.
@@ -70,6 +81,6 @@ public class MilestoneView extends Observable{
             int newMilestoneInt = Integer.parseInt(newMilestoneStr.substring(-1));//Get the last character of the string (should be milestone num) and change it to an int
             switchMilestone(newMilestoneInt);
         });
-
+        return milestoneDropdown;
     }
 }
