@@ -139,10 +139,13 @@ public class MySQLDatabase extends Observable {
             ps = conn.prepareStatement(preparedStr);
             //int j = 1;
             //TODO: same issue as getAllData todo -Blake
-            for (int i = 1; i <= strvals.length; i++) {
-                for (int j = 0; j <= strvals.length - 1; j++) {
-                    ps.setString(i, strvals[j]);
-                    //System.out.println("i: " + i + " j: " + j);
+            for (int i = 0; i < strvals.length; i++) {
+                //todo: Set to the correct datatype rather than sring every time
+                
+                if (Character.isDigit(strvals[i].charAt(0)) && strvals[i].length() == 1) {
+                    ps.setInt(i + 1, Integer.parseInt(strvals[i]));
+                } else {
+                    ps.setString(i + 1, strvals[i]);
                 }
             }
             //System.out.println(ps);
@@ -221,9 +224,11 @@ public class MySQLDatabase extends Observable {
         try {
             PreparedStatement stmt = prepare(sql, strvals);
             //ResultSet rs = stmt.executeUpdate();
+            //todo: Why is the row count coming back 0 when trying to add a user to the user_project_link table.
             rc = stmt.executeUpdate();
         } catch (SQLException sqle) {
         } catch (NullPointerException npe) {
+            System.out.println(npe);
         }
         return rc;
     }//end executeStmt
@@ -239,7 +244,9 @@ public class MySQLDatabase extends Observable {
     public Boolean login(String username, String password) {
         //creating new string array for the username
         String[] userNameAL = new String[1];
-        if (username.isEmpty() || password.isEmpty()){return false;}
+        if (username.isEmpty() || password.isEmpty()) {
+            return false;
+        }
 
         try {
             userNameAL[0] = username; //setting the string array to the username.
@@ -260,6 +267,19 @@ public class MySQLDatabase extends Observable {
             return false;
         }
         return false;
+    }
+
+    public String getMaxProjectID() {
+        try {
+            makeConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("Select Max(ID) from project");
+            rs.first();
+            return rs.getString("MAX(ID)");
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
     }
 
 } // end program
