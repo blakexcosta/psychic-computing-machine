@@ -9,6 +9,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Observable;
 
 public class ProjectView extends Observable {
@@ -126,10 +128,11 @@ public class ProjectView extends Observable {
         {
             mv.setCurrProjectID(row.get(1));
         }
-        String[] projectIDAL = {mv.getCurrProjectID()};
+        ArrayList<String> projectIDAL = new ArrayList<>();
+        projectIDAL.add(mv.getCurrProjectID());
         rs = msdb.getData("Select Name, Summary, Topic, DueDate, Grade from  project where ID in (?)", projectIDAL);
 
-        if (rs== null || !rs[0][1].equals("Summary")) {//They do not have any project info, so we need to make the view to add a project.
+        if (rs== null || !rs.get(0).get(1).equals("Summary")) {//They do not have any project info, so we need to make the view to add a project.
             //TODO: notify the user that they have no projects before the new view is made.
             System.out.println("no projects found");
             makeAddProjectView();
@@ -137,7 +140,7 @@ public class ProjectView extends Observable {
         } else {
             //add their project info to the grid pane one row at a time
             int rowCount = 0;
-            for (String str : rs[1]) {
+            for (String str : rs.get(1)) {
                 Label lab = new Label(str);
                 lab.getStyleClass().add("infoDataLabel");
                 gp.add(lab, 1, ++rowCount);
@@ -180,15 +183,15 @@ public class ProjectView extends Observable {
             String projectLinkQuery = "INSERT INTO user_project_link (UserName,ProjectID) VALUES (?,?)";
 
             //Values to go in user_project_link query
-            String[] projectLinkVals = {mv.getCurrUserName(), Integer.toString(newMaxID)};
+            ArrayList<String > projectLinkVals = new ArrayList<>(Arrays.asList(mv.getCurrUserName(), Integer.toString(newMaxID)));
 
             //query to add a new project
             String newProjectQuery = "INSERT INTO project (ID,Name,Summary,Topic,Type,StartDate,EndDate,Completed,ProposalApproved)" +
                     " VALUES (?,?,?,?,?,?,?,?,?)";
 
             //Values to go in new project query
-            String[] newProjectVals = {Integer.toString(newMaxID), inputName.getText(), inputSummary.getText(), inputTopic.getText(), inputType.getText(),
-                    inputStartDate.getText(), inputEndDate.getText(), "0", "0"};
+            ArrayList<String> newProjectVals = new ArrayList<>(Arrays.asList(Integer.toString(newMaxID), inputName.getText(), inputSummary.getText(), inputTopic.getText(), inputType.getText(),
+                    inputStartDate.getText(), inputEndDate.getText(), "0", "0"));
 
             //make the two calls to put it into the database
             //TODO: put this in a transaction?

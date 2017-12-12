@@ -8,6 +8,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Observable;
 
@@ -64,8 +65,8 @@ public class MilestoneView extends Observable{
         //todo: Based on which milestone they choose in the dropdown. Dislay the info for that milestone
         //switch the page to show the passed in milestone number
 
-        String[][] rs = msdb.getData("Select StatusCode,Name,Number,DueDate,Approved from milestone where ID in (?)",new String[]{msNum});
-        for (String curr : rs[1]){
+        ArrayList<ArrayList<String>> rs = msdb.getData("Select StatusCode,Name,Number,DueDate,Approved from milestone where ID in (?)",new ArrayList<String>(Arrays.asList(msNum)));
+        for (String curr : rs.get(1)){
             Label lab = new Label(curr);//make a new label with the DB text
             //add the label to the gridpane in the correct spot. col = 1, row = counter
 
@@ -77,12 +78,10 @@ public class MilestoneView extends Observable{
     public ComboBox makeMilestoneDropdown(){
         milestoneDropdown = new ComboBox<String>();
         //how ever many milestones there are, that should be the length of the combo box
-        String[] projectIDStr = new String[1];
-        projectIDStr[0] = mv.getCurrProjectID();
+        ArrayList<String> projectIDAL = new ArrayList<String>(Arrays.asList(mv.getCurrProjectID()));
         //TODO: The dropdown should increment until the number of milestones they have.
-        String[][] rs = msdb.getData("select MIN(MilestoneID), 'makeItWork' from project_milestone_link where ProjectID in (?)", projectIDStr);
-        System.out.println(Arrays.deepToString(rs));
-        for (String curr : rs[1]){
+        ArrayList<ArrayList<String>> rs = msdb.getData("select MIN(MilestoneID), 'makeItWork' from project_milestone_link where ProjectID in (?)", projectIDAL);
+        for (String curr : rs.get(1)){
             System.out.println(curr);
         }
 
