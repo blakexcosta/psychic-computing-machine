@@ -93,7 +93,7 @@ public class InfoView extends Observable {
      * gets all of the data to be put next to the labels in the grid.
      */
     public void loadStudentDBInfo() {
-        String[] userNameAL = {msdb.getUserName()};
+        String[] userNameAL = {mv.getCurrUserName()};
         returnData = msdb.getData("SELECT CONCAT(FirstName, ' ',  LastName) as 'Name' , UserName, Department, GraduationDate,Major, Role FROM user where UserName in (?)", userNameAL);
         int rowCount = 0;
         for (String str : returnData[1]){

@@ -1,6 +1,8 @@
 package View;
 
 import Model.MySQLDatabase;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -96,13 +98,18 @@ public class LoginView extends Observable {
     private void addControllers() {
         loginButton.setOnAction(e -> {
             if (msdb.login(userNameField.getText(), passwordField.getText())) {//if login was successful
+
+                //store the user in the master view for later
+                mv.setCurrUserName(userNameField.getText());
+
                 //if the role is a student, make the student view from the get info view.
                 if (msdb.getRole().equals("student")) {
                     mv.getInfoView().makeStudentView();
                 } else if (msdb.getRole().equals("staff")) {
                     mv.getInfoView().makeStaffView();//make the staff view.
                 } else if (msdb.getRole().equals("faculty")) {
-                    // TODO: 12/12/17 This is where you create a faculty view. lookie here. -Blake 
+                    // TODO: 12/12/17 This is where you create a faculty view. lookie here. -Blake
+                    //mv.getInfoView().makeFacultyView();
                     System.out.println("Faculty clicked");
                 }
             } else {//login was not successful

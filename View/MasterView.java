@@ -31,8 +31,26 @@ public class MasterView extends Application implements Observer{
     private ProjectView projectView = new ProjectView(this);
     private MilestoneView milestoneView = new MilestoneView(this);
     private MySQLDatabase msdb = MySQLDatabase.getInstance();//Need a model instance to add as an observer
-
+    private String currUserName, currProjectID;
     private String buttonStyle ="-fx-padding: 2em;-fx-background-color:linear-gradient(#dddddd 0%, #f6f6f6 50%);-fx-background-radius: 8,7,6; -fx-background-insets: 0,1,2; -fx-text-fill: black; -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );";
+
+
+    public String getCurrUserName() {
+        return currUserName;
+    }
+
+    public String getCurrProjectID() {
+        return currProjectID;
+    }
+
+    public void setCurrUserName(String currUserName) {
+        this.currUserName = currUserName;
+    }
+
+    public void setCurrProjectID(String currProjectID) {
+        this.currProjectID = currProjectID;
+    }
+
 
     public InfoView getInfoView() {
         return infoView;
