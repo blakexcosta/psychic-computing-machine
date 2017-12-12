@@ -7,6 +7,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Observable;
 
 public class MilestoneView extends Observable{
@@ -58,8 +60,8 @@ public class MilestoneView extends Observable{
         notifyObservers(sc);
     }
 
-    //TODO: Functionality to switch between milestones based on value of dropdown.
     public void switchMilestone(String msNum){
+        //todo: Based on which milestone they choose in the dropdown. Dislay the info for that milestone
         //switch the page to show the passed in milestone number
 
         String[][] rs = msdb.getData("Select StatusCode,Name,Number,DueDate,Approved from milestone where ID in (?)",new String[]{msNum});
@@ -77,9 +79,9 @@ public class MilestoneView extends Observable{
         //how ever many milestones there are, that should be the length of the combo box
         String[] projectIDStr = new String[1];
         projectIDStr[0] = mv.getCurrProjectID();
-        System.out.println(projectIDStr[0]);
-        //TODO: need to figure out why project ID in ProjecView.loadStudentInfo() is erroring before going on this
-        String[][] rs = msdb.getData("select MilestoneID from project_milestone_link where ProjectID in (?)", projectIDStr);
+        //TODO: The dropdown should increment until the number of milestones they have.
+        String[][] rs = msdb.getData("select MIN(MilestoneID), 'makeItWork' from project_milestone_link where ProjectID in (?)", projectIDStr);
+        System.out.println(Arrays.deepToString(rs));
         for (String curr : rs[1]){
             System.out.println(curr);
         }
