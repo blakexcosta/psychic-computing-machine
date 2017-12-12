@@ -75,7 +75,7 @@ public class MasterView extends Application implements Observer{
                 infoView.makeStudentView();
             }
             if (msdb.getRole().equals("staff")){
-                infoView.makeStaffView();
+                infoView.makeStaffView();//make infoview of the staffview.
             }
             if (msdb.getRole().equals("faculty")){
                 infoView.makeFacultyView();
@@ -90,7 +90,7 @@ public class MasterView extends Application implements Observer{
             }
             if (msdb.getRole().equals("staff")){
                 //make a new staff view
-                projectView.makeStaffView();
+                projectView.makeStaffView();//making a new staff view
             }
             if (msdb.getRole().equals("faculty")){
                 projectView.makeStudentView();
