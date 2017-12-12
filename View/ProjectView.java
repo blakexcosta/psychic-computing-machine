@@ -129,15 +129,21 @@ public class ProjectView extends Observable {
         }
     }
 
-    public void makeAddProjectView() {
-        //TODO: this will be a form that they can input into and it will add their project to the database
-        //private TextField inputName,inputSummary,inputStartDate, inputEndDate, inputDueDate, inputTopic, inputType;
 
+    /**
+     * This view is made by a call in loadStudentDBInfo.
+     * If there is no project info for a student this form will submit to the DB to add a new project for that user
+     */
+    public void makeAddProjectView() {
+        //Main scene and border pane to put everything in
         Scene sc = mv.getBaseScene();
         BorderPane bp = (BorderPane) sc.getRoot();
+        //Grid pane to store labels and input boxes
         gp = new GridPane();
         bp.setCenter(gp);
         gp.setAlignment(Pos.CENTER);
+
+        //Initialize all the labels that will be put on the screen
         Label header = new Label("Add a new Project");
         labName = new Label("Name: ");
         labSummary = new Label("Summary: ");
@@ -145,34 +151,37 @@ public class ProjectView extends Observable {
         labType = new Label("Type: ");
         labStartDate = new Label("Start Date(YYYY-MM-DD): ");
         labEndDate = new Label("End Date(YYYY-MM-DD): ");
+        //Make the submit button
         Button submit = new Button("Submit");
+        //Button functionality
+
         submit.setOnAction(e -> {
+            //get the new project ID value
             int newMaxID = Integer.parseInt(msdb.getMaxProjectID())+1;
-
-
             //TODO: check form to validate input
-            //TODO: put this in a transaction?
-            //query to add new project to user_project_link
+            //query to add to user_project_link
             String projectLinkQuery = "INSERT INTO user_project_link (UserName,ProjectID) VALUES (?,?)";
 
+            //Values to go in user_project_link query
             String[] projectLinkVals = {msdb.getUserName(),Integer.toString(newMaxID)};
-
 
             //query to add a new project
             String newProjectQuery = "INSERT INTO project (ID,Name,Summary,Topic,Type,StartDate,EndDate,Completed,ProposalApproved)" +
                     " VALUES (?,?,?,?,?,?,?,?,?)";
 
+            //Values to go in new project query
             String[] newProjectVals = {Integer.toString(newMaxID),inputName.getText(), inputSummary.getText(), inputTopic.getText(), inputType.getText(),
                     inputStartDate.getText(), inputEndDate.getText(), "0", "0"};
 
-            //TODO: it says it is inserting but there is no new data going into the DB
-            System.out.println(msdb.setData(newProjectQuery,newProjectVals));
-            System.out.println(msdb.setData(projectLinkQuery,projectLinkVals));
-            String[][] rs = msdb.getData("Select * from user_project_link where UserName in (?)",new String[]{msdb.getUserName()});
-            System.out.println("here");
+            //make the two calls to put it into the database
+            //TODO: put this in a transaction?
+            msdb.setData(newProjectQuery,newProjectVals);
+            msdb.setData(projectLinkQuery,projectLinkVals);
 
         });
 
+
+        //Initialize all of the input fields. Put placeholder text into some of them
         inputName = new TextField();
         inputSummary = new TextField();
         inputTopic = new TextField();
@@ -182,10 +191,11 @@ public class ProjectView extends Observable {
         inputStartDate.setPromptText("YYYY-MM-DD");
         inputEndDate = new TextField();
         inputEndDate.setPromptText("YYYY-MM-DD");
+        //Add all labels, header, and button in one column
         gp.addColumn(0, header, labName, labSummary, labTopic, labType, labStartDate, labEndDate, submit);
+
+        //Add all input boxes in one column (next to their labels)
         gp.addColumn(1, new Label(""), inputName, inputSummary, inputTopic, inputType, inputStartDate, inputEndDate);
-
-
         setChanged();
         notifyObservers(sc);
     }
