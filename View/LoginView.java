@@ -24,56 +24,55 @@ import java.util.Observer;
  */
 // TODO: 12/8/17 Document and fix indentation -Blake 
 public class LoginView implements Observer{
-    private Stage window = new Stage();
-    private TextField userNameField;
-    private PasswordField passwordField;
-    private GridPane gp;
-    // TODO: 12/8/17 my point continues to stand, remove MasterView update/ class instance, especially if it exists in the subclasses -Blake
-    private MySQLDatabase msdb = MySQLDatabase.getInstance(); //there is only one instance of a database.
-    private String usrRole;
+   private Stage window = new Stage();
+   private TextField userNameField;
+   private PasswordField passwordField;
+   private GridPane gp;
+   // TODO: 12/8/17 my point continues to stand, remove MasterView update/ class instance, especially if it exists in the subclasses -Blake
+   private MySQLDatabase msdb = MySQLDatabase.getInstance(); //there is only one instance of a database.
+   private String usrRole;
 
-    public LoginView(){
+   public LoginView(){
 
-    }
+   }
 
-    public Scene makeLoginView(){
-        //make gridpane
-        gp = new GridPane();
-        gp.setHgap( 5 );
-        gp.setVgap( 5 );
-        gp.setAlignment( Pos.CENTER );
-        //make user name text field
-        userNameField = new TextField();
-        userNameField.setPromptText("User Name");
-        //make password text field
-        passwordField = new PasswordField();
-        passwordField.setPromptText("Password");
-        //Add User Name label / Textfield to grid pane
-        gp.add( new Label("User Name:"), 0,0);
-        gp.add(userNameField, 1, 0);
-        //Add Password label / Textfield to grid pane
-        gp.add( new Label ("Password:"), 0, 1);
-        gp.add(passwordField, 1, 1);
-        //add button to grid pane
-        Button loginButton = new Button("Log In");
-        gp.add(loginButton, 1, 3);
-        gp.setHalignment(loginButton, HPos.LEFT);//position to the left
-        //Login button click functionality
+   public Scene makeLoginView(){
+      //make gridpane
+      gp = new GridPane();
+      gp.setHgap( 5 );
+      gp.setVgap( 5 );
+      gp.setAlignment( Pos.CENTER );
+      //make user name text field
+      userNameField = new TextField();
+      userNameField.setPromptText("User Name");
+      //make password text field
+      passwordField = new PasswordField();
+      passwordField.setPromptText("Password");
+      //Add User Name label / Textfield to grid pane
+      gp.add( new Label("User Name:"), 0,0);
+      gp.add(userNameField, 1, 0);
+      //Add Password label / Textfield to grid pane
+      gp.add( new Label ("Password:"), 0, 1);
+      gp.add(passwordField, 1, 1);
+      //add button to grid pane
+      Button loginButton = new Button("Log In");
+      gp.add(loginButton, 1, 3);
+      gp.setHalignment(loginButton, HPos.LEFT);//position to the left
+      //Login button click functionality
 
-        loginButton.setOnAction(e -> { new BusinessLayerLogin(userNameField.getText(), passwordField.getText()); });
-//        loginButton.setOnAction(e -> {
-//            //TODO: All login functionality as well as populating with the user info. THIS SHOULD ALL BE IN THE CONTROLLER....I think -Gavin
-        Scene loginScene = new Scene( gp, 1366, 768 );
-        return loginScene;
+      loginButton.setOnAction(e -> { new BusinessLayerLogin(userNameField.getText(), passwordField.getText()); });
+      //loginButton.setOnAction(e -> {
+      //TODO: All login functionality as well as populating with the user info. THIS SHOULD ALL BE IN THE CONTROLLER....I think -Gavin
+      Scene loginScene = new Scene( gp, 1366, 768 );
+      return loginScene;
+   }
 
-    }
-
-    @Override
-    public void update(Observable observable, Object o) {
-        System.out.println("Object received in LoginView");
-        String str = (String) o;
-        System.out.println(str);
-    }
+   @Override
+   public void update(Observable observable, Object o) {
+      System.out.println("Object received in LoginView");
+      String str = (String) o;
+      System.out.println(str);
+   }
 //    String[] vals = new String[1];
 //    boolean loginSuccess = false;
 //        try{
