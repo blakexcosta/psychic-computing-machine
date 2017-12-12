@@ -89,7 +89,8 @@ public class MasterView extends Application implements Observer{
                 projectView.makeStudentView();
             }
             if (msdb.getRole().equals("staff")){
-                projectView.makeStudentView();
+                //make a new staff view
+                projectView.makeStaffView();
             }
             if (msdb.getRole().equals("faculty")){
                 projectView.makeStudentView();
@@ -102,7 +103,7 @@ public class MasterView extends Application implements Observer{
             //remake the login view. Get rid of stored database variablesz
             System.out.println("logout clicked.");
             //make it go back to the login screen
-            // TODO: 12/12/17 I see an issue with this. state information may break, but we'll cross that bridge when we get there -Blake.  
+            // TODO: 12/12/17 I see an issue with this. state information may break, but we'll cross that bridge when we get there -Blake.
             loginView.makeLoginView();
             window.show();
         });//end logout action listner

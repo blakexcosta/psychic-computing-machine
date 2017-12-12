@@ -16,12 +16,10 @@ import java.util.Observable;
  * Professor Floeser
  * December 18th, 2017
  */
-
 /**
  * LoginView class serves as the default template that holds all the functionality of the jpanels
  * individual components
  */
-
 public class LoginView extends Observable {
     //both of these are in ALL the view classes
     private MySQLDatabase msdb = MySQLDatabase.getInstance(); //there is only one instance of the database.
@@ -101,6 +99,10 @@ public class LoginView extends Observable {
                 //if the role is a student, make the student view from the get info view.
                 if (msdb.getRole().equals("student")) {
                     mv.getInfoView().makeStudentView();
+                } else if (msdb.getRole().equals("staff")) {
+                    mv.getInfoView().makeStaffView();//make the staff view.
+                } else if (msdb.getRole().equals("faculty")) {
+                    System.out.println("Faculty clicked");
                 }
             } else {//login was not successful
                 passwordField.setText(""); //reset the text
