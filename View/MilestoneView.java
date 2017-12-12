@@ -86,6 +86,9 @@ public class MilestoneView extends Observable {
         ArrayList<ArrayList<String>> rs = msdb.getData("Select StatusCode,Name,Number,DueDate,Approved from milestone where ID in (?)", new ArrayList<String>(Arrays.asList(msNum)));
         System.out.println(rs);
         int rowCount=1;
+        //put all the new information on the page.clear it first
+        gp.getChildren().clear();
+        gp.addColumn(0, makeMilestoneDropdown(),statusLab,nameLab,numberLab,dueDateLab,approvedLab);
         for (String curr : rs.get(1)) {
             Label lab = new Label(curr);//make a new label with the DB text
             gp.add(lab,1,rowCount);
