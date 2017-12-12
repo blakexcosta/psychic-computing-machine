@@ -102,6 +102,7 @@ public class LoginView extends Observable {
                 } else if (msdb.getRole().equals("staff")) {
                     mv.getInfoView().makeStaffView();//make the staff view.
                 } else if (msdb.getRole().equals("faculty")) {
+                    // TODO: 12/12/17 This is where you create a faculty view. lookie here. -Blake 
                     System.out.println("Faculty clicked");
                 }
             } else {//login was not successful

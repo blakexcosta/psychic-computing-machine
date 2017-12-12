@@ -18,7 +18,6 @@ import java.util.Observable;
  * December 18th, 2017
  */
 
-// TODO: 12/8/17 Document and Fix indentation -Blake 
 public class InfoView extends Observable {
     //both of these are in ALL the view classes
     private MySQLDatabase msdb = MySQLDatabase.getInstance(); //there is only one instance of the database.
@@ -105,7 +104,6 @@ public class InfoView extends Observable {
         }
     }
 
-    //TODO: Build out staff info view
     /**
      * makes the staff view.
      */
