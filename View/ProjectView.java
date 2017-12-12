@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
@@ -15,6 +16,7 @@ public class ProjectView extends Observable {
     private MasterView mv;//this is passed in through the constructor
     private GridPane gp;
     private Label mainHeader, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade;
+    private TextField inputName,inputSummary,inputStartDate, inputEndDate, inputDueDate, inputTopic, inputType;
     private Button showMilestones;
     private String[][] rs;
 
@@ -129,12 +131,49 @@ public class ProjectView extends Observable {
 
     public void makeAddProjectView() {
         //TODO: this will be a form that they can input into and it will add their project to the database
+        //private TextField inputName,inputSummary,inputStartDate, inputEndDate, inputDueDate, inputTopic, inputType;
+
         Scene sc = mv.getBaseScene();
         BorderPane bp = (BorderPane) sc.getRoot();
         gp = new GridPane();
         bp.setCenter(gp);
         gp.setAlignment(Pos.CENTER);
-        gp.add(new Label("add a new project"), 0, 0);
+        Label header = new Label("Add a new Project");
+        labName = new Label("Name: ");
+        labSummary = new Label("Summary: ");
+        labTopic = new Label("Topic: ");
+        labType = new Label("Type: ");
+        labStartDate = new Label("Start Date(YYYY-MM-DD): ");
+        labEndDate = new Label("End Date(YYYY-MM-DD): ");
+        Button submit = new Button("Submit");
+        submit.setOnAction(e ->{
+            //TODO: check form to validate input
+            String[] queryVals = {inputName.getText(),inputSummary.getText(),inputTopic.getText(),inputType.getText(),
+                    inputStartDate.getText(),inputEndDate.getText(),"0","0"};
+
+            String sqlQuery = "INSERT INTO project ('Name','Summary','Topic','Type','StartDate','EndDate','Completed','ProposalApproved')" +
+                    " VALUES (?,?,?,?,?,?,?,?)";
+
+            //TODO: it says it is inserting but there is no new data going into the DB
+            System.out.println(msdb.setData(sqlQuery,queryVals));
+
+            System.out.println("insert into Project");
+        });
+
+        inputName = new TextField();
+        inputSummary = new TextField();
+        inputTopic = new TextField();
+        inputType = new TextField();
+        inputType.setPromptText("Capstone or Thesis");
+        inputStartDate = new TextField();
+        inputStartDate.setPromptText("YYYY-MM-DD");
+        inputEndDate = new TextField();
+        inputEndDate.setPromptText("YYYY-MM-DD");
+        gp.addColumn(0,header,labName,labSummary,labTopic,labType,labStartDate,labEndDate,submit);
+        gp.addColumn(1,new Label(""),inputName,inputSummary,inputTopic,inputType,inputStartDate,inputEndDate);
+
+
+
 
 
         setChanged();
