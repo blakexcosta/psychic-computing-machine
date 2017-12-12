@@ -98,11 +98,12 @@ public class LoginView extends Observable {
     private void addControllers() {
         loginButton.setOnAction(e -> {
             if (msdb.login(userNameField.getText(), passwordField.getText())) {//if login was successful
+                //if the role is a student, make the student view from the get info view.
                 if (msdb.getRole().equals("student")) {
                     mv.getInfoView().makeStudentView();
                 }
             } else {//login was not successful
-                passwordField.setText("");
+                passwordField.setText(""); //reset the text
             }
         });
     }

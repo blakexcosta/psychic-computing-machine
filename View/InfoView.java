@@ -23,7 +23,6 @@ public class InfoView extends Observable {
     //both of these are in ALL the view classes
     private MySQLDatabase msdb = MySQLDatabase.getInstance(); //there is only one instance of the database.
     private MasterView mv;//this is passed in through the constructor
-
     private String[][] sqlData;
     private Label userInfoHeaderLabel,labName, labUserName, labDepartment, labGradDate, labMajor, labRole;
     private GridPane gp;
@@ -107,6 +106,9 @@ public class InfoView extends Observable {
     }
 
     //TODO: Build out staff info view
+    /**
+     * makes the staff view.
+     */
     public void makeStaffView() {
         //this scene object comes from masterView. it has a border pane in it. The top object of the border pane has been set to the nav bar
         //the borderpane can be referenced by casting an object seen below

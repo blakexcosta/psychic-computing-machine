@@ -84,7 +84,6 @@ public class MasterView extends Application implements Observer{
         Button projectInfoButton = new Button("Project Information");
         projectInfoButton.setPrefHeight(50);
         projectInfoButton.setStyle(buttonStyle);
-
         projectInfoButton.setOnAction(e -> {
             if (msdb.getRole().equals("student")){
                 projectView.makeStudentView();
@@ -99,14 +98,14 @@ public class MasterView extends Application implements Observer{
         Button logOutButton = new Button("Log Out");
         logOutButton.setPrefHeight(50);
         logOutButton.setStyle(buttonStyle);
-
         logOutButton.setOnAction(e -> {
-            //todo: Implement logging out.
-            //remake the login view. Get rid of stored database variables?
-
+            //remake the login view. Get rid of stored database variablesz
+            System.out.println("logout clicked.");
+            //make it go back to the login screen
+            // TODO: 12/12/17 I see an issue with this. state information may break, but we'll cross that bridge when we get there -Blake.  
+            loginView.makeLoginView();
+            window.show();
         });//end logout action listner
-
-
         returnMenu.getChildren().addAll(userInfoButton, projectInfoButton, logOutButton);
         return returnMenu;
     }
