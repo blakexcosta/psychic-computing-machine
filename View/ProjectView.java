@@ -115,18 +115,15 @@ public class ProjectView extends Observable {
      * @return
      */
     public Boolean loadStudentDBInfo() {
-        //todo: get the project ID for the curr user;
+        //todo: why is it erroring to get the project ID for the curr user;
         String[] userNameAL = {mv.getCurrUserName()};
-        System.out.println("here");
-        System.out.println(userNameAL[0]);
+
         rs = msdb.getData("select ProjectID from user_project_link where UserName in (?)",userNameAL);
-        System.out.println("here");
-        System.out.println(rs);
-        String[] projectIDAL = {mv.getCurrUserName()};
-        //get the project info for the current user
+        //todo: after storing the projectID get the project info for the current user
+        //String[] projectIDAL = {mv.getCurrProjectID()};
         //rs = msdb.getData("Select Name, Summary, Topic, DueDate, Grade from  project where ID in (?)", projectIDAL);
 
-        if (!rs[0][1].equals("Summary")) {//They do not have any project info, so we need to make the view to add a project.
+        if (rs== null || !rs[0][1].equals("Summary")) {//They do not have any project info, so we need to make the view to add a project.
             //TODO: notify the user that they have no projects before the new view is made.
             System.out.println("no projects found");
             makeAddProjectView();
