@@ -18,7 +18,7 @@ public class ProjectView extends Observable {
     private Label mainHeader, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade;
     private TextField inputName, inputSummary, inputStartDate, inputEndDate, inputDueDate, inputTopic, inputType;
     private Button showMilestones;
-    private String[][] rs;
+    private ArrayList<ArrayList<String>> rs;
 
 
     public ProjectView(MasterView _mv) {
@@ -116,11 +116,16 @@ public class ProjectView extends Observable {
      */
     public Boolean loadStudentDBInfo() {
         //todo: why is it erroring to get the project ID for the curr user;
-        String[] userNameAL = {mv.getCurrUserName()};
+        ArrayList<String> userNameAL = new ArrayList<String>();
+        userNameAL.add(mv.getCurrUserName());
         System.out.println(rs);
-        rs = new String[2][1];
+        //rs = new String[2][1];
         rs = msdb.getData("select * from user_project_link where UserName in (?)",userNameAL);
-        mv.setCurrProjectID(rs[1][1]);
+        //mv.setCurrProjectID(rs[1][1]);
+        for (ArrayList<String> row : rs)
+        {
+            mv.setCurrProjectID(row.get(1));
+        }
         String[] projectIDAL = {mv.getCurrProjectID()};
         rs = msdb.getData("Select Name, Summary, Topic, DueDate, Grade from  project where ID in (?)", projectIDAL);
 

@@ -130,7 +130,7 @@ public class MySQLDatabase extends Observable {
      * @param strvals Statement String
      * @return SQL Statement PreparedStatement
      */
-    public PreparedStatement prepare(String sql, String[] strvals) {
+    public PreparedStatement prepare(String sql, ArrayList<String> strvals) {
         PreparedStatement ps = null;
         String preparedStr = sql; //sql string must contain ?
         //strvals list must contain values in order of ?
@@ -139,13 +139,13 @@ public class MySQLDatabase extends Observable {
             ps = conn.prepareStatement(preparedStr);
             //int j = 1;
             //TODO: same issue as getAllData todo -Blake
-            for (int i = 0; i < strvals.length; i++) {
+            for (int i = 0; i < strvals.size(); i++) {
                 //todo: Set to the correct datatype rather than sring every time
-
-                if (Character.isDigit(strvals[i].charAt(0)) && strvals[i].length() == 1) {
-                    ps.setInt(i + 1, Integer.parseInt(strvals[i]));
+                
+                if (Character.isDigit(strvals.get(i).charAt(0)) && strvals.get(i).length() == 1) {
+                    ps.setInt(i + 1, Integer.parseInt(strvals.get(i)));
                 } else {
-                    ps.setString(i + 1, strvals[i]);
+                    ps.setString(i + 1, strvals.get(i));
                 }
             }
             //System.out.println(ps);
@@ -162,37 +162,42 @@ public class MySQLDatabase extends Observable {
      * @param strvals values String[]
      * @return String[][] of all the data
      */
-    public String[][] getData(String sql, String[] strvals) {
-        try {
-            PreparedStatement stmt = prepare(sql, strvals);
+    public ArrayList<ArrayList<String>> getData(String sqlCMD, ArrayList<String> vals) {
+        ArrayList<ArrayList<String>> dataList = new ArrayList<ArrayList<String>>();
+        ArrayList<String> headerRow = new ArrayList<String>();
+        PreparedStatement stmt = prepare(sqlCMD, vals);
+        try{
+            System.out.println(stmt.executeQuery());
             ResultSet rs = stmt.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
-            //boolean yesNo = colnames;                           ///NEW
-            int columnCount = rsmd.getColumnCount();
-            String headers[] = new String[columnCount];
-            //new
-            for (int i = 1; i <= columnCount; i++) {          //loops through and collects headings and their lengths
-                headers[i - 1] = rsmd.getColumnName(i);     //creates the column heading for chart
-            }
             while (rs.next()) {
-                sqlArr = new String[headers.length][columnCount];
-                for (int i = 0; i < 2; i++) {
-                    for (int j = 1; j <= columnCount; j++) {
-                        if (i == 0) {
-                            sqlArr[i][j - 1] = headers[j - 1]; //loop through column data from list(?) and populate this row with column headers
-                        } else {
-                            sqlArr[i][j - 1] = rs.getString(j);
-                        }
-                    }
+                ArrayList<String> row = new ArrayList<String>();
+                for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+                    row.add(rs.getString(i));
                 }
+                dataList.add(row);
             }
-        } catch (SQLException sqle) {
-            System.out.println(sqle);
-            //System.out.println("Error in getData(): SQL Statement not valid (?) ");
-        } catch (NullPointerException npe) {
-            System.out.println(npe);
+            for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+                headerRow.add(rsmd.getColumnName(i));
+            }
+            dataList.add(0,headerRow);
+            return dataList;
         }
-        return sqlArr;
+		catch (SQLException sqle) {
+			System.out.println(sqle);
+			dataList = null;
+            return dataList;
+		}
+		catch (NullPointerException npe) {
+			System.out.println(npe);
+			dataList = null;
+            return dataList;
+		}
+        catch (Exception E){
+			System.out.println(E);
+            dataList = null;
+            return dataList;
+        }
     } // end getData();
 
     /**
@@ -202,7 +207,7 @@ public class MySQLDatabase extends Observable {
      * @param strvals values String[]
      * @return boolean depending on the success of the update, insert, or delete
      */
-    public boolean setData(String sql, String[] strvals) {
+    public boolean setData(String sql, ArrayList<String> strvals) {
         boolean flag = true;
         if (executeStmt(sql, strvals) == -1) {
             flag = false;
@@ -219,7 +224,7 @@ public class MySQLDatabase extends Observable {
      * @param strvals values String[]
      * @return results affected int
      */
-    public int executeStmt(String sql, String[] strvals) {
+    public int executeStmt(String sql, ArrayList<String> strvals) {
         int rc = 0;
         try {
             PreparedStatement stmt = prepare(sql, strvals);
@@ -240,22 +245,36 @@ public class MySQLDatabase extends Observable {
      */
     public Boolean login(String username, String password) {
         //creating new string array for the username
-        String[] userNameAL = new String[1];
+        ArrayList<String> userNameAL = new ArrayList<String>();
         if (username.isEmpty() || password.isEmpty()) {
             return false;
         }
 
         try {
-            userNameAL[0] = username; //setting the string array to the username.
+            userNameAL.add(username); //setting the string array to the username.
             msdb.makeConnection(); //making a connection
-            String[][] rs = msdb.getData("SELECT Password, Role FROM user WHERE UserName in (?);", userNameAL); //getting the values from the database
-            String dbPassword = rs[0][0]; //getting the password
-            String usrRole = rs[1][1]; //getting the user role
+            ArrayList<ArrayList<String>> rs = msdb.getData("SELECT Password, Role FROM user WHERE UserName in (?);", userNameAL); //getting the values from the database
+            
+            String dbPassword = null;
+            String userRole = null;
+            
+            for (ArrayList<String> list : rs)
+            {
+               dbPassword = list.get(0);
+               userRole = list.get(1); 
+            }
+            
+            System.out.println(dbPassword);
+            System.out.println(userRole);
+            System.out.println(password);
+            
+            //String dbPassword = rs[0][0]; //getting the password
+            //String usrRole = rs[1][1]; //getting the user role
             //if the password fields text that was inputed from the user equals the databases password,
             // then set loginSuccess = true, then continue to the next block.
             if (password.equals(dbPassword)) {
                 this.userName = username;
-                this.role = usrRole;
+                this.role = userRole;
                 return true;
             }
 

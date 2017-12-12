@@ -1,5 +1,6 @@
 package View;
 
+import java.util.*;
 import Model.MySQLDatabase;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -25,7 +26,7 @@ public class InfoView extends Observable {
     private String[][] sqlData;
     private Label userInfoHeaderLabel,labName, labUserName, labDepartment, labGradDate, labMajor, labRole;
     private GridPane gp;
-    private String[][] returnData;
+    private ArrayList<ArrayList<String>> returnData;
 
     public InfoView(MasterView _mv) {
         this.mv = _mv;
@@ -93,15 +94,24 @@ public class InfoView extends Observable {
      * gets all of the data to be put next to the labels in the grid.
      */
     public void loadStudentDBInfo() {
-        String[] userNameAL = {mv.getCurrUserName()};
+        ArrayList<String> userNameAL = new ArrayList<String>();
+        userNameAL.add(mv.getCurrUserName());
+        //ArrayList<String> userNameAL = {mv.getCurrUserName()};
         returnData = msdb.getData("SELECT CONCAT(FirstName, ' ',  LastName) as 'Name' , UserName, Department, GraduationDate,Major, Role FROM user where UserName in (?)", userNameAL);
         int rowCount = 0;
-        for (String str : returnData[1]){
-            Label lab = new Label(str);
-            lab.getStyleClass().add("infoDataLabel");
-            gp.add(lab,1,++rowCount);
-
-        }
+        
+        ArrayList<String> str = returnData.get(1);
+        
+        //for (ArrayList<String> str : returnData)
+        //{
+            for (int i = 0; i < str.size(); i++)
+            {
+               System.out.println(str.get(i));
+               Label lab = new Label(str.get(i));
+               lab.getStyleClass().add("infoDataLabel");
+               gp.add(lab,1,++rowCount);
+            }
+        //}
     }
 
     /**
