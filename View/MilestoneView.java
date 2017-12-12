@@ -3,6 +3,7 @@ package View;
 import Model.MySQLDatabase;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
@@ -58,9 +59,15 @@ public class MilestoneView extends Observable{
     }
 
     //TODO: Functionality to switch between milestones based on value of dropdown.
-    public void switchMilestone(int msNum){
+    public void switchMilestone(String msNum){
         //switch the page to show the passed in milestone number
 
+        String[][] rs = msdb.getData("Select StatusCode,Name,Number,DueDate,Approved from milestone where ID in (?)",new String[]{msNum});
+        for (String curr : rs[1]){
+            Label lab = new Label(curr);//make a new label with the DB text
+            //add the label to the gridpane in the correct spot. col = 1, row = counter
+
+        }
         //make a msdb query to get milestone info where milestoneNumber = msNum;
     }
 
@@ -68,7 +75,11 @@ public class MilestoneView extends Observable{
     public ComboBox makeMilestoneDropdown(){
         milestoneDropdown = new ComboBox<String>();
         //how ever many milestones there are, that should be the length of the combo box
-        String[][] rs = msdb.getData("select MilestoneID from project_milestone_link where ProjectID in (?)", new String[] {mv.getCurrProjectID()});
+        String[] projectIDStr = new String[1];
+        projectIDStr[0] = mv.getCurrProjectID();
+        System.out.println(projectIDStr[0]);
+        //TODO: need to figure out why project ID in ProjecView.loadStudentInfo() is erroring before going on this
+        String[][] rs = msdb.getData("select MilestoneID from project_milestone_link where ProjectID in (?)", projectIDStr);
         for (String curr : rs[1]){
             System.out.println(curr);
         }
@@ -78,8 +89,8 @@ public class MilestoneView extends Observable{
         //this fires when the dropdown changes.
         milestoneDropdown.setOnAction(e ->{
             String newMilestoneStr = (String) milestoneDropdown.getValue(); //this is the value of the drop down. "milestone x" need to extract the number
-            int newMilestoneInt = Integer.parseInt(newMilestoneStr.substring(-1));//Get the last character of the string (should be milestone num) and change it to an int
-            switchMilestone(newMilestoneInt);
+            newMilestoneStr = newMilestoneStr.substring(-1);//Get the last character of the string (should be milestone num) and change it to an int
+            switchMilestone(newMilestoneStr);
         });
         return milestoneDropdown;
     }
