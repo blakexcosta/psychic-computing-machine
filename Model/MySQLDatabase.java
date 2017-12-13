@@ -303,10 +303,11 @@ public class MySQLDatabase extends Observable {
      * @return
      * @param _userID is passed in and will usually be the current user
      */
-    public Boolean checkUserHasNotifications(String _userID){
+    public Boolean checkUserHasNotifications(String _userID, String type){
         ArrayList<String> queryVals = new ArrayList<>();
         queryVals.add(_userID);
-        ArrayList<ArrayList<String>> rs = getData("SELECT * from user_notifications where NotifiedUserName in (?)",queryVals);
+        queryVals.add(type);
+        ArrayList<ArrayList<String>> rs = getData("SELECT * from user_notifications where NotifiedUserName in (?) and NotificationType in (?)",queryVals);
         if (rs.size() == 1){return false;}//all it got back was headers
         else if (rs.size() > 1){return true;}//got back more than one row means there was data.
         return false;
@@ -316,10 +317,11 @@ public class MySQLDatabase extends Observable {
      * This checks the NOTIFIED user
      * @return
      */
-    public Boolean checkUserWaitingOnNotifications(String _userID){
+    public Boolean checkUserWaitingOnNotifications(String _userID, String type){
         ArrayList<String> queryVals = new ArrayList<>();
         queryVals.add(_userID);
-        ArrayList<ArrayList<String>> rs = getData("SELECT * from user_notifications where NotifierUserName in (?) and Approved is null",queryVals);
+        queryVals.add(type);
+        ArrayList<ArrayList<String>> rs = getData("SELECT * from user_notifications where NotifierUserName in (?) and Approved is null and NotificationType in (?)",queryVals);
         if (rs.size() == 1){return false;}//all it got back was headers
         else if (rs.size() > 1){return true;}//got back more than one row means there was data.
         return true;

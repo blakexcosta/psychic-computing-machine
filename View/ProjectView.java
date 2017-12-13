@@ -277,6 +277,10 @@ public class ProjectView extends Observable {
         gp.setHgap(5);
         gp.setVgap(5);
 
+        //TODO: If checkUserWaitingOnNotifications is true then it should pop up a box. All professors they are waiting on and a button to email them.
+        //Professor Name - [Click to send email notification]
+        //If they are waiting on committee notifications make a box to email the prof
+
         Label committeeHeader = new Label("Committee information");
         Button addMemberButton = new Button("Add a committee member");
 
@@ -305,9 +309,52 @@ public class ProjectView extends Observable {
         }
         setChanged();
         notifyObservers(sc);
+        if (msdb.checkUserWaitingOnNotifications(mv.getCurrUserName(),"committee")){makeEmailNotifyPopup();}
+
 
     }
 
+    /**
+     * This is only made if the current user is waiting on committee members to accept (or decline).
+     * Clicking the button will send an email to the professor.
+     */
+    private void makeEmailNotifyPopup(){
+        Stage popupWindow = new Stage();
+        gp = new GridPane();
+        Scene popupInfo = new Scene(gp, 600, 800);
+        popupWindow.setScene(popupInfo);
+
+        ArrayList<String> queryVals = new ArrayList<>();
+        queryVals.add(mv.getCurrUserName());
+        rs = msdb.getData("SELECT NotifiedUserName from user_notifications where NotifierUserName in (?) and Approved is null and NotificationType in ('committee')",queryVals);
+
+        Label Header = new Label("Click the button to send an email notification");
+        gp.add(Header,0,0);
+        int rowCount = 0;
+        for (ArrayList<String> curr:rs){
+
+            if (rowCount == 0){}
+            else{
+                Button btn = new Button("NOTIFY");
+                btn.setOnAction(e -> {
+                    System.out.println("call email function from MV");
+                });
+                Label lab = new Label(curr.get(0));
+                gp.add(lab,0,rowCount);
+                gp.add(btn,1,rowCount);
+            }
+            rowCount++;
+        }
+
+        popupWindow.show();
+
+    }
+
+    /**
+     * Checks through all of the project IDs that have committee members.
+     * If this projectID is one of them it returns true
+     * @return
+     */
     private Boolean checkCommiteeMems() {
         rs = msdb.getData("select ProjectID from committee", new ArrayList<>());
         for (ArrayList<String> curr : rs) {
@@ -321,11 +368,6 @@ public class ProjectView extends Observable {
         gp = new GridPane();
         Scene popupInfo = new Scene(gp, 600, 800);
         popupWindow.setScene(popupInfo);
-
-        System.out.println("checking notifications! ");
-        System.out.println("Has: " +msdb.checkUserHasNotifications(mv.getCurrUserName()));
-        System.out.println("Waiting: "+msdb.checkUserWaitingOnNotifications(mv.getCurrUserName()));
-
         Label header = new Label("Choose a commitee member from the dropdown and click add member to notify them.");
 
         roleDropdown = new ComboBox<String>();
