@@ -20,7 +20,7 @@ public class MilestoneView extends Observable {
     private ComboBox milestoneDropdown;
     private GridPane gp;
     private HashMap<String, String> dropDownVal_ProjectID = new HashMap<String, String>();
-    private Label statusLab,nameLab,numberLab,dueDateLab,approvedLab;
+    private Label statusLab, nameLab, numberLab, dueDateLab, approvedLab;
 
     public MilestoneView(MasterView _mv) {
         this.mv = _mv;
@@ -46,7 +46,7 @@ public class MilestoneView extends Observable {
         numberLab = new Label("Milestone Number: ");
         dueDateLab = new Label("Milestone Due Date: ");
         approvedLab = new Label("Approval Status: ");
-        gp.addColumn(0, makeMilestoneDropdown(),statusLab,nameLab,numberLab,dueDateLab,approvedLab);
+        gp.addColumn(0, makeMilestoneDropdown(), statusLab, nameLab, numberLab, dueDateLab, approvedLab);
 
 
         //After the scene is made completely these two methods run which will update the master view to our new view
@@ -84,21 +84,19 @@ public class MilestoneView extends Observable {
         //switch the page to show the passed in milestone number
 
         ArrayList<ArrayList<String>> rs = msdb.getData("Select StatusCode,Name,Number,DueDate,Approved from milestone where ID in (?)", new ArrayList<String>(Arrays.asList(msNum)));
-        System.out.println(rs);
-        int rowCount=1;
+        int rowCount = 1;
         //put all the new information on the page.clear it first
         gp.getChildren().clear();
-        gp.addColumn(0, makeMilestoneDropdown(),statusLab,nameLab,numberLab,dueDateLab,approvedLab);
+        gp.addColumn(0, makeMilestoneDropdown(), statusLab, nameLab, numberLab, dueDateLab, approvedLab);
         for (String curr : rs.get(1)) {
             Label lab = new Label(curr);//make a new label with the DB text
-            gp.add(lab,1,rowCount);
+            gp.add(lab, 1, rowCount);
             rowCount++;
             //add the label to the gridpane in the correct spot. col = 1, row = counter
         }
         //make a msdb query to get milestone info where milestoneNumber = msNum;
     }
 
-    //TODO: Finish functionality to make dropdown
     public ComboBox makeMilestoneDropdown() {
         milestoneDropdown = new ComboBox<String>();
         //how ever many milestones there are, that should be the length of the combo box
@@ -123,9 +121,9 @@ public class MilestoneView extends Observable {
         //map of Key: dropdownNumber value: projectID
         //this fires when the dropdown changes.
         milestoneDropdown.setOnAction(e -> {
-            String hashMapKeyStr = (String) milestoneDropdown.getValue(); //this is the value of the drop down. "milestone x" need to extract the number
-            hashMapKeyStr = hashMapKeyStr.substring(hashMapKeyStr.length() - 1);//Get the last character of the string (should be milestone num) and change it to an int
-            //todo: should be passing a string that is a single number. (1,2,3,4,5...)
+            //get the value from the combo box and cast it as a a string
+            String hashMapKeyStr = (String) milestoneDropdown.getValue(); //this is the value of the drop down. "1,2" need to extract the number
+            //pass the ProjectID value from the hashmap
             switchMilestone(dropDownVal_ProjectID.get(hashMapKeyStr));
         });
         return milestoneDropdown;

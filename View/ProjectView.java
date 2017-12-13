@@ -1,6 +1,7 @@
 package View;
 
 import Model.MySQLDatabase;
+import BusinessLayer.BusinessLayer;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -15,6 +16,7 @@ import java.util.Observable;
 
 public class ProjectView extends Observable {
     private MySQLDatabase msdb = MySQLDatabase.getInstance(); //there is only one instance of the database.
+    private BusinessLayer busLayer = new BusinessLayer();
     private MasterView mv;//this is passed in through the constructor
     private GridPane gp;
     private Label mainHeader, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade;
@@ -120,6 +122,7 @@ public class ProjectView extends Observable {
         //todo: why is it erroring to get the project ID for the curr user;
         ArrayList<String> userNameAL = new ArrayList<String>();
         userNameAL.add(mv.getCurrUserName());
+        System.out.println(rs);
         //rs = new String[2][1];
         rs = msdb.getData("select * from user_project_link where UserName in (?)",userNameAL);
         //mv.setCurrProjectID(rs[1][1]);
@@ -127,11 +130,12 @@ public class ProjectView extends Observable {
         {
             mv.setCurrProjectID(row.get(1));
         }
+        
         ArrayList<String> projectIDAL = new ArrayList<>();
         projectIDAL.add(mv.getCurrProjectID());
         rs = msdb.getData("Select Name, Summary, Topic, DueDate, Grade from  project where ID in (?)", projectIDAL);
 
-        if (rs== null || !rs.get(0).get(1).equals("Summary")) {//They do not have any project info, so we need to make the view to add a project.
+        if (rs.size() == 1) {//They do not have any project info, so we need to make the view to add a project.
             //TODO: notify the user that they have no projects before the new view is made.
             System.out.println("no projects found");
             makeAddProjectView();
@@ -139,11 +143,13 @@ public class ProjectView extends Observable {
         } else {
             //add their project info to the grid pane one row at a time
             int rowCount = 0;
-            for (String str : rs.get(1)) {
-                Label lab = new Label(str);
-                lab.getStyleClass().add("infoDataLabel");
-                gp.add(lab, 1, ++rowCount);
+            for (int i = 0; i < rs.get(1).size(); i++)
+            {
+               Label lab = new Label(rs.get(1).get(i));
+               lab.getStyleClass().add("infoDataLabel");
+               gp.add(lab, 1, ++rowCount);
             }
+           
             return true;
         }
     }
@@ -153,7 +159,7 @@ public class ProjectView extends Observable {
      * This view is made by a call in loadStudentDBInfo.
      * If there is no project info for a student this form will submit to the DB to add a new project for that user
      */
-    public void makeAddProjectView() {
+      public void makeAddProjectView() {
         //Main scene and border pane to put everything in
         Scene sc = mv.getBaseScene();
         BorderPane bp = (BorderPane) sc.getRoot();
@@ -182,8 +188,8 @@ public class ProjectView extends Observable {
             String projectLinkQuery = "INSERT INTO user_project_link (UserName,ProjectID) VALUES (?,?)";
 
             //Values to go in user_project_link query
-            ArrayList<String > projectLinkVals = new ArrayList<>(Arrays.asList(mv.getCurrUserName(), Integer.toString(newMaxID)));
-
+            ArrayList<String> projectLinkVals = new ArrayList<>(Arrays.asList(mv.getCurrUserName(), Integer.toString(newMaxID)));
+            
             //query to add a new project
             String newProjectQuery = "INSERT INTO project (ID,Name,Summary,Topic,Type,StartDate,EndDate,Completed,ProposalApproved)" +
                     " VALUES (?,?,?,?,?,?,?,?,?)";
@@ -191,14 +197,20 @@ public class ProjectView extends Observable {
             //Values to go in new project query
             ArrayList<String> newProjectVals = new ArrayList<>(Arrays.asList(Integer.toString(newMaxID), inputName.getText(), inputSummary.getText(), inputTopic.getText(), inputType.getText(),
                     inputStartDate.getText(), inputEndDate.getText(), "0", "0"));
-
+                    
+            //Business layer checks the values
+            boolean checkResult = busLayer.checkNewProject(newProjectVals);
+            System.out.println("Business Layer Check: " + checkResult);
+            
             //make the two calls to put it into the database
             //TODO: put this in a transaction?
-            msdb.setData(newProjectQuery, newProjectVals);
-            msdb.setData(projectLinkQuery, projectLinkVals);
-            //store the current projectID in the master view
-            mv.setCurrProjectID(Integer.toString(newMaxID));
-            makeStudentView();
+            if (checkResult) {
+               msdb.setData(newProjectQuery, newProjectVals);
+               msdb.setData(projectLinkQuery, projectLinkVals);
+               //store the current projectID in the master view
+               mv.setCurrProjectID(Integer.toString(newMaxID));
+               makeStudentView();
+            }
 
         });
 

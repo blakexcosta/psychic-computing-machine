@@ -100,17 +100,12 @@ public class InfoView extends Observable {
         returnData = msdb.getData("SELECT CONCAT(FirstName, ' ',  LastName) as 'Name' , UserName, Department, GraduationDate,Major, Role FROM user where UserName in (?)", userNameAL);
         int rowCount = 0;
         
-        ArrayList<String> str = returnData.get(1);
-        
-        //for (ArrayList<String> str : returnData)
-        //{
-            for (int i = 0; i < str.size(); i++)
-            {
-               Label lab = new Label(str.get(i));
-               lab.getStyleClass().add("infoDataLabel");
-               gp.add(lab,1,++rowCount);
-            }
-        //}
+         for (int i = 0; i < returnData.get(1).size(); i++)
+         {
+            Label lab = new Label(returnData.get(1).get(i));
+            lab.getStyleClass().add("infoDataLabel");
+            gp.add(lab,1,++rowCount);
+         }
     }
 
     /**
