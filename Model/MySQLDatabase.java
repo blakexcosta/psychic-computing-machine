@@ -297,4 +297,32 @@ public class MySQLDatabase extends Observable {
         }
     }
 
+    /**
+     * Returns true if the current user has notifications that they have not yet approved.
+     * This checks the NOTIFIED user
+     * @return
+     * @param _userID is passed in and will usually be the current user
+     */
+    public Boolean checkUserHasNotifications(String _userID){
+        ArrayList<String> queryVals = new ArrayList<>();
+        queryVals.add(_userID);
+        ArrayList<ArrayList<String>> rs = getData("SELECT * from user_notifications where NotifiedUserName in (?)",queryVals);
+        if (rs.size() == 1){return false;}//all it got back was headers
+        else if (rs.size() > 1){return true;}//got back more than one row means there was data.
+        return false;
+    }
+    /**
+     *Will return true if there is request made by the current user that is not marked as yes or no by a faculty / staff
+     * This checks the NOTIFIED user
+     * @return
+     */
+    public Boolean checkUserWaitingOnNotifications(String _userID){
+        ArrayList<String> queryVals = new ArrayList<>();
+        queryVals.add(_userID);
+        ArrayList<ArrayList<String>> rs = getData("SELECT * from user_notifications where NotifierUserName in (?) and Approved is null",queryVals);
+        if (rs.size() == 1){return false;}//all it got back was headers
+        else if (rs.size() > 1){return true;}//got back more than one row means there was data.
+        return true;
+    }
+
 } // end program

@@ -322,6 +322,10 @@ public class ProjectView extends Observable {
         Scene popupInfo = new Scene(gp, 600, 800);
         popupWindow.setScene(popupInfo);
 
+        System.out.println("checking notifications! ");
+        System.out.println("Has: " +msdb.checkUserHasNotifications(mv.getCurrUserName()));
+        System.out.println("Waiting: "+msdb.checkUserWaitingOnNotifications(mv.getCurrUserName()));
+
         Label header = new Label("Choose a commitee member from the dropdown and click add member to notify them.");
 
         roleDropdown = new ComboBox<String>();
@@ -335,12 +339,13 @@ public class ProjectView extends Observable {
             //The username to be notified.
             //todo: this is their actual name(because that is the val in the dropdown) it should be their username.
             notificationValsAL.add((String) memberDropdown.getValue());
+            //the user name of the person sending a notification
+            notificationValsAL.add(mv.getCurrUserName());
             //The type can be hard coded because it is being set in the committee window
             notificationValsAL.add("committee");
             //the current user wants to add you as a member of their committee
             notificationValsAL.add(mv.getCurrUserName() + " wants you to be on their committee");
-
-            msdb.setData("Insert into user_notifications (UserName,NotificationType,NotificationDesc) VALUES (?,?,?)",notificationValsAL);
+            msdb.setData("Insert into user_notifications (NotifiedUserName,NotifierUserName,NotificationType,NotificationDesc) VALUES (?,?,?,?)",notificationValsAL);
             makeStudentCommitteeView();
             popupWindow.close();
         });

@@ -226,9 +226,11 @@ DROP TABLE IF EXISTS `project_tracker`.`user_notifications` ;
 
 CREATE TABLE IF NOT EXISTS `project_tracker`.`user_notifications` (
   `NotificationID` INT(11) NOT NULL AUTO_INCREMENT,
-  `UserName` VARCHAR(20) NOT NULL,
+  `NotifiedUserName` VARCHAR(20) NOT NULL,
+  `NotifierUserName` VARCHAR(20) NOT NULL,
   `NotificationType` ENUM('committee') NOT NULL,
   `NotificationDesc` VARCHAR(50) NOT NULL,
+  `Approved` TINYINT(4) NULL,
   PRIMARY KEY (`NotificationID`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
