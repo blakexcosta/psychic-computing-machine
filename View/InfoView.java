@@ -200,7 +200,7 @@ public class InfoView extends Observable {
         gp.add(labName, 0, 1);
         gp.add(labUserName, 0, 2);
         gp.add(labDepartment, 0, 3);
-        gp.add(labRole, 0, 6);
+        gp.add(labRole, 0, 4);
         gp.gridLinesVisibleProperty().setValue(true);
 
         loadStudentDBInfo();//this sets the labels to the proper info using the local class instance of MSDB
