@@ -338,14 +338,14 @@ public class ProjectView extends Observable {
             ArrayList<String> notificationValsAL = new ArrayList<>();
             //The username to be notified.
             //todo: this is their actual name(because that is the val in the dropdown) it should be their username.
-            notificationValsAL.add((String) memberDropdown.getValue());
+            notificationValsAL.add(nameToUserName((String) memberDropdown.getValue()));
             //the user name of the person sending a notification
             notificationValsAL.add(mv.getCurrUserName());
             //The type can be hard coded because it is being set in the committee window
             notificationValsAL.add("committee");
             //the current user wants to add you as a member of their committee
             notificationValsAL.add(mv.getCurrUserName() + " wants you to be on their committee");
-            msdb.setData("Insert into user_notifications (NotifiedUserName,NotifierUserName,NotificationType,NotificationDesc) VALUES (?,?,?,?)",notificationValsAL);
+            msdb.setData("Insert into user_notifications (NotifiedUserName,NotifierUserName,NotificationType,NotificationDesc,Approved) VALUES (?,?,?,?,null)",notificationValsAL);
             makeStudentCommitteeView();
             popupWindow.close();
         });
@@ -374,9 +374,19 @@ public class ProjectView extends Observable {
         return memberDropdown;
 
     }
-    private ComboBox makeRoleOptionDropDown(){
 
-        return roleDropdown;
+    /**
+     * helper used to convert a Full Name to a user name EX: Gavin Drabik -> grd2747.
+     * @param _name to be converted
+     * @return
+     */
+    private String nameToUserName(String _name){
+        //Arraylist is the first name and last name split
+        ArrayList<String> queryVals = new ArrayList<>(Arrays.asList(_name.split(" ")));
+        //Get the username for that first and last name
+        rs = msdb.getData("SELECT UserName from user where FirstName in (?) and LastName in (?)",queryVals);
+        //return the username
+        return rs.get(1).get(0);
 
     }
 
