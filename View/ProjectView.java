@@ -358,6 +358,10 @@ public class ProjectView extends Observable {
 
     }
 
+    /**
+     * Makes the combo box that is put at the top when adding a staff or faculty member to your committee.
+     * @return
+     */
     private ComboBox makeMemberOptionDropdown() {
         memberDropdown = new ComboBox<String>();
         ArrayList<String> memberOptions;
@@ -369,10 +373,7 @@ public class ProjectView extends Observable {
                 memberDropdown.getItems().add(curr.get(0));
             }
         }
-        //loop through all fac / staff and add them as options
-
         return memberDropdown;
-
     }
 
     /**
