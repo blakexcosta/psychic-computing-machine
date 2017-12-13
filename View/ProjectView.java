@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +22,7 @@ public class ProjectView extends Observable {
     private GridPane gp;
     private Label mainHeader, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade;
     private TextField inputName, inputSummary, inputStartDate, inputEndDate, inputDueDate, inputTopic, inputType;
-    private Button showMilestones;
+    private Button showMilestonesButton,editInfoButton;
     private ArrayList<ArrayList<String>> rs;
 
 
@@ -59,14 +60,23 @@ public class ProjectView extends Observable {
         gp.add(mainHeader, 0, 0, 2, 1);
 
         //add the milestone button
-        showMilestones = new Button();
-        showMilestones.setText("Show Project Milestones");
+        showMilestonesButton = new Button();
+        showMilestonesButton.setText("Show Project Milestones");
 
-        showMilestones.setOnAction(e -> {
+        showMilestonesButton.setOnAction(e -> {
             //on click make the milestone view.
             mv.getMilestoneView().makeStudentView();
         });
-        gp.add(showMilestones, 0, 6);
+
+        editInfoButton = new Button();
+        editInfoButton.setText("Edit Project Information");
+        editInfoButton.setOnAction(e ->{
+            makeStudentEditView();
+        });
+
+
+        gp.add(showMilestonesButton, 0, 6);
+        gp.add(editInfoButton,1,6);
 
 
 
@@ -87,31 +97,6 @@ public class ProjectView extends Observable {
         notifyObservers(sc);
 
 
-    }
-
-    //TODO: Build out staff project view
-    public void makeStaffView() {
-        //this scene object comes from masterView. it has a border pane in it. The top object of the border pane has been set to the nav bar
-        //the borderpane can be referenced by casting an object seen below
-        Scene sc = mv.getBaseScene();
-        BorderPane bp = (BorderPane) sc.getRoot();
-
-        //After the scene is made completely these two methods run which will update the master view to our new view
-
-        setChanged();
-        notifyObservers(sc);
-    }
-
-    //TODO: Build out faculty project view
-    public void makeFacultyView() {
-        //this scene object comes from masterView. it has a border pane in it. The top object of the border pane has been set to the nav bar
-        //the borderpane can be referenced by casting an object seen below
-        Scene sc = mv.getBaseScene();
-        BorderPane bp = (BorderPane) sc.getRoot();
-
-        //After the scene is made completely these two methods run which will update the master view to our new view
-        setChanged();
-        notifyObservers(sc);
     }
 
     /**
@@ -234,4 +219,44 @@ public class ProjectView extends Observable {
         setChanged();
         notifyObservers(sc);
     }
+
+    private void makeStudentEditView(){
+        Stage popupWindow = new Stage();
+        gp = new GridPane();
+        Scene popupInfo = new Scene(gp,600,800);
+        popupWindow.setScene(popupInfo);
+        popupWindow.setOnCloseRequest(e -> {
+            System.out.println("popup closed");
+        });
+        popupWindow.show();
+
+    }
+
+    //TODO: Build out staff project view
+    public void makeStaffView() {
+        //this scene object comes from masterView. it has a border pane in it. The top object of the border pane has been set to the nav bar
+        //the borderpane can be referenced by casting an object seen below
+        Scene sc = mv.getBaseScene();
+        BorderPane bp = (BorderPane) sc.getRoot();
+
+        //After the scene is made completely these two methods run which will update the master view to our new view
+
+        setChanged();
+        notifyObservers(sc);
+    }
+
+    //TODO: Build out faculty project view
+    public void makeFacultyView() {
+        //this scene object comes from masterView. it has a border pane in it. The top object of the border pane has been set to the nav bar
+        //the borderpane can be referenced by casting an object seen below
+        Scene sc = mv.getBaseScene();
+        BorderPane bp = (BorderPane) sc.getRoot();
+
+        //After the scene is made completely these two methods run which will update the master view to our new view
+        setChanged();
+        notifyObservers(sc);
+    }
+
+
+
 }
