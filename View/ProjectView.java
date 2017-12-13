@@ -319,20 +319,24 @@ public class ProjectView extends Observable {
      * Clicking the button will send an email to the professor.
      */
     private void makeEmailNotifyPopup(){
+        //Make inital popup stuff
         Stage popupWindow = new Stage();
         gp = new GridPane();
         Scene popupInfo = new Scene(gp, 600, 800);
         popupWindow.setScene(popupInfo);
 
+        //Only val added is the current username
         ArrayList<String> queryVals = new ArrayList<>();
         queryVals.add(mv.getCurrUserName());
         rs = msdb.getData("SELECT NotifiedUserName from user_notifications where NotifierUserName in (?) and Approved is null and NotificationType in ('committee')",queryVals);
 
+        //make the header and put it on top.
         Label Header = new Label("Click the button to send an email notification");
         gp.add(Header,0,0);
         int rowCount = 0;
-        for (ArrayList<String> curr:rs){
 
+        //Loop through all professors that have not approved notifications. add their username and a button to email them.
+        for (ArrayList<String> curr:rs){
             if (rowCount == 0){}
             else{
                 Button btn = new Button("NOTIFY");
@@ -345,9 +349,8 @@ public class ProjectView extends Observable {
             }
             rowCount++;
         }
-
+        //show the window
         popupWindow.show();
-
     }
 
     /**
