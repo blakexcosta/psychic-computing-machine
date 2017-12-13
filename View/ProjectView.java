@@ -328,7 +328,7 @@ public class ProjectView extends Observable {
         Label header = new Label("Choose a commitee member from the dropdown and click add member to notify them.");
         Button addMemberButton = new Button("Add to committee");
         addMemberButton.setOnAction(e -> {
-            //todo: not sure if notfy the proessor to add the student or write query to actually add them?
+            //todo: not sure if we want to notify the professor to add the student or write query to actually add them?
             System.out.println("add " + memberDropdown.getValue());
             makeStudentCommitteeView();
             popupWindow.close();
@@ -336,12 +336,22 @@ public class ProjectView extends Observable {
         gp.add(header, 0, 0);
         gp.add(makeMemberOptionDropdown(), 0, 1);
         gp.add(addMemberButton, 0, 2);
-        
+        popupWindow.show();
+
 
     }
 
     private ComboBox makeMemberOptionDropdown() {
         memberDropdown = new ComboBox<String>();
+        ArrayList<String> memberOptions;
+        rs = msdb.getData("SELECT CONCAT(FirstName, ' ', LastName) as 'Name' FROM user WHERE role IN ('staff','faculty')",new ArrayList<>());
+        boolean header = true;
+        for (ArrayList<String> curr : rs){
+            if (header){header = false;}
+            else{
+                memberDropdown.getItems().add(curr.get(0));
+            }
+        }
         //loop through all fac / staff and add them as options
 
         return memberDropdown;
