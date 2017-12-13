@@ -5,6 +5,7 @@ import BusinessLayer.BusinessLayer;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -22,7 +23,8 @@ public class ProjectView extends Observable {
     private GridPane gp;
     private Label mainHeader, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade;
     private TextField inputName, inputSummary, inputStartDate, inputEndDate, inputDueDate, inputTopic, inputType;
-    private Button showMilestonesButton,editInfoButton;
+    private Button showMilestonesButton, editInfoButton, committeeInfoButton;
+    private ComboBox memberDropdown;
     private ArrayList<ArrayList<String>> rs;
 
 
@@ -70,14 +72,20 @@ public class ProjectView extends Observable {
 
         editInfoButton = new Button();
         editInfoButton.setText("Edit Project Information");
-        editInfoButton.setOnAction(e ->{
-            makeStudentEditView();
+
+        editInfoButton.setOnAction(e -> {
+            makeStudentEditInfoPopup();
+        });
+
+        committeeInfoButton = new Button("Show Committee Information");
+        committeeInfoButton.setOnAction(e -> {
+            makeStudentCommitteeView();
         });
 
 
         gp.add(showMilestonesButton, 0, 6);
-        gp.add(editInfoButton,1,6);
-
+        gp.add(editInfoButton, 0, 7);
+        gp.add(committeeInfoButton, 0, 8);
 
 
         //initialize all of the buttons and add them to the grid
@@ -110,13 +118,12 @@ public class ProjectView extends Observable {
         userNameAL.add(mv.getCurrUserName());
         System.out.println(rs);
         //rs = new String[2][1];
-        rs = msdb.getData("select * from user_project_link where UserName in (?)",userNameAL);
+        rs = msdb.getData("select * from user_project_link where UserName in (?)", userNameAL);
         //mv.setCurrProjectID(rs[1][1]);
-        for (ArrayList<String> row : rs)
-        {
+        for (ArrayList<String> row : rs) {
             mv.setCurrProjectID(row.get(1));
         }
-        
+
         ArrayList<String> projectIDAL = new ArrayList<>();
         projectIDAL.add(mv.getCurrProjectID());
         rs = msdb.getData("Select Name, Summary, Topic, DueDate, Grade from  project where ID in (?)", projectIDAL);
@@ -129,13 +136,12 @@ public class ProjectView extends Observable {
         } else {
             //add their project info to the grid pane one row at a time
             int rowCount = 0;
-            for (int i = 0; i < rs.get(1).size(); i++)
-            {
-               Label lab = new Label(rs.get(1).get(i));
-               lab.getStyleClass().add("infoDataLabel");
-               gp.add(lab, 1, ++rowCount);
+            for (int i = 0; i < rs.get(1).size(); i++) {
+                Label lab = new Label(rs.get(1).get(i));
+                lab.getStyleClass().add("infoDataLabel");
+                gp.add(lab, 1, ++rowCount);
             }
-           
+
             return true;
         }
     }
@@ -145,7 +151,7 @@ public class ProjectView extends Observable {
      * This view is made by a call in loadStudentDBInfo.
      * If there is no project info for a student this form will submit to the DB to add a new project for that user
      */
-      public void makeAddProjectView() {
+    public void makeAddProjectView() {
         //Main scene and border pane to put everything in
         Scene sc = mv.getBaseScene();
         BorderPane bp = (BorderPane) sc.getRoot();
@@ -175,7 +181,7 @@ public class ProjectView extends Observable {
 
             //Values to go in user_project_link query
             ArrayList<String> projectLinkVals = new ArrayList<>(Arrays.asList(mv.getCurrUserName(), Integer.toString(newMaxID)));
-            
+
             //query to add a new project
             String newProjectQuery = "INSERT INTO project (ID,Name,Summary,Topic,Type,StartDate,EndDate,Completed,ProposalApproved)" +
                     " VALUES (?,?,?,?,?,?,?,?,?)";
@@ -183,19 +189,19 @@ public class ProjectView extends Observable {
             //Values to go in new project query
             ArrayList<String> newProjectVals = new ArrayList<>(Arrays.asList(Integer.toString(newMaxID), inputName.getText(), inputSummary.getText(), inputTopic.getText(), inputType.getText(),
                     inputStartDate.getText(), inputEndDate.getText(), "0", "0"));
-                    
+
             //Business layer checks the values
             boolean checkResult = busLayer.checkNewProject(newProjectVals);
             System.out.println("Business Layer Check: " + checkResult);
-            
+
             //make the two calls to put it into the database
             //TODO: put this in a transaction?
             if (checkResult) {
-               msdb.setData(newProjectQuery, newProjectVals);
-               msdb.setData(projectLinkQuery, projectLinkVals);
-               //store the current projectID in the master view
-               mv.setCurrProjectID(Integer.toString(newMaxID));
-               makeStudentView();
+                msdb.setData(newProjectQuery, newProjectVals);
+                msdb.setData(projectLinkQuery, projectLinkVals);
+                //store the current projectID in the master view
+                mv.setCurrProjectID(Integer.toString(newMaxID));
+                makeStudentView();
             }
 
         });
@@ -220,15 +226,125 @@ public class ProjectView extends Observable {
         notifyObservers(sc);
     }
 
-    private void makeStudentEditView(){
+    private void makeStudentEditInfoPopup() {
         Stage popupWindow = new Stage();
         gp = new GridPane();
-        Scene popupInfo = new Scene(gp,600,800);
+        Scene popupInfo = new Scene(gp, 600, 800);
         popupWindow.setScene(popupInfo);
-        popupWindow.setOnCloseRequest(e -> {
-            System.out.println("popup closed");
-        });
+        Label header = new Label("Input new project information");
+        Label nameLab = new Label("New Name: ");
+        Label summLab = new Label("New Summary: ");
+        Label topicLab = new Label("New Topic: ");
+
+        TextField inputName = new TextField();
+        TextField inputSumm = new TextField();
+        TextField inputTopic = new TextField();
+
+        Button submitButton = new Button("Submit Changes");
+
+        gp.addColumn(0, header, nameLab, summLab, topicLab, submitButton);
+        gp.addColumn(1, new Label(), inputName, inputSumm, inputTopic);
+
+
         popupWindow.show();
+
+        submitButton.setOnAction(e -> {
+            ArrayList<String> projectIDAL = new ArrayList<>(Arrays.asList(mv.getCurrProjectID()));
+
+            if (!inputName.getText().isEmpty()) {
+                msdb.setData("UPDATE project set Name='" + inputName.getText() + "' where ID in (?)", projectIDAL);
+            }
+            if (!inputSumm.getText().isEmpty()) {
+                msdb.setData("UPDATE project set Summary='" + inputSumm.getText() + "' where ID in (?)", projectIDAL);
+            }
+            if (!inputTopic.getText().isEmpty()) {
+                msdb.setData("UPDATE project set Topic='" + inputTopic.getText() + "' where ID in (?)", projectIDAL);
+            }
+            makeStudentView();
+            popupWindow.close();
+        });
+
+
+    }
+
+    private void makeStudentCommitteeView() {
+        Scene sc = mv.getBaseScene();
+        //add the css sheet
+        sc.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());//add css files
+        //cast the border pane from the scene so it can be used.
+        BorderPane bp = (BorderPane) sc.getRoot();
+        //make a grid pane to put data on
+        gp = new GridPane();
+        bp.setCenter(gp);
+        gp.setAlignment(Pos.CENTER);
+        gp.setHgap(5);
+        gp.setVgap(5);
+
+        Label committeeHeader = new Label("Committee information");
+        Button addMemberButton = new Button("Add a committee member");
+
+        addMemberButton.setOnAction(e -> {
+            makeAddMemberPopup();
+        });
+        gp.add(committeeHeader, 0, 0);
+
+        if (checkCommiteeMems()) {
+            //They do have committee members. Display them and their role. THEN the button to add
+            System.out.println(mv.getCurrProjectID());
+            rs = msdb.getData("Select UserName, Role from committee where ProjectID in (?)",
+                    new ArrayList<String>(Arrays.asList(mv.getCurrProjectID())));
+            int rowCount = 0;
+            for (ArrayList<String> curr : rs) {
+                if (rowCount == 0){}
+                else {
+                    Label lab = new Label(curr.get(1) + ": " + curr.get(0));
+                    gp.add(lab,0,rowCount);
+                }
+                rowCount++;
+            }
+            gp.add(addMemberButton,0,rowCount);
+
+        } else {//they do not have any committee members. only add the button to add new members
+            gp.add(addMemberButton, 0, 1);
+        }
+        setChanged();
+        notifyObservers(sc);
+
+    }
+
+    private Boolean checkCommiteeMems() {
+        rs = msdb.getData("select ProjectID from committee", new ArrayList<>());
+        for (ArrayList<String> curr : rs) {
+            if (curr.get(0).equals(mv.getCurrProjectID())) return true;
+        }
+        return false;
+    }
+
+    private void makeAddMemberPopup() {
+        Stage popupWindow = new Stage();
+        gp = new GridPane();
+        Scene popupInfo = new Scene(gp, 600, 800);
+        popupWindow.setScene(popupInfo);
+        Label header = new Label("Choose a commitee member from the dropdown and click add member to notify them.");
+        Button addMemberButton = new Button("Add to committee");
+        addMemberButton.setOnAction(e -> {
+            //todo: not sure if notfy the proessor to add the student or write query to actually add them?
+            System.out.println("add " + memberDropdown.getValue());
+            makeStudentCommitteeView();
+            popupWindow.close();
+        });
+        gp.add(header, 0, 0);
+        gp.add(makeMemberOptionDropdown(), 0, 1);
+        gp.add(addMemberButton, 0, 2);
+        
+
+    }
+
+    private ComboBox makeMemberOptionDropdown() {
+        memberDropdown = new ComboBox<String>();
+        //loop through all fac / staff and add them as options
+
+        return memberDropdown;
 
     }
 
@@ -256,7 +372,6 @@ public class ProjectView extends Observable {
         setChanged();
         notifyObservers(sc);
     }
-
 
 
 }
