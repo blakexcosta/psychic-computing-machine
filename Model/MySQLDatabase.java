@@ -167,7 +167,6 @@ public class MySQLDatabase extends Observable {
         ArrayList<String> headerRow = new ArrayList<String>();
         PreparedStatement stmt = prepare(sqlCMD, vals);
         try{
-            System.out.println(stmt.executeQuery());
             ResultSet rs = stmt.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
             while (rs.next()) {

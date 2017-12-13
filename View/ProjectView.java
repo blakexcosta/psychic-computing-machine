@@ -24,7 +24,7 @@ public class ProjectView extends Observable {
     private Label mainHeader, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade;
     private TextField inputName, inputSummary, inputStartDate, inputEndDate, inputDueDate, inputTopic, inputType;
     private Button showMilestonesButton, editInfoButton, committeeInfoButton;
-    private ComboBox memberDropdown;
+    private ComboBox memberDropdown, roleDropdown;
     private ArrayList<ArrayList<String>> rs;
 
 
@@ -116,10 +116,7 @@ public class ProjectView extends Observable {
         //todo: why is it erroring to get the project ID for the curr user;
         ArrayList<String> userNameAL = new ArrayList<String>();
         userNameAL.add(mv.getCurrUserName());
-        System.out.println(rs);
-        //rs = new String[2][1];
         rs = msdb.getData("select * from user_project_link where UserName in (?)", userNameAL);
-        //mv.setCurrProjectID(rs[1][1]);
         for (ArrayList<String> row : rs) {
             mv.setCurrProjectID(row.get(1));
         }
@@ -290,7 +287,6 @@ public class ProjectView extends Observable {
 
         if (checkCommiteeMems()) {
             //They do have committee members. Display them and their role. THEN the button to add
-            System.out.println(mv.getCurrProjectID());
             rs = msdb.getData("Select UserName, Role from committee where ProjectID in (?)",
                     new ArrayList<String>(Arrays.asList(mv.getCurrProjectID())));
             int rowCount = 0;
@@ -325,17 +321,33 @@ public class ProjectView extends Observable {
         gp = new GridPane();
         Scene popupInfo = new Scene(gp, 600, 800);
         popupWindow.setScene(popupInfo);
+
         Label header = new Label("Choose a commitee member from the dropdown and click add member to notify them.");
+
+        roleDropdown = new ComboBox<String>();
+        roleDropdown.getItems().addAll("chair","reader","other");
+
         Button addMemberButton = new Button("Add to committee");
+
         addMemberButton.setOnAction(e -> {
-            //todo: not sure if we want to notify the professor to add the student or write query to actually add them?
-            System.out.println("add " + memberDropdown.getValue());
+            //todo: not sure if we want to notify the professor to add the student or write query to actually add them?abab
+            ArrayList<String> notificationValsAL = new ArrayList<>();
+            //The username to be notified.
+            //todo: this is their actual name(because that is the val in the dropdown) it should be their username.
+            notificationValsAL.add((String) memberDropdown.getValue());
+            //The type can be hard coded because it is being set in the committee window
+            notificationValsAL.add("committee");
+            //the current user wants to add you as a member of their committee
+            notificationValsAL.add(mv.getCurrUserName() + " wants you to be on their committee");
+
+            msdb.setData("Insert into user_notifications (UserName,NotificationType,NotificationDesc) VALUES (?,?,?)",notificationValsAL);
             makeStudentCommitteeView();
             popupWindow.close();
         });
         gp.add(header, 0, 0);
-        gp.add(makeMemberOptionDropdown(), 0, 1);
-        gp.add(addMemberButton, 0, 2);
+        gp.add(roleDropdown, 0, 1);
+        gp.add(makeMemberOptionDropdown(), 0, 2);
+        gp.add(addMemberButton, 0, 3);
         popupWindow.show();
 
 
@@ -355,6 +367,11 @@ public class ProjectView extends Observable {
         //loop through all fac / staff and add them as options
 
         return memberDropdown;
+
+    }
+    private ComboBox makeRoleOptionDropDown(){
+
+        return roleDropdown;
 
     }
 

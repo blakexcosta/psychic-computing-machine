@@ -121,7 +121,6 @@ public class MasterView extends Application implements Observer{
         logOutButton.setStyle(buttonStyle);
         logOutButton.setOnAction(e -> {
             //remake the login view. Get rid of stored database variablesz
-            System.out.println("logout clicked.");
             //make it go back to the login screen
             // TODO: 12/12/17 I see an issue with this. state information may break, but we'll cross that bridge when we get there -Blake.
             loginView.makeLoginView();
