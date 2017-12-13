@@ -39,7 +39,7 @@ public class MasterView extends Application implements Observer{
         return currUserName;
     }
 
-    public MySQLDatabase getMsdb(){return msdb;}
+    public MySQLDatabase getMsdb(){return MySQLDatabase.getInstance();}
 
     public String getCurrProjectID() {
         return currProjectID;
