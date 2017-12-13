@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.Observable;
 
 public class ProjectView extends Observable {
-    private MySQLDatabase msdb = MySQLDatabase.getInstance(); //there is only one instance of the database.
+    private MySQLDatabase msdb; //there is only one instance of the database.
     private BusinessLayer busLayer = new BusinessLayer();
     private MasterView mv;//this is passed in through the constructor
     private GridPane gp;
@@ -27,6 +27,7 @@ public class ProjectView extends Observable {
 
     public ProjectView(MasterView _mv) {
         this.mv = _mv;
+        msdb = mv.getMsdb();
     }
 
     //TODO: Build out student project view

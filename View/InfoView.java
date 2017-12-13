@@ -21,7 +21,7 @@ import java.util.Observable;
 
 public class InfoView extends Observable {
     //both of these are in ALL the view classes
-    private MySQLDatabase msdb = MySQLDatabase.getInstance(); //there is only one instance of the database.
+    private MySQLDatabase msdb; //there is only one instance of the database.
     private MasterView mv;//this is passed in through the constructor
     private String[][] sqlData;
     private Label userInfoHeaderLabel,labName, labUserName, labDepartment, labGradDate, labMajor, labRole;
@@ -30,6 +30,7 @@ public class InfoView extends Observable {
 
     public InfoView(MasterView _mv) {
         this.mv = _mv;
+        msdb = mv.getMsdb();
     }
 
     //TODO: Build out student info view (make it look nice. also add the information in loadStudentDBInfo)

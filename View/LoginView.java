@@ -24,7 +24,7 @@ import java.util.Observable;
  */
 public class LoginView extends Observable {
     //both of these are in ALL the view classes
-    private MySQLDatabase msdb = MySQLDatabase.getInstance(); //there is only one instance of the database.
+    private MySQLDatabase msdb; //there is only one instance of the database.
     private MasterView mv;//this is passed in through the constructor
 
     private Label labUserName, labPassword;
@@ -35,6 +35,7 @@ public class LoginView extends Observable {
 
     public LoginView(MasterView _mv) {
         this.mv = _mv;
+        msdb = mv.getMsdb();
     }
 
     public void makeLoginView() {
