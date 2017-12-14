@@ -16,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -91,10 +92,22 @@ public class ProjectView extends Observable {
         });
 
 
-        gp.add(showMilestonesButton, 0, 7);
-        gp.add(editInfoButton, 0, 8);
-        gp.add(committeeInfoButton, 0, 9);
+        gp.add(showMilestonesButton, 0, 8);
+        gp.add(editInfoButton, 0, 9);
+        gp.add(committeeInfoButton, 0, 10);
 
+        //project progress bar
+        //get data
+        ArrayList<String> projectIDAL = new ArrayList<>();
+        projectIDAL.add(mv.getCurrProjectID());
+        rs = msdb.getData("SELECT MAX(StatusCode) FROM milestone JOIN project_milestone_link on (milestone.ID = project_milestone_link.MilestoneID) WHERE project_milestone_link.ProjectID in (?)", projectIDAL);
+        String maxStatus = rs.get(1).get(0).toString();
+        System.out.println("MAX STATUS CODE: " + maxStatus);
+        double maxStatusNum = Double.parseDouble(maxStatus);
+        double progressBarVal = (maxStatusNum / 1600);
+        ProgressBar projectStatusBar = new ProgressBar();
+        System.out.println("Progress Bar Value: " + progressBarVal);
+        projectStatusBar.setProgress(progressBarVal);
 
         //initialize all of the buttons and add them to the grid
         labName = new Label("Name: ");
@@ -109,6 +122,7 @@ public class ProjectView extends Observable {
         gp.add(labDueDate, 0, 4);
         gp.add(labGrade, 0, 5);
         gp.add(labApproved, 0, 6);
+        gp.add(projectStatusBar, 0, 7);
 
         //After the scene is made completely these two methods run which will update the master view to our new view
         setChanged();
