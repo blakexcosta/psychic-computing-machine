@@ -173,7 +173,6 @@ CREATE TABLE IF NOT EXISTS `project_tracker`.`project_milestone_link` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-
 -- -----------------------------------------------------
 -- Table `project_tracker`.`committee`
 -- -----------------------------------------------------
@@ -187,16 +186,15 @@ CREATE TABLE IF NOT EXISTS `project_tracker`.`committee` (
   CONSTRAINT `Committee_User_FK`
     FOREIGN KEY (`UserName`)
     REFERENCES `project_tracker`.`user` (`UserName`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `Committee_Project_FK`
     FOREIGN KEY (`ProjectID`)
     REFERENCES `project_tracker`.`project` (`ID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
-
 
 -- -----------------------------------------------------
 -- Table `project_tracker`.`user_project_link`
@@ -680,3 +678,7 @@ INSERT INTO `project_tracker`.`user_project_link` (`UserName`, `ProjectID`) VALU
 
 COMMIT;
 
+-- -----------------------------------------------------
+-- Foreign Key
+-- -----------------------------------------------------
+ALTER TABLE milestone ADD FOREIGN KEY (ID) REFERENCES project_milestone_link(MilestoneID) ON UPDATE CASCADE ON DELETE CASCADE;

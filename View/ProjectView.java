@@ -32,7 +32,7 @@ public class ProjectView extends Observable {
     private GridPane gp;
     private Label mainHeader, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved;
     private TextField inputName, inputSummary, inputStartDate, inputEndDate, inputDueDate, inputTopic, inputType;
-    private Button showMilestonesButton, editInfoButton, committeeInfoButton;
+    private Button showMilestonesButton, editInfoButton, committeeInfoButton, deleteProjectButton;
     private ComboBox memberDropdown;
     private ArrayList<ArrayList<String>> rs;
 
@@ -90,11 +90,16 @@ public class ProjectView extends Observable {
         committeeInfoButton.setOnAction(e -> {
             makeStudentCommitteeView();
         });
-
+        
+        deleteProjectButton = new Button("Delete Project");
+        deleteProjectButton.setOnAction( e -> {
+            deleteConfirmPopup();
+         });
 
         gp.add(showMilestonesButton, 0, 8);
         gp.add(editInfoButton, 0, 9);
         gp.add(committeeInfoButton, 0, 10);
+        gp.add(deleteProjectButton, 0, 11);
 
         //project progress bar
         //get data
@@ -507,5 +512,31 @@ public class ProjectView extends Observable {
         notifyObservers(sc);
     }
 
-
+   public void deleteConfirmPopup() {
+        Stage popupWindow = new Stage();
+        gp = new GridPane();
+        Scene popupInfo = new Scene(gp, 600, 800);
+        popupWindow.setScene(popupInfo);
+        Label header = new Label("Are you sure that you want to delete your project?");
+        
+        Button deleteButton = new Button("Yes");
+        Button cancelButton = new Button("Cancel");
+        
+        deleteButton.setOnAction(e -> {
+             ArrayList<String> projectIDAL = new ArrayList<>(Arrays.asList(mv.getCurrProjectID()));
+             msdb.setData("DELETE FROM project WHERE ID in (?)", projectIDAL);
+             makeStudentView();
+             popupWindow.close();
+        });
+        
+        cancelButton.setOnAction(e -> {
+            makeStudentView();
+            popupWindow.close(); 
+        });
+        
+        gp.add(header, 0, 0);
+        gp.add(deleteButton, 0, 1);
+        gp.add(cancelButton, 0, 2);
+        popupWindow.show();
+   }
 }
