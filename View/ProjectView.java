@@ -24,7 +24,7 @@ public class ProjectView extends Observable {
     private Label mainHeader, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved;
     private TextField inputName, inputSummary, inputStartDate, inputEndDate, inputDueDate, inputTopic, inputType;
     private Button showMilestonesButton, editInfoButton, committeeInfoButton;
-    private ComboBox memberDropdown, roleDropdown;
+    private ComboBox memberDropdown;
     private ArrayList<ArrayList<String>> rs;
 
 
@@ -394,8 +394,8 @@ public class ProjectView extends Observable {
         popupWindow.setScene(popupInfo);
         Label header = new Label("Choose a commitee member from the dropdown and click add member to notify them.");
 
-        roleDropdown = new ComboBox<String>();
-        roleDropdown.getItems().addAll("chair", "reader", "other");
+        memberDropdown = new ComboBox<String>();
+        memberDropdown.getItems().addAll("chair", "reader", "other");
 
         Button addMemberButton = new Button("Add to committee");
 
@@ -416,7 +416,7 @@ public class ProjectView extends Observable {
             popupWindow.close();
         });
         gp.add(header, 0, 0);
-        gp.add(roleDropdown, 0, 1);
+        gp.add(memberDropdown, 0, 1);
         gp.add(makeMemberOptionDropdown(), 0, 2);
         gp.add(addMemberButton, 0, 3);
         popupWindow.show();

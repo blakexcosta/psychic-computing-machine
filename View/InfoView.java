@@ -268,9 +268,9 @@ public class InfoView extends Observable {
 //          }
 //       }
       roleDropBox.getItems().addAll(
-         "Student",
-         "Faculty",
-         "Staff"
+         "student",
+         "faculty",
+         "staff"
       );
       return roleDropBox;
    }
@@ -279,20 +279,23 @@ public class InfoView extends Observable {
    private void makeEditPopup(String userTypeIdentifier) {
         //userTypeIdentifiers: s = student, stf = staff, f = faculty
         
+        ArrayList<String> userNameAL = new ArrayList<String>();
+        userNameAL.add(mv.getCurrUserName());
+        
         Stage popupWindow = new Stage();
         gp = new GridPane();
         Scene popupInfo = new Scene(gp, 600, 800);
         popupWindow.setScene(popupInfo);
         Label header = new Label("Input new user information");
-        Label nameLab = new Label("New Name: ");
-        Label usernLab = new Label("New Username: ");
+        //Label nameLab = new Label("New Name: ");
+        //Label usernLab = new Label("New Username: ");
         Label deptLab = new Label("New Department: ");
 		Label gradDateLab = new Label("New Graduation Date: ");
 		Label majLab = new Label("New Major: ");
 		Label roleLab = new Label("New Role: ");
 
-        TextField inputName = new TextField();
-        TextField inputUsrName = new TextField();
+        //TextField inputName = new TextField();
+        //TextField inputUsrName = new TextField();
         TextField inputDept = new TextField();
 		TextField inputGradDate = new TextField();
 		TextField inputMaj = new TextField();
@@ -303,40 +306,68 @@ public class InfoView extends Observable {
 
         Button submitButton = new Button("Submit Changes");
 
-        gp.addColumn(0, header, nameLab, usernLab, deptLab, gradDateLab,majLab,roleLab, submitButton); //THIS WILL CHANGE DEPENDING ON USER TYPE
-        gp.addColumn(1, new Label(), inputName, inputUsrName, inputDept, inputGradDate, inputMaj, makeRoleOptionDropdown());
+        gp.addColumn(0, header, deptLab, gradDateLab,majLab,roleLab, submitButton); //THIS WILL CHANGE DEPENDING ON USER TYPE
+        gp.addColumn(1, new Label(), inputDept, inputGradDate, inputMaj, makeRoleOptionDropdown());
 		
-		//gp.add(makeRoleOptionDropdown(), 0, 2);
+        rs = msdb.getData("SELECT Role FROM user WHERE UserName=(?) ", userNameAL); //retrieves current user's role
+
+        roleDropBox.setValue( rs.get(1).get(0) );
+        String originalRole = roleDropBox.getValue().toString();
+
 
 
         popupWindow.show();
 
         submitButton.setOnAction(e -> {
             // ArrayList<String> projectIDAL = new ArrayList<>(Arrays.asList(mv.getCurrProjectID()));
-// 
-//             if (!inputName.getText().isEmpty()) {
-//                 msdb.setData("UPDATE project set Name='" + inputName.getText() + "' where ID in (?)", projectIDAL);
-//             }
-//             if (!inputUsrName.getText().isEmpty()) {
-//                 msdb.setData("UPDATE project set Summary='" + inputSumm.getText() + "' where ID in (?)", projectIDAL);
-//             }
-//             if (!inputDept.getText().isEmpty()) {
-//                 msdb.setData("UPDATE project set Topic='" + inputTopic.getText() + "' where ID in (?)", projectIDAL);
-//             }
-//             if (!inputGradDae.getText().isEmpty()) {
-//                 msdb.setData("UPDATE project set Topic='" + inputTopic.getText() + "' where ID in (?)", projectIDAL);
-//             }
-//             if (!inputMaj.getText().isEmpty()) {
-//                 msdb.setData("UPDATE project set Topic='" + inputTopic.getText() + "' where ID in (?)", projectIDAL);
-//             }
+            
+            String selected = roleDropBox.getValue().toString();
+            
+             
+                        
+            // rs.get(1).get(0);
+                       
+            if (!inputDept.getText().isEmpty()) {
+                msdb.setData("UPDATE user set Department='" + inputDept.getText() + "' where UserName= (?)", userNameAL );//mv.getCurrUserName() );
+            }
+            if (!inputGradDate.getText().isEmpty()) {
+                msdb.setData("UPDATE user set GraduationDate='" + inputGradDate.getText() + "' where UserName= (?)", userNameAL );// mv.getCurrUserName() );
+
+            }
+            if (!inputMaj.getText().isEmpty()) {
+                msdb.setData("UPDATE user set Major='" + inputMaj.getText() + "' where UserName=(?)", userNameAL );// mv.getCurrUserName() );
+            }
+            if (originalRole != selected ) {
+                
+                System.out.println("Inside combobox if statement");
+                //String selected = roleDropBox.getValue().toString();
+
+                msdb.setData("UPDATE user set Role='" + selected + "' where UserName=(?)", userNameAL );// mv.getCurrUserName() );
+                System.out.println("you changed the role!: " + selected );
+            }
+            //System.out.println("Role: " + selected );
+                        //makeRoleOptionDropdown.getValue()
 
 
             System.out.println("you did it, you submitted it. Good Job");
-            makeStudentView();
+            
+            
+            
+            makeStudentView(); //depends on which userggg
             popupWindow.close();
         });
 
 
    }
+   
+   private String nameToUserName(String _name) {
+        //Arraylist is the first name and last name split
+        ArrayList<String> queryVals = new ArrayList<>(Arrays.asList(_name.split(" ")));
+        //Get the username for that first and last name
+        rs = msdb.getData("SELECT UserName from user where FirstName in (?) and LastName in (?)", queryVals);
+        //return the username
+        return rs.get(1).get(0);
+
+    }
 
 }
