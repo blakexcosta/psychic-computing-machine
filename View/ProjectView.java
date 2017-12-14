@@ -123,7 +123,7 @@ public class ProjectView extends Observable {
         gp.add(labDueDate, 0, 4);
         gp.add(labGrade, 0, 5);
         gp.add(labApproved, 0, 6);
-        gp.add(projectStatusBar, 0, 7);
+        gp.add(projectStatusBar, 0, 7,2,1);
         ColumnConstraints col1Style = new ColumnConstraints();
         col1Style.setPercentWidth(20);
         gp.getColumnConstraints().add(col1Style);
