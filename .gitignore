@@ -1,3 +1,7 @@
 .idea/
 output/
 *.class
+ExternalLibariesAndResources/jaf-1.0.2/
+ExternalLibariesAndResources/javamail-1.4.5/
+
+

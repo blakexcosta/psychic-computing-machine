@@ -98,7 +98,15 @@ public class InfoView extends Observable {
         editProfileButton.setOnAction(e -> {
             makeEditPopup("s");
         });
-        
+
+        //testing out the new button
+        Button sendEmailButton = new Button();
+        sendEmailButton.setText("Send Email");
+        //setting the action, Enter the email you want to send to here.
+        sendEmailButton.setOnAction(e ->
+            mv.sendEmail("armykids117@gmail.com","Test message")
+        );
+
         gp.add(labName, 0, 1);
         gp.add(labUserName, 0, 2);
         gp.add(labDepartment, 0, 3);
@@ -106,7 +114,9 @@ public class InfoView extends Observable {
         gp.add(labMajor, 0, 5);
         gp.add(labRole, 0, 6);
         gp.add(editProfileButton, 0, 7);
-        
+        //adding the new button
+        gp.add(sendEmailButton, 0,8);
+
         gp.gridLinesVisibleProperty().setValue(true);
 
         loadStudentDBInfo();//this sets the labels to the proper info using the local class instance of MSDB

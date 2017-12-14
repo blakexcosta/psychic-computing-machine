@@ -16,8 +16,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Properties;
 
 /**
  * MasterView serves as the home base for the views, as it instantiates
@@ -169,6 +173,51 @@ public class MasterView extends Application implements Observer{
         milestoneView.addObserver(this);
         loginView.makeLoginView();
         window.show();
+    }
+
+    /**
+     * this uses googles smtp server to send an email, emails need
+     * to be gmail accounts. 2FA accounts will not work as of the time
+     * of writing.
+     * @param recipientEmail
+     * @param text
+     * @return
+     */
+    public boolean sendEmail(String recipientEmail, String text) {
+        //gonna test sending an email here first, will make a new commit once this runs
+        //email account you're going to be using
+        // TODO: 12/14/17 May need to make these final. 
+        String username = "wutangwebsolutions@gmail.com";
+        String password = "whereiskrispykreme";
+        Properties properties = System.getProperties();
+        properties.put("mail.smtp.starttls.enable", "true");
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.port", "587");
+        //properties.setProperty("smtp.gmail.com", host);
+        //Session session = Session.getDefaultInstance(properties);
+        Session session = Session.getInstance(properties,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(username, password);
+                    }
+                });
+
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("wutangewebsolutions@gmail.com"));
+            //setting where you want to send it to
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientEmail));
+            message.setSubject("DB Project Notification - WWS");
+            message.setText(text);
+            Transport.send(message);
+            System.out.println("Email sent to: " + recipientEmail);
+            return true;
+        } catch (MessagingException mex) {
+            System.out.println("Err. email failed.");
+            mex.printStackTrace();
+            return false;
+        }
     }
 
 
