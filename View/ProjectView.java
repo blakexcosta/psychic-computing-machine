@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Observable;
+import java.util.HashMap;
 
 public class ProjectView extends Observable {
     private MySQLDatabase msdb; //there is only one instance of the database.
@@ -34,9 +35,9 @@ public class ProjectView extends Observable {
     private Label mainHeader, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved;
     private TextField inputName, inputSummary, inputStartDate, inputEndDate, inputDueDate, inputTopic, inputType;
     private Button showMilestonesButton, editInfoButton, committeeInfoButton, deleteProjectButton;
-    private ComboBox memberDropdown;
+    private ComboBox memberDropdown, staffProjectDropdown;
     private ArrayList<ArrayList<String>> rs;
-
+    private HashMap<String, String> dropDownVal_ProjectID = new HashMap<String, String>();
 
     public ProjectView(MasterView _mv) {
         this.mv = _mv;
@@ -176,6 +177,33 @@ public class ProjectView extends Observable {
         }
     }
 
+   public ComboBox loadStaffDBInfo()
+   {
+      ArrayList<String> blankAL = new ArrayList<String>();
+      rs = msdb.getData("SELECT name FROM project", blankAL);
+      staffProjectDropdown = new ComboBox<String>();
+      
+        int counter = 0;
+        for (ArrayList<String> curr : rs) {
+            if (counter == 0) {//do nothing because its the header
+            } else {
+                //add number to the dropdown.
+                staffProjectDropdown.getItems().add(Integer.toString(counter));
+                //map dropdown number to milestoneID value
+                dropDownVal_ProjectID.put(Integer.toString(counter), curr.get(0));
+            }
+            counter++;
+        }
+        
+      staffProjectDropdown.setOnAction(e -> {
+         //get the value from the combo box and cast it as a a string
+         String hashMapKeyStr = (String) staffProjectDropdown.getValue(); //this is the value of the drop down. "1,2" need to extract the number
+         //pass the ProjectID value from the hashmap
+         switchProject(dropDownVal_ProjectID.get(hashMapKeyStr));
+      });
+      
+      return staffProjectDropdown;
+   }
 
     /**
      * This view is made by a call in loadStudentDBInfo.
@@ -502,10 +530,38 @@ public class ProjectView extends Observable {
         //this scene object comes from masterView. it has a border pane in it. The top object of the border pane has been set to the nav bar
         //the borderpane can be referenced by casting an object seen below
         Scene sc = mv.getBaseScene();
+        //sc.getStylesheets().add(getClass().getResource("Style.css").toExternalForm());
         BorderPane bp = (BorderPane) sc.getRoot();
+        //Make a grid pane to put data on
+        gp = new GridPane();
+         
+        ComboBox projectsComboBox = loadStaffDBInfo();
+        
+        bp.setCenter(gp);
+        gp.setHgap(5);
+        gp.setVgap(10);
+        gp.setAlignment(Pos.CENTER);
+        
+        //labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved
+        
+        mainHeader = new Label("All Projects");
+        mainHeader.getStyleClass().add("mainHeader");
+        labName = new Label("Name: ");
+        labSummary = new Label("Summary: ");
+        labTopic = new Label("Type: ");
+        labStartDate = new Label("Start Date: ");
+        labEndDate = new Label("Due Date: ");
+        labDueDate = new Label("End Date: ");
+        labGrade = new Label("Grade: ");
+        labApproved = new Label("Approved? ");
+        
+        gp.addColumn(0, projectsComboBox, mainHeader, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved);
+        
+        //gp.add(mainHeader, 0, 0, 2, 1);
+        
+        //gp.add(projectsComboBox, 0, 1);
 
         //After the scene is made completely these two methods run which will update the master view to our new view
-
         setChanged();
         notifyObservers(sc);
     }
@@ -548,5 +604,34 @@ public class ProjectView extends Observable {
         gp.add(deleteButton, 0, 1);
         gp.add(cancelButton, 0, 2);
         popupWindow.show();
+   }
+   
+   public void switchProject(String projectVal)
+   {
+      System.out.println("PROJECT VALUE: " + projectVal);
+      ArrayList<String> projNmAL = new ArrayList<String>();
+      projNmAL.add(projectVal);
+      ArrayList<ArrayList<String>> rs = msdb.getData("Select Name, Summary, Topic, DueDate, Grade,ProposalApproved from  project where name in (?)", projNmAL);
+
+      int rowCount = 1;
+      gp.getChildren().clear();
+      
+      ComboBox projectsComboBox = loadStaffDBInfo();
+      
+      gp.addColumn(0, projectsComboBox, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved);
+   
+      for (String curr : rs.get(1)) {
+         Label lab = new Label(curr);
+         gp.add(lab, 1, rowCount);
+         rowCount++;
+      }
+      
+      
+   }
+   
+   public void staffUpdatePlagiarismScore()
+   {
+     
+      
    }
 }
