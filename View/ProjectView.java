@@ -194,7 +194,6 @@ public class ProjectView extends Observable {
             System.out.println("Business Layer Check: " + checkResult);
 
             //make the two calls to put it into the database
-            //TODO: put this in a transaction?
             if (checkResult) {
                 msdb.setData(newProjectQuery, newProjectVals);
                 msdb.setData(projectLinkQuery, projectLinkVals);
@@ -244,23 +243,34 @@ public class ProjectView extends Observable {
         gp.addColumn(0, header, nameLab, summLab, topicLab, submitButton);
         gp.addColumn(1, new Label(), inputName, inputSumm, inputTopic);
 
-
         popupWindow.show();
 
         submitButton.setOnAction(e -> {
             ArrayList<String> projectIDAL = new ArrayList<>(Arrays.asList(mv.getCurrProjectID()));
 
-            if (!inputName.getText().isEmpty()) {
-                msdb.setData("UPDATE project set Name='" + inputName.getText() + "' where ID in (?)", projectIDAL);
+            ArrayList<String> newProjectVals = new ArrayList<>(Arrays.asList(inputName.getText(), inputSumm.getText(), inputTopic.getText()));
+            
+            //Business layer checks the values
+            boolean checkResult = busLayer.checkEditProject(newProjectVals);
+            System.out.println("Business Layer Check: " + checkResult);
+            
+            if (checkResult) {
+               if (!inputName.getText().isEmpty()) {
+                   msdb.setData("UPDATE project set Name='" + inputName.getText() + "' where ID in (?)", projectIDAL);
+               }
+               if (!inputSumm.getText().isEmpty()) {
+                   msdb.setData("UPDATE project set Summary='" + inputSumm.getText() + "' where ID in (?)", projectIDAL);
+               }
+               if (!inputTopic.getText().isEmpty()) {
+                   msdb.setData("UPDATE project set Topic='" + inputTopic.getText() + "' where ID in (?)", projectIDAL);
+               }
+               makeStudentView();
+               popupWindow.close();
+            } else {
+               makeStudentView();
+               popupWindow.close();
+               popupWindow.show();
             }
-            if (!inputSumm.getText().isEmpty()) {
-                msdb.setData("UPDATE project set Summary='" + inputSumm.getText() + "' where ID in (?)", projectIDAL);
-            }
-            if (!inputTopic.getText().isEmpty()) {
-                msdb.setData("UPDATE project set Topic='" + inputTopic.getText() + "' where ID in (?)", projectIDAL);
-            }
-            makeStudentView();
-            popupWindow.close();
         });
 
 

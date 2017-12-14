@@ -270,7 +270,6 @@ public class InfoView extends Observable {
       roleDropBox.getItems().addAll(
          "Student",
          "Faculty",
-         "Adjunct",
          "Staff"
       );
       return roleDropBox;

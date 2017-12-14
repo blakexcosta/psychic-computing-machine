@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `project_tracker`.`user` (
   `GraduationDate` DATE NULL,
   `Department` VARCHAR(50) NULL,
   `Major` VARCHAR(50) NULL,
-  `Role` ENUM('student', 'faculty', 'adjunct', 'staff') NULL,
+  `Role` ENUM('student', 'faculty', 'staff') NULL,
   PRIMARY KEY (`UserName`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
@@ -182,7 +182,7 @@ DROP TABLE IF EXISTS `project_tracker`.`committee` ;
 CREATE TABLE IF NOT EXISTS `project_tracker`.`committee` (
   `UserName` VARCHAR(20) NOT NULL,
   `ProjectID` INT(11) NOT NULL,
-  `Role` ENUM('chair', 'reader', 'adjunct') NULL,
+  `Role` ENUM('chair', 'reader', 'other') NULL,
   PRIMARY KEY (`UserName`, `ProjectID`),
   CONSTRAINT `Committee_User_FK`
     FOREIGN KEY (`UserName`)

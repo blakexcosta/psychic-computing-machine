@@ -46,9 +46,38 @@ public class BusinessLayer {
       }
       catch (Exception E)
       {
-         System.out.println("Invalid Date");
+         System.out.println("Invalid Project");
          return false;
       }
    }
+   
+   public boolean checkEditProject(ArrayList<String> newProjectVals)
+   {
+      try {
+         String projNm = newProjectVals.get(0).toString();
+         System.out.println("Name: " + projNm);
+         String projSum = newProjectVals.get(1).toString();
+         System.out.println("Summary: " + projSum);
+         String projTopic = newProjectVals.get(2).toString();
+         System.out.println("Topic: " + projTopic);
+         
+         if (projNm.equals("")|| projSum.equals("") || projTopic.equals(""))
+         {
+            System.out.println("Incomplete Form");
+            return false;
+         }
+         else 
+         {
+            System.out.println("Project Valid.");
+            return true;
+         } 
+      }
+      catch (Exception E)
+      {
+         System.out.println("Invalid Project");
+         return false;
+      }
+      
+   }   
 }
 
