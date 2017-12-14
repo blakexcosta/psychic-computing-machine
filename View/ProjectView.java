@@ -21,7 +21,7 @@ public class ProjectView extends Observable {
     private BusinessLayer busLayer = new BusinessLayer();
     private MasterView mv;//this is passed in through the constructor
     private GridPane gp;
-    private Label mainHeader, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade;
+    private Label mainHeader, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved;
     private TextField inputName, inputSummary, inputStartDate, inputEndDate, inputDueDate, inputTopic, inputType;
     private Button showMilestonesButton, editInfoButton, committeeInfoButton;
     private ComboBox memberDropdown, roleDropdown;
@@ -83,9 +83,9 @@ public class ProjectView extends Observable {
         });
 
 
-        gp.add(showMilestonesButton, 0, 6);
-        gp.add(editInfoButton, 0, 7);
-        gp.add(committeeInfoButton, 0, 8);
+        gp.add(showMilestonesButton, 0, 7);
+        gp.add(editInfoButton, 0, 8);
+        gp.add(committeeInfoButton, 0, 9);
 
 
         //initialize all of the buttons and add them to the grid
@@ -94,11 +94,13 @@ public class ProjectView extends Observable {
         labTopic = new Label("Topic: ");
         labDueDate = new Label("Due Date: ");
         labGrade = new Label("Grade: ");
+        labApproved = new Label("Approved: ");
         gp.add(labName, 0, 1);
         gp.add(labSummary, 0, 2);
         gp.add(labTopic, 0, 3);
         gp.add(labDueDate, 0, 4);
         gp.add(labGrade, 0, 5);
+        gp.add(labApproved, 0, 6);
 
         //After the scene is made completely these two methods run which will update the master view to our new view
         setChanged();
@@ -123,7 +125,7 @@ public class ProjectView extends Observable {
 
         ArrayList<String> projectIDAL = new ArrayList<>();
         projectIDAL.add(mv.getCurrProjectID());
-        rs = msdb.getData("Select Name, Summary, Topic, DueDate, Grade from  project where ID in (?)", projectIDAL);
+        rs = msdb.getData("Select Name, Summary, Topic, DueDate, Grade,ProposalApproved from  project where ID in (?)", projectIDAL);
 
         if (rs.size() == 1) {//They do not have any project info, so we need to make the view to add a project.
             //TODO: notify the user that they have no projects before the new view is made.
@@ -310,8 +312,6 @@ public class ProjectView extends Observable {
         setChanged();
         notifyObservers(sc);
         if (msdb.checkUserWaitingOnNotifications(mv.getCurrUserName(),"committee")){makeEmailNotifyPopup();}
-
-
     }
 
     /**
