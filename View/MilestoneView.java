@@ -11,6 +11,7 @@ package View;
 import Model.MySQLDatabase;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -29,6 +30,7 @@ public class MilestoneView extends Observable {
     private GridPane gp;
     private HashMap<String, String> dropDownVal_ProjectID = new HashMap<String, String>();
     private Label statusLab, nameLab, numberLab, dueDateLab, approvedLab;
+    private String currMSNum;
 
     public MilestoneView(MasterView _mv) {
         this.mv = _mv;
@@ -56,7 +58,6 @@ public class MilestoneView extends Observable {
         dueDateLab = new Label("Milestone Due Date: ");
         approvedLab = new Label("Approval Status: ");
         gp.addColumn(0, makeMilestoneDropdown(), statusLab, nameLab, numberLab, dueDateLab, approvedLab);
-
 
         //After the scene is made completely these two methods run which will update the master view to our new view
         setChanged();
@@ -96,14 +97,15 @@ public class MilestoneView extends Observable {
         int rowCount = 1;
         //put all the new information on the page.clear it first
         gp.getChildren().clear();
-        gp.addColumn(0, makeMilestoneDropdown(), statusLab, nameLab, numberLab, dueDateLab, approvedLab);
+        Button editMilestoneButton = new Button("Edit Milestone");
+        gp.addColumn(0, makeMilestoneDropdown(), statusLab, nameLab, numberLab, dueDateLab, approvedLab,editMilestoneButton);
         for (String curr : rs.get(1)) {
             Label lab = new Label(curr);//make a new label with the DB text
             gp.add(lab, 1, rowCount);
             rowCount++;
             //add the label to the gridpane in the correct spot. col = 1, row = counter
         }
-        //make a msdb query to get milestone info where milestoneNumber = msNum;
+        this.currMSNum = msNum;
     }
 
     public ComboBox makeMilestoneDropdown() {
