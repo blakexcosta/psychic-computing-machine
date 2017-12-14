@@ -14,8 +14,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -30,7 +32,7 @@ public class MilestoneView extends Observable {
     private GridPane gp;
     private HashMap<String, String> dropDownVal_ProjectID = new HashMap<String, String>();
     private Label statusLab, nameLab, numberLab, dueDateLab, approvedLab;
-    private String currMSNum;
+    private String currMSID;
 
     public MilestoneView(MasterView _mv) {
         this.mv = _mv;
@@ -89,15 +91,19 @@ public class MilestoneView extends Observable {
         notifyObservers(sc);
     }
 
-    public void switchMilestone(String msNum) {
+    public void switchMilestone(String _msID) {
         //todo: Based on which milestone they choose in the dropdown. Dislay the info for that milestone
         //switch the page to show the passed in milestone number
 
-        ArrayList<ArrayList<String>> rs = msdb.getData("Select StatusCode,Name,Number,DueDate,Approved from milestone where ID in (?)", new ArrayList<String>(Arrays.asList(msNum)));
+        ArrayList<ArrayList<String>> rs = msdb.getData("Select StatusCode,Name,Number,DueDate,Approved from milestone where ID in (?)", new ArrayList<String>(Arrays.asList(_msID)));
         int rowCount = 1;
         //put all the new information on the page.clear it first
         gp.getChildren().clear();
         Button editMilestoneButton = new Button("Edit Milestone");
+
+        editMilestoneButton.setOnAction(e -> {
+            makeStudentEditMilestonePopup();
+        });
         gp.addColumn(0, makeMilestoneDropdown(), statusLab, nameLab, numberLab, dueDateLab, approvedLab,editMilestoneButton);
         for (String curr : rs.get(1)) {
             Label lab = new Label(curr);//make a new label with the DB text
@@ -105,7 +111,40 @@ public class MilestoneView extends Observable {
             rowCount++;
             //add the label to the gridpane in the correct spot. col = 1, row = counter
         }
-        this.currMSNum = msNum;
+        this.currMSID = _msID;
+    }
+
+    public void makeStudentEditMilestonePopup(){
+        Stage popupWindow = new Stage();
+        gp = new GridPane();
+        Scene popupInfo = new Scene(gp, 600, 800);
+        popupWindow.setScene(popupInfo);
+        Label header = new Label("Input new milestone information");
+        Label nameLab = new Label("New Name: ");
+        Label summLab = new Label("New Due Date: ");
+
+        TextField inputName = new TextField();
+        TextField inputDate = new TextField();
+        inputDate.setPromptText("YYYY-MM-DD");
+
+        Button submitButton = new Button("Submit Changes");
+        ArrayList<String> milestoneIDAL = new ArrayList<>(Arrays.asList(currMSID));
+
+        submitButton.setOnAction(e -> {
+            if (!inputName.getText().isEmpty()) {
+                msdb.setData("UPDATE milestone set Name='" + inputName.getText() + "' where ID in (?)", milestoneIDAL);
+            }
+            if (!inputDate.getText().isEmpty()) {
+                msdb.setData("UPDATE milestone set DueDate='" + inputDate.getText() + "' where ID in (?)", milestoneIDAL);
+            }
+            makeStudentView();
+            popupWindow.close();
+        });
+
+        gp.addColumn(0, header, nameLab, summLab, submitButton);
+        gp.addColumn(1, new Label(), inputName, inputDate);
+
+        popupWindow.show();
     }
 
     public ComboBox makeMilestoneDropdown() {
