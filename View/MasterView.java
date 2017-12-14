@@ -85,6 +85,15 @@ public class MasterView extends Application implements Observer{
         return new Scene(bp,1280,800);
     }
 
+    /**
+     * send notification to an email string
+     *
+     * @return
+     */
+    public void sendEmail(String email) {
+
+    }
+
     public HBox makeMenuButtons() {
         HBox returnMenu = new HBox(430);
         Button userInfoButton = new Button("User Information");

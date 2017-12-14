@@ -21,6 +21,9 @@ public class Instantiation {
         //runs the program
         //| GradCoord | Qi        | Yu          | Password | https://ist.rit.edu/assets/img/people/qyuvks.jpg                                       | 1900-01-01     | Associate Professor          |       | staff   |
         //creates a new thread to run the javafx application, goes to MasterView
+        //gonna test sending an email here first, will make a new commit once this runs
+        
+
         new Thread() {
             @Override
             public void run(){
