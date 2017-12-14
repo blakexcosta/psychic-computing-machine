@@ -38,6 +38,10 @@ public class MasterView extends Application implements Observer{
     private String currUserName, currProjectID;
     private String buttonStyle ="-fx-padding: 2em;-fx-background-color:linear-gradient(#dddddd 0%, #f6f6f6 50%);-fx-background-radius: 8,7,6; -fx-background-insets: 0,1,2; -fx-text-fill: black; -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );";
 
+    /**
+     * default constructor
+     */
+    public MasterView(){}
 
     public String getCurrUserName() {
         return currUserName;
@@ -143,8 +147,6 @@ public class MasterView extends Application implements Observer{
         return returnMenu;
     }
 
-    public MasterView(){}
-
     /**
      * The master view is observing each of the view classes individually. So whenever a view class is done making the
      * necessary view it calls setChanged and NotifyObservers which notifys this to switch the view to whichever one is
@@ -184,39 +186,47 @@ public class MasterView extends Application implements Observer{
      * @return
      */
     public boolean sendEmail(String recipientEmail, String text) {
-        //gonna test sending an email here first, will make a new commit once this runs
-        //email account you're going to be using
-        // TODO: 12/14/17 May need to make these final. 
+        //these are hardcoded for a reason, leave as is. they need to be final
+        //and or effectively final.
         String username = "wutangwebsolutions@gmail.com";
         String password = "whereiskrispykreme";
+        //getting properties
         Properties properties = System.getProperties();
+        //putting information into the properties
         properties.put("mail.smtp.starttls.enable", "true");
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.host", "smtp.gmail.com");
         properties.put("mail.smtp.port", "587");
-        //properties.setProperty("smtp.gmail.com", host);
         //Session session = Session.getDefaultInstance(properties);
+        //setting the session
         Session session = Session.getInstance(properties,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
+                        //new passwordathentication obj. used for authorization
+                        //cannot handle OAuth as of yet
                         return new PasswordAuthentication(username, password);
                     }
                 });
 
         try {
+            //making a new mimemessage
             Message message = new MimeMessage(session);
+            //setting where from the message originates
             message.setFrom(new InternetAddress("wutangewebsolutions@gmail.com"));
             //setting where you want to send it to
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientEmail));
+            //setting the subject
             message.setSubject("DB Project Notification - WWS");
+            //sending the text
             message.setText(text);
+            //sending out the message
             Transport.send(message);
             System.out.println("Email sent to: " + recipientEmail);
-            return true;
+            return true; //returns true if successful
         } catch (MessagingException mex) {
             System.out.println("Err. email failed.");
             mex.printStackTrace();
-            return false;
+            return false; //returns false if not
         }
     }
 
