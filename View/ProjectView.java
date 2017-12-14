@@ -291,34 +291,44 @@ public class ProjectView extends Observable {
         });
         gp.add(committeeHeader, 0, 0);
 
-        if (checkCommiteeMems()) {
+        //If they have committee members put them all on the page
+        if (checkCommiteeMems() && msdb.checkProjectApproved(mv.getCurrProjectID())) {
             //They do have committee members. Display them and their role. THEN the button to add
             rs = msdb.getData("Select UserName, Role from committee where ProjectID in (?)",
                     new ArrayList<String>(Arrays.asList(mv.getCurrProjectID())));
             int rowCount = 0;
             for (ArrayList<String> curr : rs) {
-                if (rowCount == 0){}
-                else {
+                if (rowCount == 0) {
+                } else {
                     Label lab = new Label(curr.get(1) + ": " + curr.get(0));
-                    gp.add(lab,0,rowCount);
+                    gp.add(lab, 0, rowCount);
                 }
                 rowCount++;
             }
-            gp.add(addMemberButton,0,rowCount);
+            gp.add(addMemberButton, 0, rowCount);
 
-        } else {//they do not have any committee members. only add the button to add new members
-            gp.add(addMemberButton, 0, 1);
+        } else {//they do not have any committee members or project is not approved. only add the button to add new members
+
+            if (!msdb.checkProjectApproved(mv.getCurrProjectID())){
+                gp.add(new Label("Project is not yet approved"),0,1);
+            }
+            else {
+                gp.add(addMemberButton, 0, 1);
+            }
         }
         setChanged();
         notifyObservers(sc);
-        if (msdb.checkUserWaitingOnNotifications(mv.getCurrUserName(),"committee")){makeEmailNotifyPopup();}
+        //after the page is made. Check if they have any committee members to notify
+        if (msdb.checkUserWaitingOnNotifications(mv.getCurrUserName(), "committee")) {
+            makeEmailNotifyPopup();
+        }
     }
 
     /**
      * This is only made if the current user is waiting on committee members to accept (or decline).
      * Clicking the button will send an email to the professor.
      */
-    private void makeEmailNotifyPopup(){
+    private void makeEmailNotifyPopup() {
         //Make inital popup stuff
         Stage popupWindow = new Stage();
         gp = new GridPane();
@@ -328,24 +338,24 @@ public class ProjectView extends Observable {
         //Only val added is the current username
         ArrayList<String> queryVals = new ArrayList<>();
         queryVals.add(mv.getCurrUserName());
-        rs = msdb.getData("SELECT NotifiedUserName from user_notifications where NotifierUserName in (?) and Approved is null and NotificationType in ('committee')",queryVals);
+        rs = msdb.getData("SELECT NotifiedUserName from user_notifications where NotifierUserName in (?) and Approved is null and NotificationType in ('committee')", queryVals);
 
         //make the header and put it on top.
         Label Header = new Label("Click the button to send an email notification");
-        gp.add(Header,0,0);
+        gp.add(Header, 0, 0);
         int rowCount = 0;
 
         //Loop through all professors that have not approved notifications. add their username and a button to email them.
-        for (ArrayList<String> curr:rs){
-            if (rowCount == 0){}
-            else{
+        for (ArrayList<String> curr : rs) {
+            if (rowCount == 0) {
+            } else {
                 Button btn = new Button("NOTIFY");
                 btn.setOnAction(e -> {
                     System.out.println("call email function from MV");
                 });
                 Label lab = new Label(curr.get(0));
-                gp.add(lab,0,rowCount);
-                gp.add(btn,1,rowCount);
+                gp.add(lab, 0, rowCount);
+                gp.add(btn, 1, rowCount);
             }
             rowCount++;
         }
@@ -356,6 +366,7 @@ public class ProjectView extends Observable {
     /**
      * Checks through all of the project IDs that have committee members.
      * If this projectID is one of them it returns true
+     *
      * @return
      */
     private Boolean checkCommiteeMems() {
@@ -374,7 +385,7 @@ public class ProjectView extends Observable {
         Label header = new Label("Choose a commitee member from the dropdown and click add member to notify them.");
 
         roleDropdown = new ComboBox<String>();
-        roleDropdown.getItems().addAll("chair","reader","other");
+        roleDropdown.getItems().addAll("chair", "reader", "other");
 
         Button addMemberButton = new Button("Add to committee");
 
@@ -390,7 +401,7 @@ public class ProjectView extends Observable {
             notificationValsAL.add("committee");
             //the current user wants to add you as a member of their committee
             notificationValsAL.add(mv.getCurrUserName() + " wants you to be on their committee");
-            msdb.setData("Insert into user_notifications (NotifiedUserName,NotifierUserName,NotificationType,NotificationDesc,Approved) VALUES (?,?,?,?,null)",notificationValsAL);
+            msdb.setData("Insert into user_notifications (NotifiedUserName,NotifierUserName,NotificationType,NotificationDesc,Approved) VALUES (?,?,?,?,null)", notificationValsAL);
             makeStudentCommitteeView();
             popupWindow.close();
         });
@@ -405,16 +416,18 @@ public class ProjectView extends Observable {
 
     /**
      * Makes the combo box that is put at the top when adding a staff or faculty member to your committee.
+     *
      * @return
      */
     private ComboBox makeMemberOptionDropdown() {
         memberDropdown = new ComboBox<String>();
         ArrayList<String> memberOptions;
-        rs = msdb.getData("SELECT CONCAT(FirstName, ' ', LastName) as 'Name' FROM user WHERE role IN ('staff','faculty')",new ArrayList<>());
+        rs = msdb.getData("SELECT CONCAT(FirstName, ' ', LastName) as 'Name' FROM user WHERE role IN ('staff','faculty')", new ArrayList<>());
         boolean header = true;
-        for (ArrayList<String> curr : rs){
-            if (header){header = false;}
-            else{
+        for (ArrayList<String> curr : rs) {
+            if (header) {
+                header = false;
+            } else {
                 memberDropdown.getItems().add(curr.get(0));
             }
         }
@@ -423,14 +436,15 @@ public class ProjectView extends Observable {
 
     /**
      * helper used to convert a Full Name to a user name EX: Gavin Drabik -> grd2747.
+     *
      * @param _name to be converted
      * @return
      */
-    private String nameToUserName(String _name){
+    private String nameToUserName(String _name) {
         //Arraylist is the first name and last name split
         ArrayList<String> queryVals = new ArrayList<>(Arrays.asList(_name.split(" ")));
         //Get the username for that first and last name
-        rs = msdb.getData("SELECT UserName from user where FirstName in (?) and LastName in (?)",queryVals);
+        rs = msdb.getData("SELECT UserName from user where FirstName in (?) and LastName in (?)", queryVals);
         //return the username
         return rs.get(1).get(0);
 

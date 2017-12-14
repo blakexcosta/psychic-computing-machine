@@ -141,7 +141,7 @@ public class MySQLDatabase extends Observable {
             //TODO: same issue as getAllData todo -Blake
             for (int i = 0; i < strvals.size(); i++) {
                 //todo: Set to the correct datatype rather than sring every time
-                
+
                 if (Character.isDigit(strvals.get(i).charAt(0)) && strvals.get(i).length() == 1) {
                     ps.setInt(i + 1, Integer.parseInt(strvals.get(i)));
                 } else {
@@ -166,7 +166,7 @@ public class MySQLDatabase extends Observable {
         ArrayList<ArrayList<String>> dataList = new ArrayList<ArrayList<String>>();
         ArrayList<String> headerRow = new ArrayList<String>();
         PreparedStatement stmt = prepare(sqlCMD, vals);
-        try{
+        try {
             ResultSet rs = stmt.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
             while (rs.next()) {
@@ -179,21 +179,18 @@ public class MySQLDatabase extends Observable {
             for (int i = 1; i <= rsmd.getColumnCount(); i++) {
                 headerRow.add(rsmd.getColumnName(i));
             }
-            dataList.add(0,headerRow);
+            dataList.add(0, headerRow);
             return dataList;
-        }
-		catch (SQLException sqle) {
-			System.out.println(sqle);
-			dataList = null;
+        } catch (SQLException sqle) {
+            System.out.println(sqle);
+            dataList = null;
             return dataList;
-		}
-		catch (NullPointerException npe) {
-			System.out.println(npe);
-			dataList = null;
+        } catch (NullPointerException npe) {
+            System.out.println(npe);
+            dataList = null;
             return dataList;
-		}
-        catch (Exception E){
-			System.out.println(E);
+        } catch (Exception E) {
+            System.out.println(E);
             dataList = null;
             return dataList;
         }
@@ -253,20 +250,19 @@ public class MySQLDatabase extends Observable {
             userNameAL.add(username); //setting the string array to the username.
             msdb.makeConnection(); //making a connection
             ArrayList<ArrayList<String>> rs = msdb.getData("SELECT Password, Role FROM user WHERE UserName in (?);", userNameAL); //getting the values from the database
-            
+
             String dbPassword = null;
             String userRole = null;
-            
-            for (ArrayList<String> list : rs)
-            {
-               dbPassword = list.get(0);
-               userRole = list.get(1); 
+
+            for (ArrayList<String> list : rs) {
+                dbPassword = list.get(0);
+                userRole = list.get(1);
             }
-            
+
             System.out.println(dbPassword);
             System.out.println(userRole);
             System.out.println(password);
-            
+
             //String dbPassword = rs[0][0]; //getting the password
             //String usrRole = rs[1][1]; //getting the user role
             //if the password fields text that was inputed from the user equals the databases password,
@@ -300,31 +296,55 @@ public class MySQLDatabase extends Observable {
     /**
      * Returns true if the current user has notifications that they have not yet approved.
      * This checks the NOTIFIED user
-     * @return
+     *
      * @param _userID is passed in and will usually be the current user
+     * @return
      */
-    public Boolean checkUserHasNotifications(String _userID, String type){
+    public Boolean checkUserHasNotifications(String _userID, String type) {
         ArrayList<String> queryVals = new ArrayList<>();
         queryVals.add(_userID);
         queryVals.add(type);
-        ArrayList<ArrayList<String>> rs = getData("SELECT * from user_notifications where NotifiedUserName in (?) and NotificationType in (?)",queryVals);
-        if (rs.size() == 1){return false;}//all it got back was headers
-        else if (rs.size() > 1){return true;}//got back more than one row means there was data.
+        ArrayList<ArrayList<String>> rs = getData("SELECT * from user_notifications where NotifiedUserName in (?) and NotificationType in (?)", queryVals);
+        if (rs.size() == 1) {
+            return false;
+        }//all it got back was headers
+        else if (rs.size() > 1) {
+            return true;
+        }//got back more than one row means there was data.
         return false;
     }
+
     /**
-     *Will return true if there is request made by the current user that is not marked as yes or no by a faculty / staff
+     * Will return true if there is request made by the current user that is not marked as yes or no by a faculty / staff
      * This checks the NOTIFIED user
+     *
      * @return
      */
-    public Boolean checkUserWaitingOnNotifications(String _userID, String type){
+    public Boolean checkUserWaitingOnNotifications(String _userID, String type) {
         ArrayList<String> queryVals = new ArrayList<>();
         queryVals.add(_userID);
         queryVals.add(type);
-        ArrayList<ArrayList<String>> rs = getData("SELECT * from user_notifications where NotifierUserName in (?) and Approved is null and NotificationType in (?)",queryVals);
-        if (rs.size() == 1){return false;}//all it got back was headers
-        else if (rs.size() > 1){return true;}//got back more than one row means there was data.
+        ArrayList<ArrayList<String>> rs = getData("SELECT * from user_notifications where NotifierUserName in (?) and Approved is null and NotificationType in (?)", queryVals);
+        if (rs.size() == 1) {
+            return false;
+        }//all it got back was headers
+        else if (rs.size() > 1) {
+            return true;
+        }//got back more than one row means there was data.
         return true;
+    }
+
+    public Boolean checkProjectApproved(String _projectID) {
+        ArrayList<String> projectIDAL = new ArrayList<>(Arrays.asList(_projectID));
+        ArrayList<ArrayList<String>> rs = msdb.getData("SELECT ProposalApproved from project where ID in (?)", projectIDAL);
+
+        if (rs.get(1).get(0).equals("1")) {
+            return true;
+        }
+        else{
+            return false;
+        }
+
     }
 
 } // end program
