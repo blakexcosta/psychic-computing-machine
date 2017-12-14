@@ -170,9 +170,9 @@ public class InfoView extends Observable {
         labRole = new Label("Role: ");
         labRole.getStyleClass().add("infoLabel");
         
-        editProfileButton.setOnAction(e -> {
-            makeEditPopup("stf");
-        });
+        //editProfileButton.setOnAction(e -> {
+            //makeEditPopup("stf");
+        //});
         
         //adding to the gridpane
         gp.add(labName, 0, 1);
@@ -180,7 +180,7 @@ public class InfoView extends Observable {
         gp.add(labDepartment, 0, 3);
         gp.add(labGradDate, 0, 4);
         gp.add(labRole, 0, 5);
-        gp.add(editProfileButton, 0, 6);
+        //gp.add(editProfileButton, 0, 6);
 
         gp.gridLinesVisibleProperty().setValue(true);
         //load the student information
