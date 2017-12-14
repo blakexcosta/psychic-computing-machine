@@ -251,22 +251,7 @@ public class InfoView extends Observable {
    
    private ComboBox makeRoleOptionDropdown() {
       roleDropBox = new ComboBox<String>();
-      // ArrayList<String> roleOptions;
-//       //rs = msdb.getData("SELECT CONCAT(FirstName, ' ', LastName) as 'Name' FROM user WHERE role IN ('staff','faculty')",new ArrayList<>());
-//       //String[] roles = new String[]{"student", "advisor", "professor"};
-//       roleOptions.add("Student");
-//       roleOptions.add("Advisor");
-//       roleOptions.add("Professor");
-      
-      // boolean header = true;
-//       for (ArrayList<String> curr : roleOptions){
-//          if (header){
-//             header = false;
-//          }
-//          else{
-//             roleDropBox.getItems().add(curr.get(0));
-//          }
-//       }
+
       roleDropBox.getItems().addAll(
          "student",
          "faculty",
@@ -276,7 +261,7 @@ public class InfoView extends Observable {
    }
    
    
-   private void makeEditPopup(String userTypeIdentifier) {
+   private void makeEditPopup(String userType) {
         //userTypeIdentifiers: s = student, stf = staff, f = faculty
         
         ArrayList<String> userNameAL = new ArrayList<String>();
@@ -287,28 +272,40 @@ public class InfoView extends Observable {
         Scene popupInfo = new Scene(gp, 600, 800);
         popupWindow.setScene(popupInfo);
         Label header = new Label("Input new user information");
-        //Label nameLab = new Label("New Name: ");
-        //Label usernLab = new Label("New Username: ");
         Label deptLab = new Label("New Department: ");
-		Label gradDateLab = new Label("New Graduation Date: ");
-		Label majLab = new Label("New Major: ");
-		Label roleLab = new Label("New Role: ");
+		  Label gradDateLab = new Label("New Graduation Date: ");
+		  
+        Label majLab = new Label("New Major: ");
+		  Label roleLab = new Label("New Role: ");
 
-        //TextField inputName = new TextField();
-        //TextField inputUsrName = new TextField();
         TextField inputDept = new TextField();
-		TextField inputGradDate = new TextField();
-		TextField inputMaj = new TextField();
+		  TextField inputGradDate = new TextField();
+		  TextField inputMaj = new TextField();
 		//also drop down
 
 		
 
 
         Button submitButton = new Button("Submit Changes");
+         
+        if (userType == "s"){
+            gp.addColumn(0, header, deptLab, gradDateLab,majLab,roleLab, submitButton); //Student
+            gp.addColumn(1, new Label(), inputDept, inputGradDate, inputMaj, makeRoleOptionDropdown());
+            roleDropBox.getItems().remove("faculty");
+            roleDropBox.getItems().remove("staff");
+        }
+        if (userType == "stf"){
+            gp.addColumn(0, header, deptLab, gradDateLab, roleLab, submitButton); //Staff
+            gp.addColumn(1, new Label(), inputDept, inputGradDate, makeRoleOptionDropdown());
 
-        gp.addColumn(0, header, deptLab, gradDateLab,majLab,roleLab, submitButton); //THIS WILL CHANGE DEPENDING ON USER TYPE
-        gp.addColumn(1, new Label(), inputDept, inputGradDate, inputMaj, makeRoleOptionDropdown());
-		
+        }
+        if (userType == "f"){
+            gp.addColumn(0, header, deptLab, roleLab, submitButton); //Staff
+            gp.addColumn(1, new Label(), inputDept, makeRoleOptionDropdown());
+            roleDropBox.getItems().remove("student");
+
+        }
+        		
         rs = msdb.getData("SELECT Role FROM user WHERE UserName=(?) ", userNameAL); //retrieves current user's role
 
         roleDropBox.setValue( rs.get(1).get(0) );
@@ -323,9 +320,7 @@ public class InfoView extends Observable {
             
             String selected = roleDropBox.getValue().toString();
             
-             
-                        
-            // rs.get(1).get(0);
+   
                        
             if (!inputDept.getText().isEmpty()) {
                 msdb.setData("UPDATE user set Department='" + inputDept.getText() + "' where UserName= (?)", userNameAL );//mv.getCurrUserName() );
@@ -340,20 +335,15 @@ public class InfoView extends Observable {
             if (originalRole != selected ) {
                 
                 System.out.println("Inside combobox if statement");
-                //String selected = roleDropBox.getValue().toString();
 
                 msdb.setData("UPDATE user set Role='" + selected + "' where UserName=(?)", userNameAL );// mv.getCurrUserName() );
                 System.out.println("you changed the role!: " + selected );
             }
-            //System.out.println("Role: " + selected );
-                        //makeRoleOptionDropdown.getValue()
+       
 
 
-            System.out.println("you did it, you submitted it. Good Job");
             
-            
-            
-            makeStudentView(); //depends on which userggg
+            makeStudentView(); //depends on which user
             popupWindow.close();
         });
 
