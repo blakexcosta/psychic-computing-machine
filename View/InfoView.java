@@ -1,8 +1,19 @@
+/**
+ * Blake Costa, Gavin Drabik, Matthew Turczmanovicz, Oswaldo Rosete-Garcia, and Quinn Bissen
+ * Group 11
+ * ISTE-330
+ * Professor Floeser
+ * December 18th, 2017
+ */
+
 package View;
 
 import java.util.*;
 import Model.MySQLDatabase;
+import BusinessLayer.BusinessLayer;
 import javafx.geometry.Pos;
+
+
 import javafx.scene.Scene;
 
 import javafx.scene.control.Label;
@@ -16,17 +27,10 @@ import javafx.stage.Stage;
 
 import java.util.Observable;
 
-/**
- * Blake Costa, Gavin Drabik, Matthew Turczmanovicz, Oswaldo Rosete-Garcia, and Quinn Bissen
- * Group 11
- * ISTE-330
- * Professor Floeser
- * December 18th, 2017
- */
-
 public class InfoView extends Observable {
     //both of these are in ALL the view classes
     private MySQLDatabase msdb; //there is only one instance of the database.
+    private BusinessLayer busLayer = new BusinessLayer();
     private MasterView mv;//this is passed in through the constructor
     private String[][] sqlData;
     private Label userInfoHeaderLabel,labName, labUserName, labDepartment, labGradDate, labMajor, labRole;
@@ -320,31 +324,39 @@ public class InfoView extends Observable {
             
             String selected = roleDropBox.getValue().toString();
             
-   
-                       
-            if (!inputDept.getText().isEmpty()) {
-                msdb.setData("UPDATE user set Department='" + inputDept.getText() + "' where UserName= (?)", userNameAL );//mv.getCurrUserName() );
-            }
-            if (!inputGradDate.getText().isEmpty()) {
-                msdb.setData("UPDATE user set GraduationDate='" + inputGradDate.getText() + "' where UserName= (?)", userNameAL );// mv.getCurrUserName() );
-
-            }
-            if (!inputMaj.getText().isEmpty()) {
-                msdb.setData("UPDATE user set Major='" + inputMaj.getText() + "' where UserName=(?)", userNameAL );// mv.getCurrUserName() );
-            }
-            if (originalRole != selected ) {
-                
-                System.out.println("Inside combobox if statement");
-
-                msdb.setData("UPDATE user set Role='" + selected + "' where UserName=(?)", userNameAL );// mv.getCurrUserName() );
-                System.out.println("you changed the role!: " + selected );
-            }
-       
-
-
+            ArrayList<String> newInfoVals = new ArrayList<>(Arrays.asList(inputDept.getText(), inputGradDate.getText(), inputMaj.getText()));
             
-            makeStudentView(); //depends on which user
-            popupWindow.close();
+            //Business layer checks the values
+            boolean checkResult = busLayer.checkEditInfo(newInfoVals);
+            System.out.println("Business Layer Check: " + checkResult);
+            
+            if (checkResult) {
+                       
+               if (!inputDept.getText().isEmpty()) {
+                   msdb.setData("UPDATE user set Department='" + inputDept.getText() + "' where UserName= (?)", userNameAL );//mv.getCurrUserName() );
+               }
+               if (!inputGradDate.getText().isEmpty()) {
+                   msdb.setData("UPDATE user set GraduationDate='" + inputGradDate.getText() + "' where UserName= (?)", userNameAL );// mv.getCurrUserName() );
+
+               }
+               if (!inputMaj.getText().isEmpty()) {
+                   msdb.setData("UPDATE user set Major='" + inputMaj.getText() + "' where UserName=(?)", userNameAL );// mv.getCurrUserName() );
+               }
+               if (originalRole != selected ) {
+                
+                   System.out.println("Inside combobox if statement");
+   
+                   msdb.setData("UPDATE user set Role='" + selected + "' where UserName=(?)", userNameAL );// mv.getCurrUserName() );
+                   System.out.println("you changed the role!: " + selected );
+               }
+       
+               makeStudentView(); //depends on which user
+               popupWindow.close();
+            } else {
+               makeStudentView();
+               popupWindow.close();
+               popupWindow.show();
+            }
         });
 
 

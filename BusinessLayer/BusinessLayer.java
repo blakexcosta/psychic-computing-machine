@@ -1,3 +1,11 @@
+/**
+ * Blake Costa, Gavin Drabik, Matthew Turczmanovicz, Oswaldo Rosete-Garcia, and Quinn Bissen
+ * Group 11
+ * ISTE-330
+ * Professor Floeser
+ * December 18th, 2017
+ */
+
 package BusinessLayer;
 
 import java.util.*;
@@ -77,7 +85,38 @@ public class BusinessLayer {
          System.out.println("Invalid Project");
          return false;
       }
-      
    }   
+   
+   public boolean checkEditInfo(ArrayList<String> newInfoVals)
+   {
+      try {
+         String userDept = newInfoVals.get(0).toString();
+         System.out.println("Department: " + userDept);
+         String userGradDate = newInfoVals.get(1).toString();
+         System.out.println("Graduation Date: " + userGradDate);
+         String userMajor = newInfoVals.get(2).toString();
+         System.out.println("userMajor: " + userMajor);
+         
+         if (userDept.equals("")|| userGradDate.equals("") || userMajor.equals(""))
+         {
+            System.out.println("Incomplete Form");
+            return false;
+         }
+         else 
+         {
+            java.sql.Date validGradDate = java.sql.Date.valueOf(userGradDate);
+         
+            System.out.println("Graduation Date: " + validGradDate);
+         
+            System.out.println("Project Valid.");
+            return true;
+         } 
+      }
+      catch (Exception E)
+      {
+         System.out.println("Invalid Project");
+         return false;
+      }
+   }
 }
 
