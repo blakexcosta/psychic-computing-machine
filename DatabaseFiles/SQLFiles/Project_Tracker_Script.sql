@@ -182,7 +182,7 @@ DROP TABLE IF EXISTS `project_tracker`.`committee` ;
 CREATE TABLE IF NOT EXISTS `project_tracker`.`committee` (
   `UserName` VARCHAR(20) NOT NULL,
   `ProjectID` INT(11) NOT NULL,
-  `Role` ENUM('chair', 'reader', 'other') NULL,
+  `Role` ENUM('chair', 'reader', 'adjunct') NULL,
   PRIMARY KEY (`UserName`, `ProjectID`),
   CONSTRAINT `Committee_User_FK`
     FOREIGN KEY (`UserName`)
