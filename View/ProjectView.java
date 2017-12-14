@@ -18,6 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -123,6 +124,9 @@ public class ProjectView extends Observable {
         gp.add(labGrade, 0, 5);
         gp.add(labApproved, 0, 6);
         gp.add(projectStatusBar, 0, 7);
+        ColumnConstraints col1Style = new ColumnConstraints();
+        col1Style.setPercentWidth(20);
+        gp.getColumnConstraints().add(col1Style);
 
         //After the scene is made completely these two methods run which will update the master view to our new view
         setChanged();
@@ -137,7 +141,6 @@ public class ProjectView extends Observable {
      * @return
      */
     public Boolean loadStudentDBInfo() {
-        //todo: why is it erroring to get the project ID for the curr user;
         ArrayList<String> userNameAL = new ArrayList<String>();
         userNameAL.add(mv.getCurrUserName());
         rs = msdb.getData("select * from user_project_link where UserName in (?)", userNameAL);
@@ -160,6 +163,7 @@ public class ProjectView extends Observable {
             for (int i = 0; i < rs.get(1).size(); i++) {
                 Label lab = new Label(rs.get(1).get(i));
                 lab.getStyleClass().add("infoDataLabel");
+                lab.setWrapText(true);
                 gp.add(lab, 1, ++rowCount);
             }
 
@@ -196,8 +200,7 @@ public class ProjectView extends Observable {
         submit.setOnAction(e -> {
             //get the new project ID value
             int newMaxID = Integer.parseInt(msdb.getMaxProjectID()) + 1;
-            //TODO: check form to validate input
-            //query to add to user_project_link
+                //query to add to user_project_link
             String projectLinkQuery = "INSERT INTO user_project_link (UserName,ProjectID) VALUES (?,?)";
 
             //Values to go in user_project_link query
@@ -246,6 +249,11 @@ public class ProjectView extends Observable {
         notifyObservers(sc);
     }
 
+
+    /**
+     * This is the popup to edit project info.
+     * This gets called when the usr presses the edit button in the project view
+     */
     private void makeStudentEditInfoPopup() {
         Stage popupWindow = new Stage();
         gp = new GridPane();
@@ -298,6 +306,10 @@ public class ProjectView extends Observable {
 
     }
 
+    /**
+     * This makes the committee view for the student.
+     * It has a logic check to make sure the project has been approved before displaying committee info
+     */
     private void makeStudentCommitteeView() {
         Scene sc = mv.getBaseScene();
         //add the css sheet
@@ -311,10 +323,6 @@ public class ProjectView extends Observable {
         gp.setHgap(5);
         gp.setVgap(5);
 
-        //TODO: If checkUserWaitingOnNotifications is true then it should pop up a box. All professors they are waiting on and a button to email them.
-        //Professor Name - [Click to send email notification]
-        //If they are waiting on committee notifications make a box to email the prof
-
         Label committeeHeader = new Label("Committee information");
         Button addMemberButton = new Button("Add a committee member");
 
@@ -323,7 +331,7 @@ public class ProjectView extends Observable {
         });
         gp.add(committeeHeader, 0, 0);
 
-        //If they have committee members put them all on the page
+        //If they have committee members and the project is approved put them all on the page
         if (checkCommiteeMems() && msdb.checkProjectApproved(mv.getCurrProjectID())) {
             //They do have committee members. Display them and their role. THEN the button to add
             rs = msdb.getData("Select UserName, Role from committee where ProjectID in (?)",
@@ -339,12 +347,12 @@ public class ProjectView extends Observable {
             }
             gp.add(addMemberButton, 0, rowCount);
 
-        } else {//they do not have any committee members or project is not approved. only add the button to add new members
+        } else {//they do not have any committee members or project is not approved. Do another check to see which failed
 
-            if (!msdb.checkProjectApproved(mv.getCurrProjectID())){
+            if (!msdb.checkProjectApproved(mv.getCurrProjectID())){//Project is not approved. Show page that says that
                 gp.add(new Label("Project is not yet approved"),0,1);
             }
-            else {
+            else {//The project is approved but there are not committee mems
                 gp.add(addMemberButton, 0, 1);
             }
         }
@@ -409,6 +417,10 @@ public class ProjectView extends Observable {
         return false;
     }
 
+    /**
+     * Makes the popup to add a nother member to a committee.
+     * When a student chooses someone to add it will make a notification for them from this student.
+     */
     private void makeAddMemberPopup() {
         Stage popupWindow = new Stage();
         gp = new GridPane();
@@ -422,10 +434,8 @@ public class ProjectView extends Observable {
         Button addMemberButton = new Button("Add to committee");
 
         addMemberButton.setOnAction(e -> {
-            //todo: not sure if we want to notify the professor to add the student or write query to actually add them?abab
             ArrayList<String> notificationValsAL = new ArrayList<>();
             //The username to be notified.
-            //todo: this is their actual name(because that is the val in the dropdown) it should be their username.
             notificationValsAL.add(nameToUserName((String) memberDropdown.getValue()));
             //the user name of the person sending a notification
             notificationValsAL.add(mv.getCurrUserName());
