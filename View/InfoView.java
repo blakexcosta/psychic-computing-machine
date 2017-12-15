@@ -33,7 +33,7 @@ public class InfoView extends Observable {
     private BusinessLayer busLayer = new BusinessLayer();
     private MasterView mv;//this is passed in through the constructor
     private String[][] sqlData;
-    private Label userInfoHeaderLabel,labName, labUserName, labDepartment, labGradDate, labMajor, labRole, labEmail, labPhone;
+    private Label userInfoHeaderLabel,labName, labUserName, labDepartment, labGradDate, labMajor, labRole, labPhone, labOffice, labEmail;
     private GridPane gp;
     private ArrayList<ArrayList<String>> returnData;
     private TextField inputName, inputuserName, dept, gradDate, role;
@@ -137,10 +137,10 @@ public class InfoView extends Observable {
             returnData = msdb.getData("SELECT CONCAT(FirstName, ' ',  LastName) as 'Name' , UserName, Phone, GraduationDate,Major, Email FROM user where UserName in (?)", userNameAL);
         }
         if(userType == "stf"){
-            returnData = msdb.getData("SELECT CONCAT(FirstName, ' ',  LastName) as 'Name' , UserName, Department, GraduationDate, Role FROM user where UserName in (?)", userNameAL);
+            returnData = msdb.getData("SELECT CONCAT(FirstName, ' ',  LastName) as 'Name', UserName, Department, PhoneNumber, EmailAddress, OfficeNumber FROM user JOIN email USING(UserName) JOIN phone USING(UserName) JOIN office USING(UserName) where UserName in (?)", userNameAL);
         }
         if(userType == "f"){
-            returnData = msdb.getData("SELECT CONCAT(FirstName, ' ',  LastName) as 'Name' , UserName, Department, Role FROM user where UserName in (?)", userNameAL);
+            returnData = msdb.getData("SELECT CONCAT(FirstName, ' ',  LastName) as 'Name', UserName, Department, PhoneNumber, EmailAddress, OfficeNumber FROM user JOIN email USING(UserName) JOIN phone USING(UserName) JOIN office USING(UserName) where UserName in (?)", userNameAL);
         }
    
         int rowCount = 0;
@@ -188,11 +188,14 @@ public class InfoView extends Observable {
         labDepartment = new Label("Department: ");
         labDepartment.getStyleClass().add("infoLabel");
         
-        labGradDate = new Label("Graduation Date: ");
-        labGradDate.getStyleClass().add("infoLabel");
+        labPhone = new Label("Phone: ");
+        labPhone.getStyleClass().add("infoLabel");
         
-        labRole = new Label("Role: ");
-        labRole.getStyleClass().add("infoLabel");
+        labEmail = new Label("Email: ");
+        labEmail.getStyleClass().add("infoLabel");
+        
+        labOffice = new Label("Office: ");
+        labOffice.getStyleClass().add("infoLabel");
         
         editProfileButton = new Button();
         editProfileButton.setText("Edit User Profile");
@@ -205,9 +208,10 @@ public class InfoView extends Observable {
         gp.add(labName, 0, 1);
         gp.add(labUserName, 0, 2);
         gp.add(labDepartment, 0, 3);
-        gp.add(labGradDate, 0, 4);
-        gp.add(labRole, 0, 5);
-        gp.add(editProfileButton, 0, 6);
+        gp.add(labPhone, 0, 4);
+        gp.add(labEmail, 0, 5);
+        gp.add(labOffice, 0, 6);
+        gp.add(editProfileButton, 0, 7);
 
         gp.gridLinesVisibleProperty().setValue(false);
         //load the student information
@@ -246,16 +250,22 @@ public class InfoView extends Observable {
         gp.add(userInfoHeaderLabel, 0, 0, 2, 1);
         labName = new Label("Name: ");
         labName.getStyleClass().add("infoLabel");
-
+        
         labUserName = new Label("User Name: ");
         labUserName.getStyleClass().add("infoLabel");
-
+        
         labDepartment = new Label("Department: ");
         labDepartment.getStyleClass().add("infoLabel");
-
-        labRole = new Label("Role: ");
-        labRole.getStyleClass().add("infoLabel");
-
+        
+        labPhone = new Label("Phone: ");
+        labPhone.getStyleClass().add("infoLabel");
+        
+        labEmail = new Label("Email: ");
+        labEmail.getStyleClass().add("infoLabel");
+        
+        labOffice = new Label("Office: ");
+        labOffice.getStyleClass().add("infoLabel");
+        
         editProfileButton = new Button();
         editProfileButton.setText("Edit User Profile");
         
@@ -266,8 +276,10 @@ public class InfoView extends Observable {
         gp.add(labName, 0, 1);
         gp.add(labUserName, 0, 2);
         gp.add(labDepartment, 0, 3);
-        gp.add(labRole, 0, 4);
-        gp.add(editProfileButton, 0, 5); //
+        gp.add(labPhone, 0, 4);
+        gp.add(labEmail, 0, 5);
+        gp.add(labOffice, 0, 6);
+        gp.add(editProfileButton, 0, 7);
 
         gp.gridLinesVisibleProperty().setValue(false);
         
