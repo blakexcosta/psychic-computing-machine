@@ -59,7 +59,7 @@ public class BusinessLayer {
       }
    }
    
-   public boolean checkEditProject(ArrayList<String> newProjectVals)
+   public boolean checkStudentEditProject(ArrayList<String> newProjectVals)
    {
       try {
          String projNm = newProjectVals.get(0).toString();
@@ -87,7 +87,7 @@ public class BusinessLayer {
       }
    }   
    
-   public boolean checkEditInfo(ArrayList<String> newInfoVals)
+   public boolean checkStudentEditInfo(ArrayList<String> newInfoVals)
    {
       try {
          String userDept = newInfoVals.get(0).toString();
@@ -115,6 +115,19 @@ public class BusinessLayer {
       catch (Exception E)
       {
          System.out.println("Invalid Project");
+         return false;
+      }
+   }
+   
+   public boolean checkPlagiarismScore(String score)
+   {
+      try {
+         double scoreDb = Double.parseDouble(score);
+         return true;
+      }
+      catch (Exception E)
+      {
+         System.out.println("Invalid Score");
          return false;
       }
    }

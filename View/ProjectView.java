@@ -32,7 +32,7 @@ public class ProjectView extends Observable {
     private GridPane gp;
     private Label mainHeader, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved;
     private TextField inputName, inputSummary, inputStartDate, inputEndDate, inputDueDate, inputTopic, inputType;
-    private Button showMilestonesButton, editInfoButton, committeeInfoButton, deleteProjectButton, showMoreInfoButton, showLessInfoButton;
+    private Button showMilestonesButton, editInfoButton, committeeInfoButton, deleteProjectButton, showMoreInfoButton, showLessInfoButton, staffPlagiarismButton;
     private ComboBox memberDropdown, staffProjectDropdown;
     private ArrayList<ArrayList<String>> rs;
     private ArrayList<ArrayList<String>> moreInfoArray; //used to get more information from the project, used when a button is clicked.
@@ -382,7 +382,7 @@ public class ProjectView extends Observable {
             ArrayList<String> newProjectVals = new ArrayList<>(Arrays.asList(inputName.getText(), inputSumm.getText(), inputTopic.getText()));
 
             //Business layer checks the values
-            boolean checkResult = busLayer.checkEditProject(newProjectVals);
+            boolean checkResult = busLayer.checkStudentEditProject(newProjectVals);
             System.out.println("Business Layer Check: " + checkResult);
 
             if (checkResult) {
@@ -601,7 +601,16 @@ public class ProjectView extends Observable {
         BorderPane bp = (BorderPane) sc.getRoot();
         //Make a grid pane to put data on
         gp = new GridPane();
+        
+        //Staff update the plagiarism score for a project
+        staffPlagiarismButton = new Button();
+        staffPlagiarismButton.setText("Edit Plagiarism Score");
 
+        staffPlagiarismButton.setOnAction(e -> {
+            makeStaffPlagiarismPopup();
+        });
+         
+        //Combo box that contains the projects
         ComboBox projectsComboBox = loadStaffDBInfo();
 
         bp.setCenter(gp);
@@ -624,10 +633,6 @@ public class ProjectView extends Observable {
         labApproved = new Label("Approved? ");
 
         gp.addColumn(0, projectsComboBox, mainHeader, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved);
-
-        //gp.add(mainHeader, 0, 0, 2, 1);
-
-        //gp.add(projectsComboBox, 0, 1);
 
         //After the scene is made completely these two methods run which will update the master view to our new view
         setChanged();
@@ -784,13 +789,13 @@ public class ProjectView extends Observable {
         ArrayList<String> projNmAL = new ArrayList<String>();
         projNmAL.add(projectVal);
         ArrayList<ArrayList<String>> rs = msdb.getData("Select Name, Summary, Topic, DueDate, Grade,ProposalApproved from  project where name in (?)", projNmAL);
-
+        
         int rowCount = 1;
         gp.getChildren().clear();
 
         ComboBox projectsComboBox = loadStaffDBInfo();
 
-        gp.addColumn(0, projectsComboBox, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved);
+        gp.addColumn(0, projectsComboBox, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved, staffPlagiarismButton);
 
         for (String curr : rs.get(1)) {
             Label lab = new Label(curr);
@@ -798,12 +803,50 @@ public class ProjectView extends Observable {
             rowCount++;
         }
 
-
+         rs = msdb.getData("SELECT ID FROM project WHERE name IN (?)", projNmAL);
+         mv.setCurrProjectID(rs.get(1).get(0).toString());
     }
 
-    public void staffUpdatePlagiarismScore(String plagPercent) {
+    public void makeStaffPlagiarismPopup() {
         ArrayList<String> projectIDAL = new ArrayList<>(Arrays.asList(mv.getCurrProjectID()));
-        msdb.setData("UPDATE project SET PlagiarismPercentage = " + plagPercent + " WHERE ProjectID = ?", projectIDAL);
-        System.out.println("PLAGIARISM score set to " + plagPercent);
+        System.out.println("Current Project ID: " + mv.getCurrProjectID());
+        
+        Stage popupWindow = new Stage();
+        gp = new GridPane();
+        Scene popupInfo = new Scene(gp, 600, 800);
+        popupWindow.setScene(popupInfo);
+        Label header = new Label("Input plagiarism score");
+        Label plagLab = new Label("Plagiarism Score: ");
+        TextField inputPlag = new TextField();
+        Button submitButton = new Button("Submit");
+        Button cancelButton = new Button("Cancel");
+        
+        gp.addColumn(0, header, plagLab, submitButton, cancelButton);
+        gp.addColumn(1, new Label(), inputPlag); 
+        
+        submitButton.setOnAction(e -> {
+            String plagScore = inputPlag.getText();
+            boolean checked = busLayer.checkPlagiarismScore(plagScore);
+            if (checked) {
+               msdb.setData("UPDATE project SET PlagiarismPercentage = '" + plagScore + "' WHERE ID = (?)", projectIDAL);
+               System.out.println("Plagiarism score set to " + plagScore);
+               popupWindow.close();
+               makeStaffView();
+            } else {
+               popupWindow.close();
+               popupWindow.show();
+               makeStaffView();
+            }
+            
+        });
+        
+        cancelButton.setOnAction(e -> {
+            System.out.println("Cancelled");
+            popupWindow.close();
+            makeStaffView();
+        });
+        
+        popupWindow.show();
+        makeStaffView();
     }
 }
