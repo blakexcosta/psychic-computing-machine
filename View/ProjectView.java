@@ -657,10 +657,12 @@ public class ProjectView extends Observable {
             Label noComLab = new Label("You are not currently on any committees");
             gp.add(noComLab,0,0);
             //todo: only headers were returned. show that the professor is not on any committee
+            gp.add(noComLab,0,0);
 
         } else {
             //todo: make a dropdown of all the possible projects (loop through rs).
             ComboBox<String> projectOptionsDropdown = makeFacultyProjOptionsDropdown();
+            gp.add(projectOptionsDropdown,0,0);
             // hen the project is chosen display that info.
         }
 
@@ -749,7 +751,8 @@ public class ProjectView extends Observable {
         ArrayList<String>currentUserName = new ArrayList();
         currentUserName.add(mv.getCurrUserName());
 
-        rs = msdb.getData("select ProjectID from user_project_link where UserName = ?", currentUserName );
+        rs = msdb.getData("select ProjectID from user_project_link where UserName in (?)", currentUserName );
+        System.out.println(rs);
         boolean header = true;
         for (ArrayList<String> curr : rs) {
             if (header) {
