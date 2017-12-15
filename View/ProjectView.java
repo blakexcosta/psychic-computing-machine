@@ -12,11 +12,7 @@ import Model.MySQLDatabase;
 import BusinessLayer.BusinessLayer;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ProgressBar;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -34,17 +30,18 @@ public class ProjectView extends Observable {
     private GridPane gp;
     private Label mainHeader, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved;
     private TextField inputName, inputSummary, inputStartDate, inputEndDate, inputDueDate, inputTopic, inputType;
-    private Button showMilestonesButton, editInfoButton, committeeInfoButton, deleteProjectButton;
+    private Button showMilestonesButton, editInfoButton, committeeInfoButton, deleteProjectButton, showMoreInfoButton;
     private ComboBox memberDropdown, staffProjectDropdown;
     private ArrayList<ArrayList<String>> rs;
+    private ArrayList<ArrayList<String>> moreInfoArray; //used to get more information from the project, used when a button is clicked.
     private HashMap<String, String> dropDownVal_ProjectID = new HashMap<String, String>();
-
+    // TODO: 12/14/17 8. private accessor to get information.
     public ProjectView(MasterView _mv) {
         this.mv = _mv;
         msdb = mv.getMsdb();
     }
 
-    //TODO: Build out student project view
+    // TODO: 12/14/17 Start here -blake 
     public void makeStudentView() {
         Scene sc = mv.getBaseScene();
         //add the css sheet
@@ -78,6 +75,7 @@ public class ProjectView extends Observable {
 
         showMilestonesButton.setOnAction(e -> {
             //on click make the milestone view.
+            // TODO: 12/14/17 2.
             mv.getMilestoneView().makeStudentView();
         });
 
@@ -92,16 +90,27 @@ public class ProjectView extends Observable {
         committeeInfoButton.setOnAction(e -> {
             makeStudentCommitteeView();
         });
-        
+
+        //delete the project
         deleteProjectButton = new Button("Delete Project");
         deleteProjectButton.setOnAction( e -> {
             deleteConfirmPopup();
          });
 
+        // TODO: 12/14/17 3. after here, add button
+        //add a new show more info button, then when populated remove info
+        showMoreInfoButton = new Button("More Information");
+        showMoreInfoButton.setOnAction(e ->{
+            showMoreInfo();
+        });
+
         gp.add(showMilestonesButton, 0, 8);
         gp.add(editInfoButton, 0, 9);
         gp.add(committeeInfoButton, 0, 10);
         gp.add(deleteProjectButton, 0, 11);
+        //adding show more info to the pane.
+        // TODO: 12/14/17 4. 
+        gp.add(showMoreInfoButton,0,12);
 
         //project progress bar
         //get data
@@ -142,10 +151,44 @@ public class ProjectView extends Observable {
     }
 
     /**
+     * Show more information about the project, has a private method to remove information as well
+     */
+    // TODO: 12/14/17 5 
+    public void showMoreInfo() {
+        System.out.println("Show more information button clicked.");
+        //get information from the database with the required information
+        //store it
+        //called and stored from the loadStudentDBInfo method, when that is fired.
+        if (moreInfoArray.size() == 1) {//They do not have any project info, so we need to make the view to add a project.
+            //TODO: notify the user that they have no projects before the new view is made.
+            System.out.println("nothing found");
+        } else {
+            //int rowCount = gp.getScene().getRoot().getS;
+            int rowCount = 13;
+            for (int i = 0; i < moreInfoArray.get(1).size(); i++) {
+                Label lab = new Label(moreInfoArray.get(1).get(i));
+                lab.getStyleClass().add("infoDataLabel");
+                gp.add(lab, 1, rowCount++); //added to the gridpane.
+                // TODO: 12/14/17 9, may have to add scrollpane -Blake
+            }
+        }
+        //send it to the view
+    }
+
+    /**
+     * private method to remove information
+     */
+    // TODO: 12/14/17 -99 
+    private void removeMoreInfo() {
+        System.out.println("Remove more information clicked.");
+    }
+
+    /**
      * returns true or false based on if the user has project informatioh. If not the view needs to be made to add a project
      *
      * @return
      */
+    // TODO: 12/14/17 6. look at for reference 
     public Boolean loadStudentDBInfo() {
         ArrayList<String> userNameAL = new ArrayList<String>();
         userNameAL.add(mv.getCurrUserName());
@@ -157,6 +200,8 @@ public class ProjectView extends Observable {
         ArrayList<String> projectIDAL = new ArrayList<>();
         projectIDAL.add(mv.getCurrProjectID());
         rs = msdb.getData("Select Name, Summary, Topic, DueDate, Grade,ProposalApproved from  project where ID in (?)", projectIDAL);
+        // TODO: 12/14/17 7. make another call here to get more info.
+        moreInfoArray = msdb.getData("SELECT * FROM project WHERE ID IN (?)", projectIDAL); //populating a new array.
 
         if (rs.size() == 1) {//They do not have any project info, so we need to make the view to add a project.
             //TODO: notify the user that they have no projects before the new view is made.
@@ -182,7 +227,7 @@ public class ProjectView extends Observable {
       ArrayList<String> blankAL = new ArrayList<String>();
       rs = msdb.getData("SELECT name FROM project", blankAL);
       staffProjectDropdown = new ComboBox<String>();
-      
+
         int counter = 0;
         for (ArrayList<String> curr : rs) {
             if (counter == 0) {//do nothing because its the header
@@ -194,14 +239,14 @@ public class ProjectView extends Observable {
             }
             counter++;
         }
-        
+
       staffProjectDropdown.setOnAction(e -> {
          //get the value from the combo box and cast it as a a string
          String hashMapKeyStr = (String) staffProjectDropdown.getValue(); //this is the value of the drop down. "1,2" need to extract the number
          //pass the ProjectID value from the hashmap
          switchProject(dropDownVal_ProjectID.get(hashMapKeyStr));
       });
-      
+
       return staffProjectDropdown;
    }
 
@@ -312,11 +357,11 @@ public class ProjectView extends Observable {
             ArrayList<String> projectIDAL = new ArrayList<>(Arrays.asList(mv.getCurrProjectID()));
 
             ArrayList<String> newProjectVals = new ArrayList<>(Arrays.asList(inputName.getText(), inputSumm.getText(), inputTopic.getText()));
-            
+
             //Business layer checks the values
             boolean checkResult = busLayer.checkEditProject(newProjectVals);
             System.out.println("Business Layer Check: " + checkResult);
-            
+
             if (checkResult) {
                if (!inputName.getText().isEmpty()) {
                    msdb.setData("UPDATE project set Name='" + inputName.getText() + "' where ID in (?)", projectIDAL);
@@ -534,16 +579,16 @@ public class ProjectView extends Observable {
         BorderPane bp = (BorderPane) sc.getRoot();
         //Make a grid pane to put data on
         gp = new GridPane();
-         
+
         ComboBox projectsComboBox = loadStaffDBInfo();
-        
+
         bp.setCenter(gp);
         gp.setHgap(5);
         gp.setVgap(10);
         gp.setAlignment(Pos.CENTER);
-        
+
         //labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved
-        
+
         mainHeader = new Label("All Projects");
         mainHeader.getStyleClass().add("mainHeader");
         labName = new Label("Name: ");
@@ -554,11 +599,11 @@ public class ProjectView extends Observable {
         labDueDate = new Label("End Date: ");
         labGrade = new Label("Grade: ");
         labApproved = new Label("Approved? ");
-        
+
         gp.addColumn(0, projectsComboBox, mainHeader, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved);
-        
+
         //gp.add(mainHeader, 0, 0, 2, 1);
-        
+
         //gp.add(projectsComboBox, 0, 1);
 
         //After the scene is made completely these two methods run which will update the master view to our new view
@@ -584,28 +629,28 @@ public class ProjectView extends Observable {
         Scene popupInfo = new Scene(gp, 600, 800);
         popupWindow.setScene(popupInfo);
         Label header = new Label("Are you sure that you want to delete your project?");
-        
+
         Button deleteButton = new Button("Yes");
         Button cancelButton = new Button("Cancel");
-        
+
         deleteButton.setOnAction(e -> {
              ArrayList<String> projectIDAL = new ArrayList<>(Arrays.asList(mv.getCurrProjectID()));
              msdb.setData("DELETE FROM project WHERE ID in (?)", projectIDAL);
              makeStudentView();
              popupWindow.close();
         });
-        
+
         cancelButton.setOnAction(e -> {
             makeStudentView();
-            popupWindow.close(); 
+            popupWindow.close();
         });
-        
+
         gp.add(header, 0, 0);
         gp.add(deleteButton, 0, 1);
         gp.add(cancelButton, 0, 2);
         popupWindow.show();
    }
-   
+
    public void switchProject(String projectVal)
    {
       System.out.println("PROJECT VALUE: " + projectVal);
@@ -615,23 +660,23 @@ public class ProjectView extends Observable {
 
       int rowCount = 1;
       gp.getChildren().clear();
-      
+
       ComboBox projectsComboBox = loadStaffDBInfo();
-      
+
       gp.addColumn(0, projectsComboBox, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved);
-   
+
       for (String curr : rs.get(1)) {
          Label lab = new Label(curr);
          gp.add(lab, 1, rowCount);
          rowCount++;
       }
-      
-      
+
+
    }
-   
+
    public void staffUpdatePlagiarismScore()
    {
-     
-      
+
+
    }
 }
