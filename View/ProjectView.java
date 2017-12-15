@@ -615,7 +615,8 @@ public class ProjectView extends Observable {
         mainHeader.getStyleClass().add("mainHeader");
         labName = new Label("Name: ");
         labSummary = new Label("Summary: ");
-        labTopic = new Label("Type: ");
+        labTopic = new Label("Topic: ");
+        labType = new Label("Type: ");
         labStartDate = new Label("Start Date: ");
         labEndDate = new Label("Due Date: ");
         labDueDate = new Label("End Date: ");
