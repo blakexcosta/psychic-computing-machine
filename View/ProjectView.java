@@ -493,7 +493,15 @@ public class ProjectView extends Observable {
             } else {
                 Button btn = new Button("NOTIFY");
                 btn.setOnAction(e -> {
-                    System.out.println("call email function from MV");
+                    rs = msdb.getData("Select EmailAddress from email where Username in (?)",new ArrayList<String>(Arrays.asList(curr.get(0))));
+                    if (rs.size() == 1){
+                        System.out.println("they dont have an email....");
+                    }
+                    else{
+                        //this is where it would be sent to...
+                        System.out.println("mv.sendEmail(" + rs.get(1).get(0) + "),'email Text'");
+                        mv.sendEmail("grd2747@rit.edu","test sending an email");
+                    }
                 });
                 Label lab = new Label(curr.get(0));
                 gp.add(lab, 0, rowCount);

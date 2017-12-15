@@ -80,17 +80,17 @@ public class InfoView extends Observable {
         labUserName = new Label("User Name: ");
         labUserName.getStyleClass().add("infoLabel");
 
-        labDepartment = new Label("Department: ");
-        labDepartment.getStyleClass().add("infoLabel");
-
         labGradDate = new Label("Graduation Date: ");
         labGradDate.getStyleClass().add("infoLabel");
 
         labMajor = new Label("Major: ");
         labMajor.getStyleClass().add("infoLabel");
 
-        labRole = new Label("Role: ");
-        labRole.getStyleClass().add("infoLabel");
+        labEmail = new Label("Email: ");
+        labEmail.getStyleClass().add("infoLabel");
+
+        labPhone = new Label("Phone: ");
+        labPhone.getStyleClass().add("infoLabel");
         
         editProfileButton = new Button();
         editProfileButton.setText("Edit User Profile");
@@ -109,10 +109,10 @@ public class InfoView extends Observable {
 
         gp.add(labName, 0, 1);
         gp.add(labUserName, 0, 2);
-        gp.add(labDepartment, 0, 3);
-        gp.add(labGradDate, 0, 4);
-        gp.add(labMajor, 0, 5);
-        gp.add(labRole, 0, 6);
+        gp.add(labGradDate, 0, 3);
+        gp.add(labMajor, 0, 4);
+        gp.add(labEmail,0,5);
+        gp.add(labPhone,0,6);
         gp.add(editProfileButton, 0, 7);
         //adding the new button
         gp.add(sendEmailButton, 0,8);
@@ -134,7 +134,7 @@ public class InfoView extends Observable {
         userNameAL.add(mv.getCurrUserName());
         //ArrayList<String> userNameAL = {mv.getCurrUserName()};
         if(userType == "s"){
-            returnData = msdb.getData("SELECT CONCAT(FirstName, ' ',  LastName) as 'Name' , UserName, Department, GraduationDate,Major, Role FROM user where UserName in (?)", userNameAL);
+            returnData = msdb.getData("SELECT CONCAT(FirstName, ' ',  LastName) as 'Name' , UserName, GraduationDate, Major, EmailAddress, PhoneNumber FROM user JOIN email USING(UserName) JOIN phone USING(UserName) JOIN office USING(UserName) where UserName in (?)", userNameAL);
         }
         if(userType == "stf"){
             returnData = msdb.getData("SELECT CONCAT(FirstName, ' ',  LastName) as 'Name', UserName, Department, PhoneNumber, EmailAddress, OfficeNumber FROM user JOIN email USING(UserName) JOIN phone USING(UserName) JOIN office USING(UserName) where UserName in (?)", userNameAL);
@@ -407,7 +407,6 @@ public class InfoView extends Observable {
    
    /**
    * Creates a user view depending on the parameters given. Helper function for makeEditPopup()
-   * @param String user -- "s": student -- "stf": staff -- "f": Faculty
    * @return
    */
    public void produceUserView(String user){ //"s": student -- "stf": staff -- "f": Faculty
