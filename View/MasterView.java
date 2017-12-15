@@ -130,7 +130,7 @@ public class MasterView extends Application implements Observer{
                 projectView.makeStaffView();//making a new staff view
             }
             if (msdb.getRole().equals("faculty")){
-                projectView.makeStudentView();
+                projectView.makeFacultyView();
             }
         });//end action listener for project button
         Button logOutButton = new Button("Log Out");

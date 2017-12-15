@@ -647,9 +647,70 @@ public class ProjectView extends Observable {
         Scene sc = mv.getBaseScene();
         BorderPane bp = (BorderPane) sc.getRoot();
 
+        ArrayList<String> userNameAL = new ArrayList<>(Arrays.asList(mv.getCurrUserName()));
+        rs = msdb.getData("SELECT ProjectID from committee where UserName in (?)",userNameAL);
+
+        if (rs.size() == 1){
+            //todo: only headers were returned. show that the professor is not on any committee
+        }
+        else {
+            //todo: make a dropdown of all the possible projects (loop through rs).
+            // hen the project is chosen display that info.
+        }
+
+
+        //this pops up a window so if you are having difficulties just comment it out and I can finish up this part - Gavin
+        if(msdb.checkUserHasNotifications(mv.getCurrUserName(),"committee")){
+            makeFacultyNotifactionPopup();
+            System.out.println("Professor has notifications to be added to a committee");
+        }
+
         //After the scene is made completely these two methods run which will update the master view to our new view
         setChanged();
         notifyObservers(sc);
+    }
+
+    private void makeFacultyNotifactionPopup(){
+        //TODO: display notifications that have the type committee and give them the option to press yes or no for each one
+        //Yes will set the notification to approved and add the professor to the student committee.
+        //The student can be found in the notification as notifierUserName
+        //No will set the notification to false and not add the professor
+        Stage popupWindow = new Stage();
+        gp = new GridPane();
+        Scene popupInfo = new Scene(gp, 600, 800);
+        popupWindow.setScene(popupInfo);
+        Label header = new Label("Students would like to add you to their committee");
+        gp.add(header,0,0,2,1);
+        ArrayList<String> userNameAL = new ArrayList<>(Arrays.asList(mv.getCurrUserName()));
+        //this will get all of the notifications they have.
+        rs = msdb.getData("SELECT NotifierUserName,NotificationDesc, NotificationID from user_notifications where NotifiedUserName in (?) and NotificationType in ('committee')", userNameAL);
+        System.out.println(rs);
+        int rowCount = 0;
+        for (ArrayList<String> curr : rs){
+            if (rowCount == 0){}//do nothing because its the headers
+            else{
+                Label lab = new Label(curr.get(1));//make a label with the notification description
+                Button yesButton = new Button("Yes");
+                Button noButton = new Button("No");
+                gp.add(lab,1,rowCount);
+                gp.add(yesButton,2,rowCount);
+                gp.add(noButton,3,rowCount);
+
+                yesButton.setOnAction(e -> {
+                    //get the student username (curr.get(0)) and add the current user (mv.getCurrUser) to their committee
+                    // then set approved = 1 for the current notificationID((curr.get(2)))
+
+                });
+
+                noButton.setOnAction(e ->{
+                    //set approved = 0 for the current notificationID(curr.get(2))
+
+                });
+            }
+            rowCount++;
+        }
+
+        popupWindow.show();
     }
 
    public void deleteConfirmPopup() {

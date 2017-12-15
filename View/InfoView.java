@@ -238,6 +238,9 @@ public class InfoView extends Observable {
 
         labRole = new Label("Role: ");
         labRole.getStyleClass().add("infoLabel");
+
+        editProfileButton = new Button();
+        editProfileButton.setText("Edit User Profile");
         
         editProfileButton.setOnAction(e -> {
             makeEditPopup("f");
