@@ -29,7 +29,7 @@ public class ProjectView extends Observable {
     private MySQLDatabase msdb; //there is only one instance of the database.
     private BusinessLayer busLayer = new BusinessLayer();
     private MasterView mv;//this is passed in through the constructor
-    private GridPane gp,facGP;
+    private GridPane gp, facGP;
     private Label mainHeader, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved;
     private TextField inputName, inputSummary, inputStartDate, inputEndDate, inputDueDate, inputTopic, inputType;
     private Button showMilestonesButton, editInfoButton, committeeInfoButton, deleteProjectButton, showMoreInfoButton, showLessInfoButton, staffPlagiarismButton;
@@ -575,6 +575,7 @@ public class ProjectView extends Observable {
         }
         return memberDropdown;
     }
+
     /**
      * helper used to convert a Full Name to a user name EX: Gavin Drabik -> grd2747.
      *
@@ -600,7 +601,7 @@ public class ProjectView extends Observable {
         BorderPane bp = (BorderPane) sc.getRoot();
         //Make a grid pane to put data on
         gp = new GridPane();
-        
+
         //Staff update the plagiarism score for a project
         staffPlagiarismButton = new Button();
         staffPlagiarismButton.setText("Edit Plagiarism Score");
@@ -608,7 +609,7 @@ public class ProjectView extends Observable {
         staffPlagiarismButton.setOnAction(e -> {
             makeStaffPlagiarismPopup();
         });
-         
+
         //Combo box that contains the projects
         ComboBox projectsComboBox = loadStaffDBInfo();
 
@@ -657,11 +658,11 @@ public class ProjectView extends Observable {
         if (rs.size() == 1) {
             //todo: only headers were returned. show that the professor is not on any committee
             Label noComLab = new Label("You are not currently on any committees");
-            facGP.add(noComLab,0,0);
+            facGP.add(noComLab, 0, 0);
 
         } else {
             //todo: make a dropdown of all the possible projects (loop through rs).
-            facGP.add(makeFacultyProjOptionsDropdown(),0,0);
+            facGP.add(makeFacultyProjOptionsDropdown(), 0, 0);
             // hen the project is chosen display that info.
         }
 
@@ -715,8 +716,8 @@ public class ProjectView extends Observable {
                 //notification ID in an Arraylist
                 ArrayList<String> notificationIDAL = new ArrayList<>(Arrays.asList(curr.get(2)));
                 yesButton.setOnAction(e -> {
-                    msdb.setData("INSERT INTO committee VALUES (?,?,?)",queryVals);
-                    msdb.setData("UPDATE user_notifications SET Approved = 1 where NotificationID in (?)",notificationIDAL);
+                    msdb.setData("INSERT INTO committee VALUES (?,?,?)", queryVals);
+                    msdb.setData("UPDATE user_notifications SET Approved = 1 where NotificationID in (?)", notificationIDAL);
                     //get the student username (curr.get(0)) and add the current user (mv.getCurrUser) to their committee
                     // then set approved = 1 for the current notificationID((curr.get(2)))
                     makeFacultyView();
@@ -726,7 +727,7 @@ public class ProjectView extends Observable {
 
                 noButton.setOnAction(e -> {
                     //set approved = 0 for the current notificationID(curr.get(2))
-                    msdb.setData("UPDATE user_notifications SET Approved = 0 where NotificationID in (?)",notificationIDAL);
+                    msdb.setData("UPDATE user_notifications SET Approved = 0 where NotificationID in (?)", notificationIDAL);
                     makeFacultyView();
                     popupWindow.close();
 
@@ -738,35 +739,34 @@ public class ProjectView extends Observable {
         popupWindow.show();
     }
 
-    private ComboBox<String> makeFacultyProjOptionsDropdown(){
+    private ComboBox<String> makeFacultyProjOptionsDropdown() {
         facultyDropdown = new ComboBox<>();
         //get all project IDs from user_project_link; is for the current user
         //put the name of all projects into the comboBox
-        //use that name in a query to get data
+        //use that name in a query to get date
 
-
-        ArrayList<String>currentUserName = new ArrayList();
+        ArrayList<String> currentUserName = new ArrayList();
         currentUserName.add(mv.getCurrUserName());
 
-        rs = msdb.getData("select ProjectID from committee where UserName in (?)", currentUserName );
+        rs = msdb.getData("select ProjectID from committee where UserName in (?)", currentUserName);
         boolean header = true;
         for (ArrayList<String> curr : rs) {
             if (header) {
                 header = false;
             } else {
-                System.out.println("adding "+ curr.get(0));
+                System.out.println("adding " + curr.get(0));
                 facultyDropdown.getItems().add(curr.get(0));
             }
         }
 
-        facultyDropdown.setOnAction(e ->{
-            switchFacProjectView((String )facultyDropdown.getValue());
+        facultyDropdown.setOnAction(e -> {
+            switchFacProjectView((String) facultyDropdown.getValue());
         });
         return facultyDropdown;
     }
 
-    private void switchFacProjectView(String projName){
-        if (facGP.getChildren().size() > 0){
+    private void switchFacProjectView(String _projID) {
+        if (facGP.getChildren().size() > 0) {
             facGP.getChildren().clear();
         }
         //get all information about the proj
@@ -777,13 +777,19 @@ public class ProjectView extends Observable {
         Label typeLab = new Label("Type: ");
         Label startDateLab = new Label("Start Date ");
         Label endDateLab = new Label("End Date: ");
-        Label completedDateLab = new Label("Completed Date: ");
+        Label completedDateLab = new Label("Completed (yes or no): ");
         Label gradeLab = new Label("Project Grade: ");
-        facGP.addColumn(0,makeFacultyProjOptionsDropdown(),nameLab,summLab,topicLab,typeLab,startDateLab,endDateLab,completedDateLab,gradeLab);
+        facGP.addColumn(0, makeFacultyProjOptionsDropdown(), nameLab, summLab, topicLab, typeLab, startDateLab, endDateLab, completedDateLab, gradeLab);
+        rs = msdb.getData("Select Name,Summary,Topic,Type,StartDate,EndDate,Completed,Grade from project where ID in (?)", new ArrayList<String>(Arrays.asList(_projID)));
 
+        System.out.println(rs);
+        int rowCount = 1;
+        for (String curr : rs.get(1)) {
 
+            facGP.add(new Label(curr), 1, rowCount);
 
-
+            rowCount++;
+        }
     }
 
     public void deleteConfirmPopup() {
@@ -819,12 +825,12 @@ public class ProjectView extends Observable {
         ArrayList<String> projNmAL = new ArrayList<String>();
         projNmAL.add(projectVal);
         ArrayList<ArrayList<String>> rs = msdb.getData("Select Name, Summary, Topic, Type, StartDate, DueDate, EndDate, Grade, ProposalApproved from  project where name in (?)", projNmAL);
-        
+
         int rowCount = 1;
         gp.getChildren().clear();
 
         ComboBox projectsComboBox = loadStaffDBInfo();
-        
+
 
         gp.addColumn(0, projectsComboBox, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved, staffPlagiarismButton);
 
@@ -834,16 +840,16 @@ public class ProjectView extends Observable {
             rowCount++;
         }
 
-         rs = msdb.getData("SELECT ID FROM project WHERE name IN (?)", projNmAL);
-         mv.setCurrProjectID(rs.get(1).get(0).toString());
-         
-         projectsComboBox.setValue(rs.get(1).get(0).toString()); //populates the combo box with the current project number
+        rs = msdb.getData("SELECT ID FROM project WHERE name IN (?)", projNmAL);
+        mv.setCurrProjectID(rs.get(1).get(0).toString());
+
+        projectsComboBox.setValue(rs.get(1).get(0).toString()); //populates the combo box with the current project number
     }
 
     public void makeStaffPlagiarismPopup() {
         ArrayList<String> projectIDAL = new ArrayList<>(Arrays.asList(mv.getCurrProjectID()));
         System.out.println("Current Project ID: " + mv.getCurrProjectID());
-        
+
         Stage popupWindow = new Stage();
         gp = new GridPane();
         Scene popupInfo = new Scene(gp, 600, 800);
@@ -853,32 +859,32 @@ public class ProjectView extends Observable {
         TextField inputPlag = new TextField();
         Button submitButton = new Button("Submit");
         Button cancelButton = new Button("Cancel");
-        
+
         gp.addColumn(0, header, plagLab, submitButton, cancelButton);
-        gp.addColumn(1, new Label(), inputPlag); 
-        
+        gp.addColumn(1, new Label(), inputPlag);
+
         submitButton.setOnAction(e -> {
             String plagScore = inputPlag.getText();
             boolean checked = busLayer.checkPlagiarismScore(plagScore);
             if (checked) {
-               msdb.setData("UPDATE project SET PlagiarismPercentage = '" + plagScore + "' WHERE ID = (?)", projectIDAL);
-               System.out.println("Plagiarism score set to " + plagScore);
-               popupWindow.close();
-               makeStaffView();
+                msdb.setData("UPDATE project SET PlagiarismPercentage = '" + plagScore + "' WHERE ID = (?)", projectIDAL);
+                System.out.println("Plagiarism score set to " + plagScore);
+                popupWindow.close();
+                makeStaffView();
             } else {
-               popupWindow.close();
-               popupWindow.show();
-               makeStaffView();
+                popupWindow.close();
+                popupWindow.show();
+                makeStaffView();
             }
-            
+
         });
-        
+
         cancelButton.setOnAction(e -> {
             System.out.println("Cancelled");
             popupWindow.close();
             makeStaffView();
         });
-        
+
         popupWindow.show();
         makeStaffView();
     }
