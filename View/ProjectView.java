@@ -676,7 +676,7 @@ public class ProjectView extends Observable {
         gp.add(header, 0, 0, 2, 1);
         ArrayList<String> userNameAL = new ArrayList<>(Arrays.asList(mv.getCurrUserName()));
         //this will get all of the notifications they have.
-        rs = msdb.getData("SELECT NotifierUserName,NotificationDesc, NotificationID from user_notifications where NotifiedUserName in (?) and NotificationType in ('committee')", userNameAL);
+        rs = msdb.getData("SELECT NotifierUserName,NotificationDesc, NotificationID from user_notifications where NotifiedUserName in (?) and NotificationType in ('committee') and Approved is null", userNameAL);
         System.out.println(rs);
         int rowCount = 0;
         for (ArrayList<String> curr : rs) {
@@ -686,18 +686,36 @@ public class ProjectView extends Observable {
                 Label lab = new Label(curr.get(1));//make a label with the notification description
                 Button yesButton = new Button("Yes");
                 Button noButton = new Button("No");
+                //Description of notification  [YES] [NO]
                 gp.add(lab, 1, rowCount);
                 gp.add(yesButton, 2, rowCount);
                 gp.add(noButton, 3, rowCount);
 
+                //select project id where username = curr.get(0)
+                String notifierProjectID = msdb.getData("SELECT ProjectID from user_project_link where UserName in (?)",
+                        new ArrayList<String>(Arrays.asList(curr.get(0)))).get(1).get(0);
+                ArrayList<String> queryVals = new ArrayList<>();
+                queryVals.add(mv.getCurrUserName());
+                queryVals.add(notifierProjectID);
+                queryVals.add("chair");
+
+                //notification ID in an Arraylist
+                ArrayList<String> notificationIDAL = new ArrayList<>(Arrays.asList(curr.get(2)));
                 yesButton.setOnAction(e -> {
+                    msdb.setData("INSERT INTO committee VALUES (?,?,?)",queryVals);
+                    msdb.setData("UPDATE user_notifications SET Approved = 1 where NotificationID in (?)",notificationIDAL);
                     //get the student username (curr.get(0)) and add the current user (mv.getCurrUser) to their committee
                     // then set approved = 1 for the current notificationID((curr.get(2)))
+                    makeFacultyView();
+                    popupWindow.close();
 
                 });
 
                 noButton.setOnAction(e -> {
                     //set approved = 0 for the current notificationID(curr.get(2))
+                    msdb.setData("UPDATE user_notifications SET Approved = 0 where NotificationID in (?)",notificationIDAL);
+                    makeFacultyView();
+                    popupWindow.close();
 
                 });
             }
