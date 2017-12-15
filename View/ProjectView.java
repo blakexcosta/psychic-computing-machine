@@ -32,7 +32,7 @@ public class ProjectView extends Observable {
     private GridPane gp, facGP;
     private Label mainHeader, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved;
     private TextField inputName, inputSummary, inputStartDate, inputEndDate, inputDueDate, inputTopic, inputType;
-    private Button showMilestonesButton, editInfoButton, committeeInfoButton, deleteProjectButton, showMoreInfoButton, showLessInfoButton, staffPlagiarismButton;
+    private Button showMilestonesButton, editInfoButton, committeeInfoButton, deleteProjectButton, showMoreInfoButton, staffPlagiarismButton;
     private ComboBox memberDropdown, staffProjectDropdown, facultyDropdown;
     private ArrayList<ArrayList<String>> rs;
     private ArrayList<ArrayList<String>> moreInfoArray; //used to get more information from the project, used when a button is clicked.
@@ -108,12 +108,6 @@ public class ProjectView extends Observable {
             showMoreInfo();
         });
 
-        //show less info.
-        showLessInfoButton = new Button("Less Informaiton");
-        showLessInfoButton.setOnAction(e -> {
-            showLessInfo();
-        });
-
         gp.add(showMilestonesButton, 0, 8);
         gp.add(editInfoButton, 0, 9);
         gp.add(committeeInfoButton, 0, 10);
@@ -121,7 +115,6 @@ public class ProjectView extends Observable {
         //adding show more info to the pane.
         gp.add(showMoreInfoButton, 1, 11);
         //adding less info to the gridpane
-        gp.add(showLessInfoButton, 1, 12);
         //project progress bar
         //get data
         ArrayList<String> projectIDAL = new ArrayList<>();
@@ -169,42 +162,76 @@ public class ProjectView extends Observable {
         //get information from the database with the required information
         //store it
         //called and stored from the loadStudentDBInfo method, when that is fired.
+        //making a new popup window
+        Stage popupWindow = new Stage();
+        gp = new GridPane(); //making a new gridpane.
+        ColumnConstraints col1Style = new ColumnConstraints();
+        col1Style.setPercentWidth(20);
+        gp.getColumnConstraints().add(col1Style);
+        Scene popupInfo = new Scene(gp, 600, 800);
+        popupWindow.setScene(popupInfo);
+
         if (moreInfoArray.size() == 1) {//They do not have any project info, so we need to make the view to add a project.
             //TODO: notify the user that they have no projects before the new view is made.
             System.out.println("nothing found");
         } else {
             //int rowCount = gp.getScene().getRoot().getS;
             System.out.println("length before population" + gp.getChildren().size());
-            int rowCount = 13;
+            int rowCount = 1;
+            //setting all the labels for the field names
+            Label id, name, summary, topic, type, startdate, enddate, duedate, completed, proposalapproved, finaldefensedate, plagiarismpercentage, grade, committeeid;
+            id = new Label("ID: ");
+            name = new Label("Name: ");
+            summary = new Label("Summary: ");
+            topic = new Label("Topic: ");
+            type  = new Label("Type: ");
+            startdate = new Label("Start Date: ");
+            enddate = new Label("End Date: ");
+            duedate = new Label("Due Date: ");
+            completed = new Label("Completed: ");
+            proposalapproved = new Label("Proposal Approved: ");
+            finaldefensedate = new Label("Final Defense Date: ");
+            plagiarismpercentage = new Label("Plagairism Percentage: ");
+            grade = new Label("Grade: ");
+            committeeid = new Label("CommitteeID: ");
+            //adding to gridpane
+            gp.add(id, 0, 1);
+            gp.add(name, 0, 2);
+            gp.add(summary, 0,3);
+            gp.add(topic, 0, 4);
+            gp.add(type, 0, 5);
+            gp.add(startdate, 0, 6);
+            gp.add(enddate, 0, 7);
+            gp.add(duedate, 0, 8);
+            gp.add(completed, 0, 9);
+            gp.add(proposalapproved, 0, 10);
+            gp.add(finaldefensedate, 0, 11);
+            gp.add(plagiarismpercentage, 0, 12);
+            gp.add(grade, 0, 13);
+            gp.add(committeeid, 0, 14);
+
             for (int i = 0; i < moreInfoArray.get(1).size(); i++) {
                 Label lab = new Label(moreInfoArray.get(1).get(i));
                 lab.getStyleClass().add("infoDataLabel");
                 gp.add(lab, 1, rowCount++); //added to the gridpane.
                 //moreInfoGroup.getChildren().add(lab);
-                // TODO: 12/14/17 9, may have to add scrollpane -Blake
             }
+
+            //TextField inputPlag = new TextField();
+//            Button submitButton = new Button("Submit");
+//            Button cancelButton = new Button("Cancel");
+
+//            gp.addColumn(0, submitButton, cancelButton);
+//            gp.addColumn(1, new Label(), inputPlag);
+
+
+            popupWindow.show();
             //for each child, add it to the pane.
             //gp.add(moreInfoGroup,0, 13);
             //add group of children to the pane
 
         }
         //send it to the view
-    }
-
-    /**
-     * When the show less info button is clicked it remakes the standard view for whatever role we currently have
-     */
-    public void showLessInfo() {
-        gp.getChildren().clear();
-        if (msdb.getRole().equals("student")) {
-            makeStudentView();
-        }
-        if (msdb.getRole().equals("staff")) {
-            makeStaffView();
-        }
-        if (msdb.getRole().equals("faculty")) {
-            makeFacultyView();
-        }
     }
 
     /**
