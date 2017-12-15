@@ -127,6 +127,7 @@ public class InfoView extends Observable {
 
     /**
      * gets all of the data to be put next to the labels in the grid.
+     * @params String usertype --  s = student, stf = staff, f = faculty
      */
     public void loadUserDBInfo(String userType) {
         ArrayList<String> userNameAL = new ArrayList<String>();
@@ -311,10 +312,7 @@ public class InfoView extends Observable {
 
         TextField inputDept = new TextField();
 		  TextField inputGradDate = new TextField();
-		  TextField inputMaj = new TextField();
-		//also drop down
-
-		
+		  TextField inputMaj = new TextField();		
 
 
         Button submitButton = new Button("Submit Changes");
@@ -389,6 +387,11 @@ public class InfoView extends Observable {
 
    }
    
+   /**
+   * Creates a user view depending on the parameters given. Helper function for makeEditPopup()
+   * @param String user -- "s": student -- "stf": staff -- "f": Faculty
+   * @return
+   */
    public void produceUserView(String user){ //"s": student -- "stf": staff -- "f": Faculty
       switch(user){
          case "s"   : makeStudentView();
