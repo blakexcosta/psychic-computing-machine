@@ -639,14 +639,22 @@ public class ProjectView extends Observable {
         //the borderpane can be referenced by casting an object seen below
         Scene sc = mv.getBaseScene();
         BorderPane bp = (BorderPane) sc.getRoot();
+        gp = new GridPane();
+        bp.setCenter(gp);
+        gp.setHgap(5);
+        gp.setVgap(10);
+        gp.setAlignment(Pos.CENTER);
 
         ArrayList<String> userNameAL = new ArrayList<>(Arrays.asList(mv.getCurrUserName()));
         rs = msdb.getData("SELECT ProjectID from committee where UserName in (?)", userNameAL);
 
         if (rs.size() == 1) {
-            //todo: only headers were returned. show that the professor is not on any committee
+            Label noComLab = new Label("You are not currently on any committees");
+            gp.add(noComLab,0,0);
+
         } else {
             //todo: make a dropdown of all the possible projects (loop through rs).
+            ComboBox<String> projectOptionsDropdown = makeFacultyProjOptionsDropdown();
             // hen the project is chosen display that info.
         }
 
@@ -722,6 +730,23 @@ public class ProjectView extends Observable {
         }
 
         popupWindow.show();
+    }
+
+    private ComboBox<String> makeFacultyProjOptionsDropdown(){
+        ComboBox<String> optionsBox = new ComboBox<>();
+        //get all project IDs from user_project_link;
+        //put the name of all projects into the comboBox
+        //use that name in a query to get data
+        optionsBox.setOnAction(e ->{
+            switchFacProjectView("VALUE OF COMBO BOX");
+        });
+
+        return optionsBox;
+    }
+
+    private void switchFacProjectView(String projName){
+        //get all information about the proj
+        //put that next to the labels
     }
 
     public void deleteConfirmPopup() {
