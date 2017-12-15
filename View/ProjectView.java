@@ -114,14 +114,14 @@ public class ProjectView extends Observable {
             showLessInfo();
         });
 
-        gp.add(showMilestonesButton, 0, 8);
-        gp.add(editInfoButton, 0, 9);
-        gp.add(committeeInfoButton, 0, 10);
-        gp.add(deleteProjectButton, 0, 11);
+        gp.add(showMilestonesButton, 0, 9);
+        gp.add(editInfoButton, 0, 10);
+        gp.add(committeeInfoButton, 0, 11);
+        gp.add(deleteProjectButton, 0, 12);
         //adding show more info to the pane.
-        gp.add(showMoreInfoButton, 1, 11);
+        gp.add(showMoreInfoButton, 1, 13);
         //adding less info to the gridpane
-        gp.add(showLessInfoButton, 1, 12);
+        gp.add(showLessInfoButton, 1, 14);
         //project progress bar
         //get data
         ArrayList<String> projectIDAL = new ArrayList<>();
@@ -142,13 +142,15 @@ public class ProjectView extends Observable {
         labDueDate = new Label("Due Date: ");
         labGrade = new Label("Grade: ");
         labApproved = new Label("Approved: ");
+        Label labProgBar = new Label("Project Progress");
         gp.add(labName, 0, 1);
         gp.add(labSummary, 0, 2);
         gp.add(labTopic, 0, 3);
         gp.add(labDueDate, 0, 4);
         gp.add(labGrade, 0, 5);
         gp.add(labApproved, 0, 6);
-        gp.add(projectStatusBar, 0, 7, 2, 1);
+        gp.add(labProgBar, 0, 7);
+        gp.add(projectStatusBar, 0, 8);
         ColumnConstraints col1Style = new ColumnConstraints();
         col1Style.setPercentWidth(20);
         gp.getColumnConstraints().add(col1Style);
