@@ -370,6 +370,17 @@ public class ProjectView extends Observable {
         TextField inputName = new TextField();
         TextField inputSumm = new TextField();
         TextField inputTopic = new TextField();
+        
+        
+        ArrayList<ArrayList<String>> rs = msdb.getData("SELECT * FROM project WHERE ID=(?) ", new ArrayList<String>(Arrays.asList(mv.getCurrProjectID()) ));
+        
+
+        inputName.setText(rs.get(1).get(1));
+        inputSumm.setText(rs.get(1).get(2));
+        inputTopic.setText(rs.get(1).get(3));
+        
+        
+
 
         Button submitButton = new Button("Submit Changes");
 
