@@ -54,7 +54,7 @@ public class MilestoneView extends Observable {
         gp.setAlignment(Pos.CENTER);
         //Make the dropdown with their information
 
-        statusLab = new Label("Status Code: ");
+        statusLab = new Label("Status: ");
         nameLab = new Label("Milestone Name: ");
         numberLab = new Label("Milestone Number: ");
         dueDateLab = new Label("Milestone Due Date: ");
@@ -95,7 +95,7 @@ public class MilestoneView extends Observable {
         //todo: Based on which milestone they choose in the dropdown. Dislay the info for that milestone
         //switch the page to show the passed in milestone number
 
-        ArrayList<ArrayList<String>> rs = msdb.getData("Select StatusCode,Name,Number,DueDate,Approved from milestone where ID in (?)", new ArrayList<String>(Arrays.asList(_msID)));
+        ArrayList<ArrayList<String>> rs = msdb.getData("Select Description,Name,Number,DueDate,Approved from milestone JOIN statuses ON milestone.statuscode = statuses.code where ID in (?)", new ArrayList<String>(Arrays.asList(_msID)));
         int rowCount = 1;
         //put all the new information on the page.clear it first
         gp.getChildren().clear();
