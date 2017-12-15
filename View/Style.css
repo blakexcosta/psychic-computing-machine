@@ -8,20 +8,9 @@
 }
 .loginLabel{
     -fx-font: 3em "Sans-Serif";
-
 }
-.infoLabel{
-    -fx-font: 3em "Serif";
-}
-
-.infoDataLabel{
-    -fx-font: 2.5em "Serif";
-
-}
-
 
 .navButton{
     -fx-padding-left: 2em;
     -fx-padding: 2em;
-
 }

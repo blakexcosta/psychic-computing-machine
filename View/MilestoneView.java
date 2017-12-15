@@ -54,7 +54,7 @@ public class MilestoneView extends Observable {
         gp.setAlignment(Pos.CENTER);
         //Make the dropdown with their information
 
-        statusLab = new Label("Status Code: ");
+        statusLab = new Label("Status: ");
         nameLab = new Label("Milestone Name: ");
         numberLab = new Label("Milestone Number: ");
         dueDateLab = new Label("Milestone Due Date: ");
@@ -95,16 +95,20 @@ public class MilestoneView extends Observable {
         //todo: Based on which milestone they choose in the dropdown. Dislay the info for that milestone
         //switch the page to show the passed in milestone number
 
-        ArrayList<ArrayList<String>> rs = msdb.getData("Select StatusCode,Name,Number,DueDate,Approved from milestone where ID in (?)", new ArrayList<String>(Arrays.asList(_msID)));
+        ArrayList<ArrayList<String>> rs = msdb.getData("Select Description,Name,Number,DueDate,Approved from milestone JOIN statuses ON milestone.statuscode = statuses.code where ID in (?)", new ArrayList<String>(Arrays.asList(_msID)));
         int rowCount = 1;
         //put all the new information on the page.clear it first
         gp.getChildren().clear();
         Button editMilestoneButton = new Button("Edit Milestone");
 
         editMilestoneButton.setOnAction(e -> {
-            makeStudentEditMilestonePopup();
+            makeStudentEditMilestonePopup(_msID);
         });
         gp.addColumn(0, makeMilestoneDropdown(), statusLab, nameLab, numberLab, dueDateLab, approvedLab,editMilestoneButton);
+        
+        milestoneDropdown.setValue(rs.get(1).get(2).toString());
+        System.out.println("value should be changed: " + rs.get(1).get(2).toString());
+        
         for (String curr : rs.get(1)) {
             Label lab = new Label(curr);//make a new label with the DB text
             gp.add(lab, 1, rowCount);
@@ -114,7 +118,7 @@ public class MilestoneView extends Observable {
         this.currMSID = _msID;
     }
 
-    public void makeStudentEditMilestonePopup(){
+    public void makeStudentEditMilestonePopup(String _msID){
         Stage popupWindow = new Stage();
         gp = new GridPane();
         Scene popupInfo = new Scene(gp, 600, 800);
@@ -128,8 +132,11 @@ public class MilestoneView extends Observable {
         inputDate.setPromptText("YYYY-MM-DD");
 
         Button submitButton = new Button("Submit Changes");
-        ArrayList<String> milestoneIDAL = new ArrayList<>(Arrays.asList(currMSID));
+        ArrayList<String> milestoneIDAL = new ArrayList<>(Arrays.asList(_msID));
 
+        ArrayList<ArrayList<String>> rs = msdb.getData("SELECT * FROM milestone WHERE ID=(?) ", new ArrayList<String>(Arrays.asList(_msID)));
+        inputName.setText(rs.get(1).get(2));
+        inputDate.setText(rs.get(1).get(4));
         submitButton.setOnAction(e -> {
             if (!inputName.getText().isEmpty()) {
                 msdb.setData("UPDATE milestone set Name='" + inputName.getText() + "' where ID in (?)", milestoneIDAL);
@@ -137,6 +144,7 @@ public class MilestoneView extends Observable {
             if (!inputDate.getText().isEmpty()) {
                 msdb.setData("UPDATE milestone set DueDate='" + inputDate.getText() + "' where ID in (?)", milestoneIDAL);
             }
+            
             makeStudentView();
             popupWindow.close();
         });

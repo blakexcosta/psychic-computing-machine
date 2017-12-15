@@ -115,7 +115,6 @@ public class InfoView extends Observable {
         gp.add(labPhone,0,6);
         gp.add(editProfileButton, 0, 7);
         //adding the new button
-        gp.add(sendEmailButton, 0,8);
 
         gp.gridLinesVisibleProperty().setValue(false);
 
@@ -134,7 +133,7 @@ public class InfoView extends Observable {
         userNameAL.add(mv.getCurrUserName());
         //ArrayList<String> userNameAL = {mv.getCurrUserName()};
         if(userType == "s"){
-            returnData = msdb.getData("SELECT CONCAT(FirstName, ' ',  LastName) as 'Name' , UserName, PhoneNumber, GraduationDate,Major, EmailAddress FROM user JOIN email USING(UserName) JOIN phone USING(UserName) JOIN office USING(UserName) where UserName in (?)", userNameAL);
+            returnData = msdb.getData("SELECT CONCAT(FirstName, ' ',  LastName) as 'Name' , UserName, GraduationDate, Major, EmailAddress, PhoneNumber FROM user JOIN email USING(UserName) JOIN phone USING(UserName) JOIN office USING(UserName) where UserName in (?)", userNameAL);
         }
         if(userType == "stf"){
             returnData = msdb.getData("SELECT CONCAT(FirstName, ' ',  LastName) as 'Name', UserName, Department, PhoneNumber, EmailAddress, OfficeNumber FROM user JOIN email USING(UserName) JOIN phone USING(UserName) JOIN office USING(UserName) where UserName in (?)", userNameAL);
