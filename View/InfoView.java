@@ -136,8 +136,11 @@ public class InfoView extends Observable {
         if(userType == "s"){
             returnData = msdb.getData("SELECT CONCAT(FirstName, ' ',  LastName) as 'Name' , UserName, Department, GraduationDate,Major, Role FROM user where UserName in (?)", userNameAL);
         }
-        if(userType == "stf" || userType == "f"){
+        if(userType == "stf"){
             returnData = msdb.getData("SELECT CONCAT(FirstName, ' ',  LastName) as 'Name' , UserName, Department, GraduationDate, Role FROM user where UserName in (?)", userNameAL);
+        }
+        if(userType == "f"){
+            returnData = msdb.getData("SELECT CONCAT(FirstName, ' ',  LastName) as 'Name' , UserName, Department, Role FROM user where UserName in (?)", userNameAL);
         }
 
         int rowCount = 0;
@@ -312,8 +315,9 @@ public class InfoView extends Observable {
 
         TextField inputDept = new TextField();
 		  TextField inputGradDate = new TextField();
-		  TextField inputMaj = new TextField();		
+		  TextField inputMaj = new TextField();	
 
+        
 
         Button submitButton = new Button("Submit Changes");
          
@@ -334,13 +338,15 @@ public class InfoView extends Observable {
             roleDropBox.getItems().remove("student");
 
         }
-        		
-        rs = msdb.getData("SELECT Role FROM user WHERE UserName=(?) ", userNameAL); //retrieves current user's role
+        
+        //Autofill textFields with current data:
+        rs = msdb.getData("SELECT * FROM user WHERE UserName=(?) ", userNameAL); //retrieves current user's role
 
-        roleDropBox.setValue( rs.get(1).get(0) );
+        inputDept.setText( rs.get(1).get(6) );
+        inputGradDate.setText( rs.get(1).get(5) );
+        inputMaj.setText( rs.get(1).get(7) );
+        roleDropBox.setValue( rs.get(1).get(8) );
         String originalRole = roleDropBox.getValue().toString();
-
-
 
         popupWindow.show();
 
