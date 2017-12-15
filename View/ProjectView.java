@@ -803,12 +803,13 @@ public class ProjectView extends Observable {
         System.out.println("PROJECT VALUE: " + projectVal);
         ArrayList<String> projNmAL = new ArrayList<String>();
         projNmAL.add(projectVal);
-        ArrayList<ArrayList<String>> rs = msdb.getData("Select Name, Summary, Topic, DueDate, Grade,ProposalApproved from  project where name in (?)", projNmAL);
+        ArrayList<ArrayList<String>> rs = msdb.getData("Select Name, Summary, Topic, Type, StartDate, DueDate, EndDate, Grade, ProposalApproved from  project where name in (?)", projNmAL);
         
         int rowCount = 1;
         gp.getChildren().clear();
 
         ComboBox projectsComboBox = loadStaffDBInfo();
+        
 
         gp.addColumn(0, projectsComboBox, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved, staffPlagiarismButton);
 
@@ -820,6 +821,8 @@ public class ProjectView extends Observable {
 
          rs = msdb.getData("SELECT ID FROM project WHERE name IN (?)", projNmAL);
          mv.setCurrProjectID(rs.get(1).get(0).toString());
+         
+         projectsComboBox.setValue(rs.get(1).get(0).toString()); //populates the combo box with the current project number
     }
 
     public void makeStaffPlagiarismPopup() {
