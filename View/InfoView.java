@@ -117,7 +117,7 @@ public class InfoView extends Observable {
         //adding the new button
         gp.add(sendEmailButton, 0,8);
 
-        gp.gridLinesVisibleProperty().setValue(true);
+        gp.gridLinesVisibleProperty().setValue(false);
 
         loadUserDBInfo("s");//this sets the labels to the proper info using the local class instance of MSDB
         //loop through each of the user fields that we have and put them next to the label. They come in in the correct order
@@ -142,7 +142,7 @@ public class InfoView extends Observable {
         if(userType == "f"){
             returnData = msdb.getData("SELECT CONCAT(FirstName, ' ',  LastName) as 'Name' , UserName, Department, Role FROM user where UserName in (?)", userNameAL);
         }
-
+   
         int rowCount = 0;
         
          for (int i = 0; i < returnData.get(1).size(); i++)
@@ -209,7 +209,7 @@ public class InfoView extends Observable {
         gp.add(labRole, 0, 5);
         gp.add(editProfileButton, 0, 6);
 
-        gp.gridLinesVisibleProperty().setValue(true);
+        gp.gridLinesVisibleProperty().setValue(false);
         //load the student information
         // TODO: 12/12/17 Found my error, its the line below me. gotta implement a loadStaffView method, not gonna mess with making that method generic -Blake 
         loadUserDBInfo("stf");//this sets the labels to the proper info using the local class instance of MSDB
@@ -269,7 +269,7 @@ public class InfoView extends Observable {
         gp.add(labRole, 0, 4);
         gp.add(editProfileButton, 0, 5); //
 
-        gp.gridLinesVisibleProperty().setValue(true);
+        gp.gridLinesVisibleProperty().setValue(false);
         
         loadUserDBInfo("f");//this sets the labels to the proper info using the local class instance of MSDB
                             //takes in identifier to specifiy which data to pull for each indiviaul type of user
