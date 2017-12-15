@@ -29,7 +29,7 @@ public class ProjectView extends Observable {
     private MySQLDatabase msdb; //there is only one instance of the database.
     private BusinessLayer busLayer = new BusinessLayer();
     private MasterView mv;//this is passed in through the constructor
-    private GridPane gp;
+    private GridPane gp,facGP;
     private Label mainHeader, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved;
     private TextField inputName, inputSummary, inputStartDate, inputEndDate, inputDueDate, inputTopic, inputType;
     private Button showMilestonesButton, editInfoButton, committeeInfoButton, deleteProjectButton, showMoreInfoButton, showLessInfoButton, staffPlagiarismButton;
@@ -644,11 +644,11 @@ public class ProjectView extends Observable {
         //the borderpane can be referenced by casting an object seen below
         Scene sc = mv.getBaseScene();
         BorderPane bp = (BorderPane) sc.getRoot();
-        gp = new GridPane();
-        bp.setCenter(gp);
-        gp.setHgap(5);
-        gp.setVgap(10);
-        gp.setAlignment(Pos.CENTER);
+        facGP = new GridPane();
+        bp.setCenter(facGP);
+        facGP.setHgap(5);
+        facGP.setVgap(10);
+        facGP.setAlignment(Pos.CENTER);
 
         ArrayList<String> userNameAL = new ArrayList<>(Arrays.asList(mv.getCurrUserName()));
         rs = msdb.getData("SELECT ProjectID from committee where UserName in (?)", userNameAL);
@@ -657,12 +657,11 @@ public class ProjectView extends Observable {
         if (rs.size() == 1) {
             //todo: only headers were returned. show that the professor is not on any committee
             Label noComLab = new Label("You are not currently on any committees");
-            gp.add(noComLab,0,0);
+            facGP.add(noComLab,0,0);
 
         } else {
             //todo: make a dropdown of all the possible projects (loop through rs).
-            ComboBox<String> projectOptionsDropdown = makeFacultyProjOptionsDropdown();
-            gp.add(projectOptionsDropdown,0,0);
+            facGP.add(makeFacultyProjOptionsDropdown(),0,0);
             // hen the project is chosen display that info.
         }
 
@@ -740,7 +739,7 @@ public class ProjectView extends Observable {
     }
 
     private ComboBox<String> makeFacultyProjOptionsDropdown(){
-        ComboBox<String> optionsBox = new ComboBox<>();
+        facultyDropdown = new ComboBox<>();
         //get all project IDs from user_project_link; is for the current user
         //put the name of all projects into the comboBox
         //use that name in a query to get data
@@ -756,20 +755,35 @@ public class ProjectView extends Observable {
                 header = false;
             } else {
                 System.out.println("adding "+ curr.get(0));
-                optionsBox.getItems().add(curr.get(0));
+                facultyDropdown.getItems().add(curr.get(0));
             }
         }
 
-        Object valueDrop = optionsBox.getValue();
-        optionsBox.setOnAction(e ->{
-            switchFacProjectView(valueDrop.toString());
+        facultyDropdown.setOnAction(e ->{
+            switchFacProjectView((String )facultyDropdown.getValue());
         });
-        return optionsBox;
+        return facultyDropdown;
     }
 
     private void switchFacProjectView(String projName){
+        if (facGP.getChildren().size() > 0){
+            facGP.getChildren().clear();
+        }
         //get all information about the proj
         //put that next to the labels
+        Label nameLab = new Label("Project Name: ");
+        Label summLab = new Label("Summary: ");
+        Label topicLab = new Label("Topic: ");
+        Label typeLab = new Label("Type: ");
+        Label startDateLab = new Label("Start Date ");
+        Label endDateLab = new Label("End Date: ");
+        Label completedDateLab = new Label("Completed Date: ");
+        Label gradeLab = new Label("Project Grade: ");
+        facGP.addColumn(0,makeFacultyProjOptionsDropdown(),nameLab,summLab,topicLab,typeLab,startDateLab,endDateLab,completedDateLab,gradeLab);
+
+
+
+
     }
 
     public void deleteConfirmPopup() {
