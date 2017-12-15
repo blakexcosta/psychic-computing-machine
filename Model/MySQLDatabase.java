@@ -81,7 +81,6 @@ public class MySQLDatabase extends Observable {
         //load the drivers
         try {
             Class.forName(driver_);
-            //System.out.println("Loaded Driver");
         } catch (ClassNotFoundException cnfe) {
             System.out.println("Cannot load driver: " + driver_);
             return false;
@@ -89,7 +88,6 @@ public class MySQLDatabase extends Observable {
         //connect to db
         try {
             this.conn = DriverManager.getConnection(uri_, user_, password_);
-            //System.out.println("Connected to database");
             return true;
         } catch (SQLException sqle) {
             System.out.println("Could not connect to db " + uri_);
@@ -110,7 +108,6 @@ public class MySQLDatabase extends Observable {
     public boolean closeConnection() {
         try {
             conn.close();
-            //System.out.println("DB closed");
             return true;
         } catch (SQLException sqle) {
             System.out.println("Could not close db " + conn);
@@ -148,7 +145,6 @@ public class MySQLDatabase extends Observable {
                     ps.setString(i + 1, strvals.get(i));
                 }
             }
-            //System.out.println(ps);
         } catch (SQLException sqle) {
             //System.out.println("Could not connect to db " + uri_);
         }
@@ -259,9 +255,6 @@ public class MySQLDatabase extends Observable {
                 userRole = list.get(1);
             }
 
-            System.out.println(dbPassword);
-            System.out.println(userRole);
-            System.out.println(password);
 
             //String dbPassword = rs[0][0]; //getting the password
             //String usrRole = rs[1][1]; //getting the user role

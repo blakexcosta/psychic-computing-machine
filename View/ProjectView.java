@@ -121,11 +121,9 @@ public class ProjectView extends Observable {
         projectIDAL.add(mv.getCurrProjectID());
         rs = msdb.getData("SELECT MAX(StatusCode) FROM milestone JOIN project_milestone_link on (milestone.ID = project_milestone_link.MilestoneID) WHERE project_milestone_link.ProjectID in (?)", projectIDAL);
         String maxStatus = rs.get(1).get(0).toString();
-        System.out.println("MAX STATUS CODE: " + maxStatus);
         double maxStatusNum = Double.parseDouble(maxStatus);
         double progressBarVal = (maxStatusNum / 1600);
         ProgressBar projectStatusBar = new ProgressBar();
-        System.out.println("Progress Bar Value: " + progressBarVal);
         projectStatusBar.setProgress(progressBarVal);
 
         //initialize all of the buttons and add them to the grid
@@ -176,7 +174,6 @@ public class ProjectView extends Observable {
             System.out.println("nothing found");
         } else {
             //int rowCount = gp.getScene().getRoot().getS;
-            System.out.println("length before population" + gp.getChildren().size());
             int rowCount = 1;
             //setting all the labels for the field names
             Label id, name, summary, topic, type, startdate, enddate, duedate, completed, proposalapproved, finaldefensedate, plagiarismpercentage, grade, committeeid;
@@ -345,7 +342,6 @@ public class ProjectView extends Observable {
 
             //Business layer checks the values
             boolean checkResult = busLayer.checkNewProject(newProjectVals);
-            System.out.println("Business Layer Check: " + checkResult);
 
             //make the two calls to put it into the database
             if (checkResult) {
@@ -519,7 +515,18 @@ public class ProjectView extends Observable {
             } else {
                 Button btn = new Button("NOTIFY");
                 btn.setOnAction(e -> {
-                    System.out.println("call email function from MV");
+
+                    if (rs.size() == 1){
+                        System.out.println("they dont have an email");
+                    }
+                    else{
+                        if (curr.get(0).equals("Michael.Floeser@rit.edu")) {
+                            mv.sendEmail(curr.get(0), "Test sending an email");
+                        } else {
+                            System.out.println("Email should go to " + curr.get(0));
+                            mv.sendEmail("grd2747@rit.edu", "this should go to " + curr.get(0));
+                        }
+                    }
                 });
                 Label lab = new Label(curr.get(0));
                 gp.add(lab, 0, rowCount);
