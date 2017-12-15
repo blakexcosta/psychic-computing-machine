@@ -33,7 +33,7 @@ public class ProjectView extends Observable {
     private Label mainHeader, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved;
     private TextField inputName, inputSummary, inputStartDate, inputEndDate, inputDueDate, inputTopic, inputType;
     private Button showMilestonesButton, editInfoButton, committeeInfoButton, deleteProjectButton, showMoreInfoButton, showLessInfoButton, staffPlagiarismButton;
-    private ComboBox memberDropdown, staffProjectDropdown;
+    private ComboBox memberDropdown, staffProjectDropdown, facultyDropdown;
     private ArrayList<ArrayList<String>> rs;
     private ArrayList<ArrayList<String>> moreInfoArray; //used to get more information from the project, used when a button is clicked.
     private HashMap<String, String> dropDownVal_ProjectID = new HashMap<String, String>();
@@ -575,7 +575,6 @@ public class ProjectView extends Observable {
         }
         return memberDropdown;
     }
-
     /**
      * helper used to convert a Full Name to a user name EX: Gavin Drabik -> grd2747.
      *
@@ -741,13 +740,29 @@ public class ProjectView extends Observable {
 
     private ComboBox<String> makeFacultyProjOptionsDropdown(){
         ComboBox<String> optionsBox = new ComboBox<>();
-        //get all project IDs from user_project_link;
+        //get all project IDs from user_project_link; is for the current user
         //put the name of all projects into the comboBox
         //use that name in a query to get data
-        optionsBox.setOnAction(e ->{
-            switchFacProjectView("VALUE OF COMBO BOX");
-        });
 
+        facultyDropdown = new ComboBox<String>();
+
+        ArrayList<String>currentUserName = new ArrayList();
+        currentUserName.add(mv.getCurrUserName());
+
+        rs = msdb.getData("select ProjectID from user_project_link where UserName = ?", currentUserName );
+        boolean header = true;
+        for (ArrayList<String> curr : rs) {
+            if (header) {
+                header = false;
+            } else {
+                facultyDropdown.getItems().add(curr.get(0));
+            }
+        }
+
+        Object valueDrop = facultyDropdown.getValue();
+        optionsBox.setOnAction(e ->{
+            switchFacProjectView(valueDrop.toString());
+        });
         return optionsBox;
     }
 
