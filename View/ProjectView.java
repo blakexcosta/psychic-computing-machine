@@ -166,7 +166,7 @@ public class ProjectView extends Observable {
         Stage popupWindow = new Stage();
         gp = new GridPane(); //making a new gridpane.
         ColumnConstraints col1Style = new ColumnConstraints();
-        col1Style.setPercentWidth(20);
+        col1Style.setPercentWidth(30);
         gp.getColumnConstraints().add(col1Style);
         Scene popupInfo = new Scene(gp, 600, 800);
         popupWindow.setScene(popupInfo);
@@ -183,8 +183,9 @@ public class ProjectView extends Observable {
             id = new Label("ID: ");
             name = new Label("Name: ");
             summary = new Label("Summary: ");
+            summary.setWrapText(true);
             topic = new Label("Topic: ");
-            type  = new Label("Type: ");
+            type = new Label("Type: ");
             startdate = new Label("Start Date: ");
             enddate = new Label("End Date: ");
             duedate = new Label("Due Date: ");
@@ -197,7 +198,7 @@ public class ProjectView extends Observable {
             //adding to gridpane
             gp.add(id, 0, 1);
             gp.add(name, 0, 2);
-            gp.add(summary, 0,3);
+            gp.add(summary, 0, 3);
             gp.add(topic, 0, 4);
             gp.add(type, 0, 5);
             gp.add(startdate, 0, 6);

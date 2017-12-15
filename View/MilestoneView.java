@@ -104,11 +104,11 @@ public class MilestoneView extends Observable {
         editMilestoneButton.setOnAction(e -> {
             makeStudentEditMilestonePopup(_msID);
         });
-        gp.addColumn(0, makeMilestoneDropdown(), statusLab, nameLab, numberLab, dueDateLab, approvedLab,editMilestoneButton);
-        
+        gp.addColumn(0, makeMilestoneDropdown(), statusLab, nameLab, numberLab, dueDateLab, approvedLab, editMilestoneButton);
+
         milestoneDropdown.setValue(rs.get(1).get(2).toString());
         System.out.println("value should be changed: " + rs.get(1).get(2).toString());
-        
+
         for (String curr : rs.get(1)) {
             Label lab = new Label(curr);//make a new label with the DB text
             gp.add(lab, 1, rowCount);
@@ -118,7 +118,7 @@ public class MilestoneView extends Observable {
         this.currMSID = _msID;
     }
 
-    public void makeStudentEditMilestonePopup(String _msID){
+    public void makeStudentEditMilestonePopup(String _msID) {
         Stage popupWindow = new Stage();
         gp = new GridPane();
         Scene popupInfo = new Scene(gp, 600, 800);
@@ -144,7 +144,7 @@ public class MilestoneView extends Observable {
             if (!inputDate.getText().isEmpty()) {
                 msdb.setData("UPDATE milestone set DueDate='" + inputDate.getText() + "' where ID in (?)", milestoneIDAL);
             }
-            
+
             makeStudentView();
             popupWindow.close();
         });

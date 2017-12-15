@@ -27,7 +27,7 @@ import java.util.Properties;
  * MasterView serves as the home base for the views, as it instantiates
  * new views.
  */
-public class MasterView extends Application implements Observer{
+public class MasterView extends Application implements Observer {
 
     private Stage window = new Stage();
     private LoginView loginView = new LoginView(this);
@@ -36,18 +36,21 @@ public class MasterView extends Application implements Observer{
     private MilestoneView milestoneView = new MilestoneView(this);
     private MySQLDatabase msdb = MySQLDatabase.getInstance();//Need a model instance to add as an observer
     private String currUserName, currProjectID;
-    private String buttonStyle ="-fx-padding: 2em;-fx-background-color:linear-gradient(#dddddd 0%, #f6f6f6 50%);-fx-background-radius: 8,7,6; -fx-background-insets: 0,1,2; -fx-text-fill: black; -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );";
+    private String buttonStyle = "-fx-padding: 2em;-fx-background-color:linear-gradient(#dddddd 0%, #f6f6f6 50%);-fx-background-radius: 8,7,6; -fx-background-insets: 0,1,2; -fx-text-fill: black; -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );";
 
     /**
      * default constructor
      */
-    public MasterView(){}
+    public MasterView() {
+    }
 
     public String getCurrUserName() {
         return currUserName;
     }
 
-    public MySQLDatabase getMsdb(){return MySQLDatabase.getInstance();}
+    public MySQLDatabase getMsdb() {
+        return MySQLDatabase.getInstance();
+    }
 
     public String getCurrProjectID() {
         return currProjectID;
@@ -87,10 +90,10 @@ public class MasterView extends Application implements Observer{
      * At the start of each stage being made (in the various views) you call mv.makeMenuButtons then add it to the top of the border pane.
      * You can see an example in the making of the student info view.
      */
-    public Scene getBaseScene(){
+    public Scene getBaseScene() {
         BorderPane bp = new BorderPane();
         bp.setTop(makeMenuButtons());
-        return new Scene(bp,1280,800);
+        return new Scene(bp, 1280, 800);
     }
 
     /**
@@ -108,13 +111,13 @@ public class MasterView extends Application implements Observer{
         userInfoButton.setPrefHeight(50);
         userInfoButton.setStyle(buttonStyle);
         userInfoButton.setOnAction(e -> {
-            if (msdb.getRole().equals("student")){
+            if (msdb.getRole().equals("student")) {
                 infoView.makeStudentView();
             }
-            if (msdb.getRole().equals("staff")){
+            if (msdb.getRole().equals("staff")) {
                 infoView.makeStaffView();//make infoview of the staffview.
             }
-            if (msdb.getRole().equals("faculty")){
+            if (msdb.getRole().equals("faculty")) {
                 infoView.makeFacultyView();
             }
         });//end action listener for user info button
@@ -122,14 +125,14 @@ public class MasterView extends Application implements Observer{
         projectInfoButton.setPrefHeight(50);
         projectInfoButton.setStyle(buttonStyle);
         projectInfoButton.setOnAction(e -> {
-            if (msdb.getRole().equals("student")){
+            if (msdb.getRole().equals("student")) {
                 projectView.makeStudentView();
             }
-            if (msdb.getRole().equals("staff")){
+            if (msdb.getRole().equals("staff")) {
                 //make a new staff view
                 projectView.makeStaffView();//making a new staff view
             }
-            if (msdb.getRole().equals("faculty")){
+            if (msdb.getRole().equals("faculty")) {
                 projectView.makeFacultyView();
             }
         });//end action listener for project button
@@ -151,6 +154,7 @@ public class MasterView extends Application implements Observer{
      * The master view is observing each of the view classes individually. So whenever a view class is done making the
      * necessary view it calls setChanged and NotifyObservers which notifys this to switch the view to whichever one is
      * passed in to notifyObservers
+     *
      * @param observableObject
      * @param arg
      */
@@ -162,6 +166,7 @@ public class MasterView extends Application implements Observer{
 
     /**
      * When the program first runs
+     *
      * @param myStage
      * @throws Exception
      */
@@ -181,6 +186,7 @@ public class MasterView extends Application implements Observer{
      * this uses googles smtp server to send an email, emails need
      * to be gmail accounts. 2FA accounts will not work as of the time
      * of writing.
+     *
      * @param recipientEmail
      * @param text
      * @return

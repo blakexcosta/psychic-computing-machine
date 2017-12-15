@@ -340,8 +340,7 @@ public class MySQLDatabase extends Observable {
 
         if (rs.get(1).get(0).equals("1")) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
 

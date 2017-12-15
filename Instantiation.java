@@ -1,4 +1,5 @@
 //import Model.*;
+
 import Model.MySQLDatabase;
 import View.*;
 
@@ -24,7 +25,7 @@ public class Instantiation {
 
         new Thread() {
             @Override
-            public void run(){
+            public void run() {
                 javafx.application.Application.launch(MasterView.class);
             }
         }.start();
