@@ -115,7 +115,6 @@ public class InfoView extends Observable {
         gp.add(labPhone,0,6);
         gp.add(editProfileButton, 0, 7);
         //adding the new button
-        gp.add(sendEmailButton, 0,8);
 
         gp.gridLinesVisibleProperty().setValue(false);
 

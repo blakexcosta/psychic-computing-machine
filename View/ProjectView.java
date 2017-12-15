@@ -370,6 +370,17 @@ public class ProjectView extends Observable {
         TextField inputName = new TextField();
         TextField inputSumm = new TextField();
         TextField inputTopic = new TextField();
+        
+        
+        ArrayList<ArrayList<String>> rs = msdb.getData("SELECT * FROM project WHERE ID=(?) ", new ArrayList<String>(Arrays.asList(mv.getCurrProjectID()) ));
+        
+
+        inputName.setText(rs.get(1).get(1));
+        inputSumm.setText(rs.get(1).get(2));
+        inputTopic.setText(rs.get(1).get(3));
+        
+        
+
 
         Button submitButton = new Button("Submit Changes");
 
@@ -499,8 +510,14 @@ public class ProjectView extends Observable {
                     }
                     else{
                         //this is where it would be sent to...
-                        System.out.println("mv.sendEmail(" + rs.get(1).get(0) + "),'email Text'");
-                        mv.sendEmail("grd2747@rit.edu","test sending an email");
+                        //ONLY SEND EMAILS TO FLOESER
+                        if (rs.get(1).get(0).equals("Michael.Floeser@rit.edu")){
+                            mv.sendEmail(rs.get(1).get(0),"test sending an email");
+                        }
+                        else{
+                            System.out.println("mv.sendEmail(" + rs.get(1).get(0) + "),'email Text'");
+                            mv.sendEmail("grd2747@rit.edu","test sending an email");
+                        }
                     }
                 });
                 Label lab = new Label(curr.get(0));
