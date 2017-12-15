@@ -573,6 +573,24 @@ public class ProjectView extends Observable {
         Scene sc = mv.getBaseScene();
         BorderPane bp = (BorderPane) sc.getRoot();
 
+        if(msdb.checkUserHasNotifications(mv.getCurrUserName(),"committee")){
+            //TODO: display committee notifications and give them the option to press yes or no for each one
+            //Yes will set the notification to approved and add the professor to their committee
+            //No will set the notification to false and not add the professor
+            System.out.println("Professor has notifications to be added to a committee");
+        }
+
+        ArrayList<String> userNameAL = new ArrayList<>(Arrays.asList(mv.getCurrUserName()));
+        rs = msdb.getData("SELECT ProjectID from committee where UserName in (?)",userNameAL);
+
+        if (rs.size() == 1){
+            //todo: only headers were returned. show that the professor is not on any committee
+        }
+        else {
+            //todo: make a dropdown of all the possible projects (loop through rs).
+            // hen the project is chosen display that info.
+        }
+
         //After the scene is made completely these two methods run which will update the master view to our new view
         setChanged();
         notifyObservers(sc);
