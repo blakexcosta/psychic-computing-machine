@@ -651,6 +651,7 @@ public class ProjectView extends Observable {
         if (rs.size() == 1) {
             Label noComLab = new Label("You are not currently on any committees");
             gp.add(noComLab,0,0);
+            //todo: only headers were returned. show that the professor is not on any committee
 
         } else {
             //todo: make a dropdown of all the possible projects (loop through rs).
@@ -799,8 +800,9 @@ public class ProjectView extends Observable {
 
     }
 
-    public void staffUpdatePlagiarismScore() {
-
-
+    public void staffUpdatePlagiarismScore(String plagPercent) {
+        ArrayList<String> projectIDAL = new ArrayList<>(Arrays.asList(mv.getCurrProjectID()));
+        msdb.setData("UPDATE project SET PlagiarismPercentage = " + plagPercent + " WHERE ProjectID = ?", projectIDAL);
+        System.out.println("PLAGIARISM score set to " + plagPercent);
     }
 }
