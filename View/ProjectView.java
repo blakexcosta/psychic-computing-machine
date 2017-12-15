@@ -97,20 +97,20 @@ public class ProjectView extends Observable {
 
         //delete the project
         deleteProjectButton = new Button("Delete Project");
-        deleteProjectButton.setOnAction( e -> {
+        deleteProjectButton.setOnAction(e -> {
             deleteConfirmPopup();
-         });
+        });
 
         // TODO: 12/14/17 3. after here, add button
         //add a new show more info button, then when populated remove info
         showMoreInfoButton = new Button("More Information");
-        showMoreInfoButton.setOnAction(e ->{
+        showMoreInfoButton.setOnAction(e -> {
             showMoreInfo();
         });
 
         //show less info.
         showLessInfoButton = new Button("Less Informaiton");
-        showLessInfoButton.setOnAction(e ->{
+        showLessInfoButton.setOnAction(e -> {
             showLessInfo();
         });
 
@@ -120,7 +120,7 @@ public class ProjectView extends Observable {
         gp.add(deleteProjectButton, 0, 11);
         //adding show more info to the pane.
         // TODO: 12/14/17 4. 
-        gp.add(showMoreInfoButton,1,11);
+        gp.add(showMoreInfoButton, 1, 11);
         //adding less info to the gridpane
         gp.add(showLessInfoButton, 1, 12);
         //project progress bar
@@ -149,7 +149,7 @@ public class ProjectView extends Observable {
         gp.add(labDueDate, 0, 4);
         gp.add(labGrade, 0, 5);
         gp.add(labApproved, 0, 6);
-        gp.add(projectStatusBar, 0, 7,2,1);
+        gp.add(projectStatusBar, 0, 7, 2, 1);
         ColumnConstraints col1Style = new ColumnConstraints();
         col1Style.setPercentWidth(20);
         gp.getColumnConstraints().add(col1Style);
@@ -175,7 +175,7 @@ public class ProjectView extends Observable {
             System.out.println("nothing found");
         } else {
             //int rowCount = gp.getScene().getRoot().getS;
-            System.out.println("length before population"+gp.getChildren().size());
+            System.out.println("length before population" + gp.getChildren().size());
             int rowCount = 13;
             for (int i = 0; i < moreInfoArray.get(1).size(); i++) {
                 Label lab = new Label(moreInfoArray.get(1).get(i));
@@ -197,6 +197,8 @@ public class ProjectView extends Observable {
      * can't seem to figure that out.
      */
     public void showLessInfo() {
+
+        /*
         System.out.println("Less Info Clicked");
         int length = gp.getChildren().size();
         //20 is the default size
@@ -209,7 +211,19 @@ public class ProjectView extends Observable {
         for(int i = 0; i <= 14; i++) {
             gp.getChildren().remove(0,i);
         }
+
         //gp.getChildren().remove(0,20);
+        */
+        gp.getChildren().clear();
+        if (msdb.getRole().equals("student")) {
+            makeStudentView();
+        }
+        if (msdb.getRole().equals("staff")) {
+            makeStaffView();
+        }
+        if (msdb.getRole().equals("faculty")) {
+            makeFacultyView();
+        }
     }
 
     /**
@@ -251,11 +265,10 @@ public class ProjectView extends Observable {
         }
     }
 
-   public ComboBox loadStaffDBInfo()
-   {
-      ArrayList<String> blankAL = new ArrayList<String>();
-      rs = msdb.getData("SELECT name FROM project", blankAL);
-      staffProjectDropdown = new ComboBox<String>();
+    public ComboBox loadStaffDBInfo() {
+        ArrayList<String> blankAL = new ArrayList<String>();
+        rs = msdb.getData("SELECT name FROM project", blankAL);
+        staffProjectDropdown = new ComboBox<String>();
 
         int counter = 0;
         for (ArrayList<String> curr : rs) {
@@ -269,15 +282,15 @@ public class ProjectView extends Observable {
             counter++;
         }
 
-      staffProjectDropdown.setOnAction(e -> {
-         //get the value from the combo box and cast it as a a string
-         String hashMapKeyStr = (String) staffProjectDropdown.getValue(); //this is the value of the drop down. "1,2" need to extract the number
-         //pass the ProjectID value from the hashmap
-         switchProject(dropDownVal_ProjectID.get(hashMapKeyStr));
-      });
+        staffProjectDropdown.setOnAction(e -> {
+            //get the value from the combo box and cast it as a a string
+            String hashMapKeyStr = (String) staffProjectDropdown.getValue(); //this is the value of the drop down. "1,2" need to extract the number
+            //pass the ProjectID value from the hashmap
+            switchProject(dropDownVal_ProjectID.get(hashMapKeyStr));
+        });
 
-      return staffProjectDropdown;
-   }
+        return staffProjectDropdown;
+    }
 
     /**
      * This view is made by a call in loadStudentDBInfo.
@@ -307,7 +320,7 @@ public class ProjectView extends Observable {
         submit.setOnAction(e -> {
             //get the new project ID value
             int newMaxID = Integer.parseInt(msdb.getMaxProjectID()) + 1;
-                //query to add to user_project_link
+            //query to add to user_project_link
             String projectLinkQuery = "INSERT INTO user_project_link (UserName,ProjectID) VALUES (?,?)";
 
             //Values to go in user_project_link query
@@ -392,21 +405,21 @@ public class ProjectView extends Observable {
             System.out.println("Business Layer Check: " + checkResult);
 
             if (checkResult) {
-               if (!inputName.getText().isEmpty()) {
-                   msdb.setData("UPDATE project set Name='" + inputName.getText() + "' where ID in (?)", projectIDAL);
-               }
-               if (!inputSumm.getText().isEmpty()) {
-                   msdb.setData("UPDATE project set Summary='" + inputSumm.getText() + "' where ID in (?)", projectIDAL);
-               }
-               if (!inputTopic.getText().isEmpty()) {
-                   msdb.setData("UPDATE project set Topic='" + inputTopic.getText() + "' where ID in (?)", projectIDAL);
-               }
-               makeStudentView();
-               popupWindow.close();
+                if (!inputName.getText().isEmpty()) {
+                    msdb.setData("UPDATE project set Name='" + inputName.getText() + "' where ID in (?)", projectIDAL);
+                }
+                if (!inputSumm.getText().isEmpty()) {
+                    msdb.setData("UPDATE project set Summary='" + inputSumm.getText() + "' where ID in (?)", projectIDAL);
+                }
+                if (!inputTopic.getText().isEmpty()) {
+                    msdb.setData("UPDATE project set Topic='" + inputTopic.getText() + "' where ID in (?)", projectIDAL);
+                }
+                makeStudentView();
+                popupWindow.close();
             } else {
-               makeStudentView();
-               popupWindow.close();
-               popupWindow.show();
+                makeStudentView();
+                popupWindow.close();
+                popupWindow.show();
             }
         });
 
@@ -456,10 +469,9 @@ public class ProjectView extends Observable {
 
         } else {//they do not have any committee members or project is not approved. Do another check to see which failed
 
-            if (!msdb.checkProjectApproved(mv.getCurrProjectID())){//Project is not approved. Show page that says that
-                gp.add(new Label("Project is not yet approved"),0,1);
-            }
-            else {//The project is approved but there are not committee mems
+            if (!msdb.checkProjectApproved(mv.getCurrProjectID())) {//Project is not approved. Show page that says that
+                gp.add(new Label("Project is not yet approved"), 0, 1);
+            } else {//The project is approved but there are not committee mems
                 gp.add(addMemberButton, 0, 1);
             }
         }
@@ -648,19 +660,18 @@ public class ProjectView extends Observable {
         BorderPane bp = (BorderPane) sc.getRoot();
 
         ArrayList<String> userNameAL = new ArrayList<>(Arrays.asList(mv.getCurrUserName()));
-        rs = msdb.getData("SELECT ProjectID from committee where UserName in (?)",userNameAL);
+        rs = msdb.getData("SELECT ProjectID from committee where UserName in (?)", userNameAL);
 
-        if (rs.size() == 1){
+        if (rs.size() == 1) {
             //todo: only headers were returned. show that the professor is not on any committee
-        }
-        else {
+        } else {
             //todo: make a dropdown of all the possible projects (loop through rs).
             // hen the project is chosen display that info.
         }
 
 
         //this pops up a window so if you are having difficulties just comment it out and I can finish up this part - Gavin
-        if(msdb.checkUserHasNotifications(mv.getCurrUserName(),"committee")){
+        if (msdb.checkUserHasNotifications(mv.getCurrUserName(), "committee")) {
             makeFacultyNotifactionPopup();
             System.out.println("Professor has notifications to be added to a committee");
         }
@@ -670,7 +681,7 @@ public class ProjectView extends Observable {
         notifyObservers(sc);
     }
 
-    private void makeFacultyNotifactionPopup(){
+    private void makeFacultyNotifactionPopup() {
         //TODO: display notifications that have the type committee and give them the option to press yes or no for each one
         //Yes will set the notification to approved and add the professor to the student committee.
         //The student can be found in the notification as notifierUserName
@@ -680,21 +691,22 @@ public class ProjectView extends Observable {
         Scene popupInfo = new Scene(gp, 600, 800);
         popupWindow.setScene(popupInfo);
         Label header = new Label("Students would like to add you to their committee");
-        gp.add(header,0,0,2,1);
+        gp.add(header, 0, 0, 2, 1);
         ArrayList<String> userNameAL = new ArrayList<>(Arrays.asList(mv.getCurrUserName()));
         //this will get all of the notifications they have.
         rs = msdb.getData("SELECT NotifierUserName,NotificationDesc, NotificationID from user_notifications where NotifiedUserName in (?) and NotificationType in ('committee')", userNameAL);
         System.out.println(rs);
         int rowCount = 0;
-        for (ArrayList<String> curr : rs){
-            if (rowCount == 0){}//do nothing because its the headers
-            else{
+        for (ArrayList<String> curr : rs) {
+            if (rowCount == 0) {
+            }//do nothing because its the headers
+            else {
                 Label lab = new Label(curr.get(1));//make a label with the notification description
                 Button yesButton = new Button("Yes");
                 Button noButton = new Button("No");
-                gp.add(lab,1,rowCount);
-                gp.add(yesButton,2,rowCount);
-                gp.add(noButton,3,rowCount);
+                gp.add(lab, 1, rowCount);
+                gp.add(yesButton, 2, rowCount);
+                gp.add(noButton, 3, rowCount);
 
                 yesButton.setOnAction(e -> {
                     //get the student username (curr.get(0)) and add the current user (mv.getCurrUser) to their committee
@@ -702,7 +714,7 @@ public class ProjectView extends Observable {
 
                 });
 
-                noButton.setOnAction(e ->{
+                noButton.setOnAction(e -> {
                     //set approved = 0 for the current notificationID(curr.get(2))
 
                 });
@@ -713,7 +725,7 @@ public class ProjectView extends Observable {
         popupWindow.show();
     }
 
-   public void deleteConfirmPopup() {
+    public void deleteConfirmPopup() {
         Stage popupWindow = new Stage();
         gp = new GridPane();
         Scene popupInfo = new Scene(gp, 600, 800);
@@ -724,10 +736,10 @@ public class ProjectView extends Observable {
         Button cancelButton = new Button("Cancel");
 
         deleteButton.setOnAction(e -> {
-             ArrayList<String> projectIDAL = new ArrayList<>(Arrays.asList(mv.getCurrProjectID()));
-             msdb.setData("DELETE FROM project WHERE ID in (?)", projectIDAL);
-             makeStudentView();
-             popupWindow.close();
+            ArrayList<String> projectIDAL = new ArrayList<>(Arrays.asList(mv.getCurrProjectID()));
+            msdb.setData("DELETE FROM project WHERE ID in (?)", projectIDAL);
+            makeStudentView();
+            popupWindow.close();
         });
 
         cancelButton.setOnAction(e -> {
@@ -739,34 +751,32 @@ public class ProjectView extends Observable {
         gp.add(deleteButton, 0, 1);
         gp.add(cancelButton, 0, 2);
         popupWindow.show();
-   }
+    }
 
-   public void switchProject(String projectVal)
-   {
-      System.out.println("PROJECT VALUE: " + projectVal);
-      ArrayList<String> projNmAL = new ArrayList<String>();
-      projNmAL.add(projectVal);
-      ArrayList<ArrayList<String>> rs = msdb.getData("Select Name, Summary, Topic, DueDate, Grade,ProposalApproved from  project where name in (?)", projNmAL);
+    public void switchProject(String projectVal) {
+        System.out.println("PROJECT VALUE: " + projectVal);
+        ArrayList<String> projNmAL = new ArrayList<String>();
+        projNmAL.add(projectVal);
+        ArrayList<ArrayList<String>> rs = msdb.getData("Select Name, Summary, Topic, DueDate, Grade,ProposalApproved from  project where name in (?)", projNmAL);
 
-      int rowCount = 1;
-      gp.getChildren().clear();
+        int rowCount = 1;
+        gp.getChildren().clear();
 
-      ComboBox projectsComboBox = loadStaffDBInfo();
+        ComboBox projectsComboBox = loadStaffDBInfo();
 
-      gp.addColumn(0, projectsComboBox, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved);
+        gp.addColumn(0, projectsComboBox, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved);
 
-      for (String curr : rs.get(1)) {
-         Label lab = new Label(curr);
-         gp.add(lab, 1, rowCount);
-         rowCount++;
-      }
-
-
-   }
-
-   public void staffUpdatePlagiarismScore()
-   {
+        for (String curr : rs.get(1)) {
+            Label lab = new Label(curr);
+            gp.add(lab, 1, rowCount);
+            rowCount++;
+        }
 
 
-   }
+    }
+
+    public void staffUpdatePlagiarismScore() {
+
+
+    }
 }
