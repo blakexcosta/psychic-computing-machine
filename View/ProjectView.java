@@ -609,7 +609,7 @@ public class ProjectView extends Observable {
         gp.add(header,0,0,2,1);
         ArrayList<String> userNameAL = new ArrayList<>(Arrays.asList(mv.getCurrUserName()));
         //this will get all of the notifications they have.
-        rs = msdb.getData("SELECT NotifierUserName,NotificationDesc from user_notifications where NotifiedUserName in (?) and NotificationType in ('committee')", userNameAL);
+        rs = msdb.getData("SELECT NotifierUserName,NotificationDesc, NotificationID from user_notifications where NotifiedUserName in (?) and NotificationType in ('committee')", userNameAL);
         System.out.println(rs);
         int rowCount = 0;
         for (ArrayList<String> curr : rs){
@@ -621,9 +621,21 @@ public class ProjectView extends Observable {
                 gp.add(lab,1,rowCount);
                 gp.add(yesButton,2,rowCount);
                 gp.add(noButton,3,rowCount);
+
+                yesButton.setOnAction(e -> {
+                    //get the student username (curr.get(0)) and add the current user (mv.getCurrUser) to their committee
+                    // then set approved = 1 for the current notificationID((curr.get(2)))
+
+                });
+
+                noButton.setOnAction(e ->{
+                    //set approved = 0 for the current notificationID(curr.get(2))
+
+                });
             }
             rowCount++;
         }
+
         popupWindow.show();
     }
 
