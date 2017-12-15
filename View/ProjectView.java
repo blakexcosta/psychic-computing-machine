@@ -762,7 +762,7 @@ public class ProjectView extends Observable {
 
         Object valueDrop = optionsBox.getValue();
         optionsBox.setOnAction(e ->{
-            switchFacProjectView(optionsBox.toString());
+            switchFacProjectView(valueDrop.toString());
         });
         return optionsBox;
     }
