@@ -11,6 +11,8 @@ package View;
 import Model.MySQLDatabase;
 import BusinessLayer.BusinessLayer;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
@@ -30,12 +32,14 @@ public class ProjectView extends Observable {
     private GridPane gp;
     private Label mainHeader, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved;
     private TextField inputName, inputSummary, inputStartDate, inputEndDate, inputDueDate, inputTopic, inputType;
-    private Button showMilestonesButton, editInfoButton, committeeInfoButton, deleteProjectButton, showMoreInfoButton;
+    private Button showMilestonesButton, editInfoButton, committeeInfoButton, deleteProjectButton, showMoreInfoButton, showLessInfoButton;
     private ComboBox memberDropdown, staffProjectDropdown;
     private ArrayList<ArrayList<String>> rs;
     private ArrayList<ArrayList<String>> moreInfoArray; //used to get more information from the project, used when a button is clicked.
     private HashMap<String, String> dropDownVal_ProjectID = new HashMap<String, String>();
     // TODO: 12/14/17 8. private accessor to get information.
+    private final Group moreInfoGroup = new Group();
+
     public ProjectView(MasterView _mv) {
         this.mv = _mv;
         msdb = mv.getMsdb();
@@ -104,14 +108,21 @@ public class ProjectView extends Observable {
             showMoreInfo();
         });
 
+        //show less info.
+        showLessInfoButton = new Button("Less Informaiton");
+        showLessInfoButton.setOnAction(e ->{
+            showLessInfo();
+        });
+
         gp.add(showMilestonesButton, 0, 8);
         gp.add(editInfoButton, 0, 9);
         gp.add(committeeInfoButton, 0, 10);
         gp.add(deleteProjectButton, 0, 11);
         //adding show more info to the pane.
         // TODO: 12/14/17 4. 
-        gp.add(showMoreInfoButton,0,12);
-
+        gp.add(showMoreInfoButton,1,11);
+        //adding less info to the gridpane
+        gp.add(showLessInfoButton, 1, 12);
         //project progress bar
         //get data
         ArrayList<String> projectIDAL = new ArrayList<>();
@@ -164,23 +175,41 @@ public class ProjectView extends Observable {
             System.out.println("nothing found");
         } else {
             //int rowCount = gp.getScene().getRoot().getS;
+            System.out.println("length before population"+gp.getChildren().size());
             int rowCount = 13;
             for (int i = 0; i < moreInfoArray.get(1).size(); i++) {
                 Label lab = new Label(moreInfoArray.get(1).get(i));
                 lab.getStyleClass().add("infoDataLabel");
                 gp.add(lab, 1, rowCount++); //added to the gridpane.
+                //moreInfoGroup.getChildren().add(lab);
                 // TODO: 12/14/17 9, may have to add scrollpane -Blake
             }
+            //for each child, add it to the pane.
+            //gp.add(moreInfoGroup,0, 13);
+            //add group of children to the pane
+
         }
         //send it to the view
     }
 
     /**
-     * private method to remove information
+     * used to show less info, would prefer this to be toggleable but
+     * can't seem to figure that out.
      */
-    // TODO: 12/14/17 -99 
-    private void removeMoreInfo() {
-        System.out.println("Remove more information clicked.");
+    public void showLessInfo() {
+        System.out.println("Less Info Clicked");
+        int length = gp.getChildren().size();
+        //20 is the default size
+        if (length <= 20) {
+            System.out.println("default size, returning...");
+            return;
+        }
+        System.out.println("length after population: " + length);
+        //decrementing length
+        for(int i = 0; i <= 14; i++) {
+            gp.getChildren().remove(0,i);
+        }
+        //gp.getChildren().remove(0,20);
     }
 
     /**
