@@ -573,12 +573,6 @@ public class ProjectView extends Observable {
         Scene sc = mv.getBaseScene();
         BorderPane bp = (BorderPane) sc.getRoot();
 
-        //this pops up a window so if you are having difficulties just comment it out and I can finish up this part - Gavin
-        if(msdb.checkUserHasNotifications(mv.getCurrUserName(),"committee")){
-            makeFacultyNotifactionPopup();
-            System.out.println("Professor has notifications to be added to a committee");
-        }
-
         ArrayList<String> userNameAL = new ArrayList<>(Arrays.asList(mv.getCurrUserName()));
         rs = msdb.getData("SELECT ProjectID from committee where UserName in (?)",userNameAL);
 
@@ -588,6 +582,13 @@ public class ProjectView extends Observable {
         else {
             //todo: make a dropdown of all the possible projects (loop through rs).
             // hen the project is chosen display that info.
+        }
+
+
+        //this pops up a window so if you are having difficulties just comment it out and I can finish up this part - Gavin
+        if(msdb.checkUserHasNotifications(mv.getCurrUserName(),"committee")){
+            makeFacultyNotifactionPopup();
+            System.out.println("Professor has notifications to be added to a committee");
         }
 
         //After the scene is made completely these two methods run which will update the master view to our new view
@@ -605,10 +606,25 @@ public class ProjectView extends Observable {
         Scene popupInfo = new Scene(gp, 600, 800);
         popupWindow.setScene(popupInfo);
         Label header = new Label("Students would like to add you to their committee");
+        gp.add(header,0,0,2,1);
         ArrayList<String> userNameAL = new ArrayList<>(Arrays.asList(mv.getCurrUserName()));
         //this will get all of the notifications they have.
-        rs = msdb.getData("SELECT * from user_notifications where NotifiedUserName in (?) and NotificationType in ('committee')", userNameAL);
+        rs = msdb.getData("SELECT NotifierUserName,NotificationDesc from user_notifications where NotifiedUserName in (?) and NotificationType in ('committee')", userNameAL);
         System.out.println(rs);
+        int rowCount = 0;
+        for (ArrayList<String> curr : rs){
+            if (rowCount == 0){}//do nothing because its the headers
+            else{
+                Label lab = new Label(curr.get(1));//make a label with the notification description
+                Button yesButton = new Button("Yes");
+                Button noButton = new Button("No");
+                gp.add(lab,1,rowCount);
+                gp.add(yesButton,2,rowCount);
+                gp.add(noButton,3,rowCount);
+            }
+            rowCount++;
+        }
+        popupWindow.show();
     }
 
    public void deleteConfirmPopup() {
