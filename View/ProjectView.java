@@ -119,7 +119,6 @@ public class ProjectView extends Observable {
         gp.add(committeeInfoButton, 0, 10);
         gp.add(deleteProjectButton, 0, 11);
         //adding show more info to the pane.
-        // TODO: 12/14/17 4. 
         gp.add(showMoreInfoButton, 1, 11);
         //adding less info to the gridpane
         gp.add(showLessInfoButton, 1, 12);
@@ -193,27 +192,9 @@ public class ProjectView extends Observable {
     }
 
     /**
-     * used to show less info, would prefer this to be toggleable but
-     * can't seem to figure that out.
+     * When the show less info button is clicked it remakes the standard view for whatever role we currently have
      */
     public void showLessInfo() {
-
-        /*
-        System.out.println("Less Info Clicked");
-        int length = gp.getChildren().size();
-        //20 is the default size
-        if (length <= 20) {
-            System.out.println("default size, returning...");
-            return;
-        }
-        System.out.println("length after population: " + length);
-        //decrementing length
-        for(int i = 0; i <= 14; i++) {
-            gp.getChildren().remove(0,i);
-        }
-
-        //gp.getChildren().remove(0,20);
-        */
         gp.getChildren().clear();
         if (msdb.getRole().equals("student")) {
             makeStudentView();
