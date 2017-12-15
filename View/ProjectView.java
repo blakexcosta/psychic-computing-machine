@@ -574,9 +574,7 @@ public class ProjectView extends Observable {
         BorderPane bp = (BorderPane) sc.getRoot();
 
         if(msdb.checkUserHasNotifications(mv.getCurrUserName(),"committee")){
-            //TODO: display committee notifications and give them the option to press yes or no for each one
-            //Yes will set the notification to approved and add the professor to their committee
-            //No will set the notification to false and not add the professor
+            makeFacultyNotifactionPopup();
             System.out.println("Professor has notifications to be added to a committee");
         }
 
@@ -594,6 +592,14 @@ public class ProjectView extends Observable {
         //After the scene is made completely these two methods run which will update the master view to our new view
         setChanged();
         notifyObservers(sc);
+    }
+
+    private void makeFacultyNotifactionPopup(){
+        //TODO: display notifications that have the type committee and give them the option to press yes or no for each one
+        //Yes will set the notification to approved and add the professor to the student committee.
+        //The student can be found in the notification as notifierUserName
+        //No will set the notification to false and not add the professor
+
     }
 
    public void deleteConfirmPopup() {
