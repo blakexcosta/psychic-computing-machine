@@ -103,7 +103,7 @@ public class MasterView extends Application implements Observer{
     }
 
     public HBox makeMenuButtons() {
-        HBox returnMenu = new HBox(430);
+        HBox returnMenu = new HBox(400);
         Button userInfoButton = new Button("User Information");
         userInfoButton.setPrefHeight(50);
         userInfoButton.setStyle(buttonStyle);
