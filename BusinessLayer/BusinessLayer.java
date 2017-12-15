@@ -156,12 +156,44 @@ public class BusinessLayer {
    public boolean checkPlagiarismScore(String score)
    {
       try {
-         double scoreDb = Double.parseDouble(score);
-         return true;
+         if (score.equals("")) 
+         { 
+            return false; 
+         }
+         else 
+         {
+            double scoreDb = Double.parseDouble(score);
+            return true;
+         }
       }
       catch (Exception E)
       {
          System.out.println("Invalid Score");
+         return false;
+      }
+   }
+   
+   public boolean checkStatus(String status) 
+   {
+      try {
+         if (status.equals(""))
+         {
+            return false;
+         }
+         else 
+         {
+            status = status.toUpperCase();
+            if (status.equals("TRUE") || status.equals("FALSE"))
+            {
+               return true;
+            }
+            
+            return false;
+         } 
+      }
+      catch (Exception E)
+      {
+         System.out.println("Invalid Status");
          return false;
       }
    }

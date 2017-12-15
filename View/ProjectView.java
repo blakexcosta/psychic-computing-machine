@@ -32,7 +32,7 @@ public class ProjectView extends Observable {
     private GridPane gp, facGP;
     private Label mainHeader, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved;
     private TextField inputName, inputSummary, inputStartDate, inputEndDate, inputDueDate, inputTopic, inputType;
-    private Button showMilestonesButton, editInfoButton, committeeInfoButton, deleteProjectButton, showMoreInfoButton, showLessInfoButton, staffPlagiarismButton;
+    private Button showMilestonesButton, editInfoButton, committeeInfoButton, deleteProjectButton, showMoreInfoButton, showLessInfoButton, staffPlagiarismButton, staffStatusButton;
     private ComboBox memberDropdown, staffProjectDropdown, facultyDropdown;
     private ArrayList<ArrayList<String>> rs;
     private ArrayList<ArrayList<String>> moreInfoArray; //used to get more information from the project, used when a button is clicked.
@@ -616,8 +616,15 @@ public class ProjectView extends Observable {
         staffPlagiarismButton = new Button();
         staffPlagiarismButton.setText("Edit Plagiarism Score");
 
+        staffStatusButton = new Button();
+        staffStatusButton.setText("Change Project Status");
+
         staffPlagiarismButton.setOnAction(e -> {
             makeStaffPlagiarismPopup();
+        });
+        
+        staffStatusButton.setOnAction(e -> {
+            makeStaffStatusPopup();
         });
 
         //Combo box that contains the projects
@@ -842,7 +849,7 @@ public class ProjectView extends Observable {
         ComboBox projectsComboBox = loadStaffDBInfo();
 
 
-        gp.addColumn(0, projectsComboBox, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved, staffPlagiarismButton);
+        gp.addColumn(0, projectsComboBox, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved, staffPlagiarismButton, staffStatusButton);
 
         for (String curr : rs.get(1)) {
             Label lab = new Label(curr);
@@ -864,7 +871,7 @@ public class ProjectView extends Observable {
         gp = new GridPane();
         Scene popupInfo = new Scene(gp, 600, 800);
         popupWindow.setScene(popupInfo);
-        Label header = new Label("Input plagiarism score");
+        Label header = new Label("Enter Plagiarism Score");
         Label plagLab = new Label("Plagiarism Score: ");
         TextField inputPlag = new TextField();
         Button submitButton = new Button("Submit");
@@ -879,6 +886,49 @@ public class ProjectView extends Observable {
             if (checked) {
                 msdb.setData("UPDATE project SET PlagiarismPercentage = '" + plagScore + "' WHERE ID = (?)", projectIDAL);
                 System.out.println("Plagiarism score set to " + plagScore);
+                popupWindow.close();
+                makeStaffView();
+            } else {
+                popupWindow.close();
+                popupWindow.show();
+                makeStaffView();
+            }
+
+        });
+
+        cancelButton.setOnAction(e -> {
+            System.out.println("Cancelled");
+            popupWindow.close();
+            makeStaffView();
+        });
+
+        popupWindow.show();
+        makeStaffView();
+    }
+    
+    public void makeStaffStatusPopup() {
+        ArrayList<String> projectIDAL = new ArrayList<>(Arrays.asList(mv.getCurrProjectID()));
+        System.out.println("Current Project ID: " + mv.getCurrProjectID());
+
+        Stage popupWindow = new Stage();
+        gp = new GridPane();
+        Scene popupInfo = new Scene(gp, 600, 800);
+        popupWindow.setScene(popupInfo);
+        Label header = new Label("Enter Project Status (True or False)");
+        Label statusLab = new Label("Status: ");
+        TextField inputStatus = new TextField();
+        Button submitButton = new Button("Submit");
+        Button cancelButton = new Button("Cancel");
+
+        gp.addColumn(0, header, statusLab, submitButton, cancelButton);
+        gp.addColumn(1, new Label(), inputStatus);
+
+        submitButton.setOnAction(e -> {
+            String status = inputStatus.getText();
+            boolean checked = busLayer.checkStatus(status);
+            if (checked) {
+                msdb.setData("UPDATE project SET completed = " + status + " WHERE ID = (?)", projectIDAL);
+                System.out.println("Status set to " + status);
                 popupWindow.close();
                 makeStaffView();
             } else {
