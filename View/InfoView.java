@@ -48,7 +48,7 @@ public class InfoView extends Observable {
         msdb = mv.getMsdb();
     }
 
-    //TODO: Build out student info view (make it look nice. also add the information in loadStudentDBInfo)
+    //TODO: Build out student info view (make it look nice. also add the information in loadUserDBInfo)
     public void makeStudentView() {
         //this scene object comes from masterView. it has a border pane in it. The top object of the border pane has been set to the nav bar
         //the borderpane can be referenced by casting an object seen below
@@ -119,7 +119,7 @@ public class InfoView extends Observable {
 
         gp.gridLinesVisibleProperty().setValue(true);
 
-        loadStudentDBInfo();//this sets the labels to the proper info using the local class instance of MSDB
+        loadUserDBInfo("s");//this sets the labels to the proper info using the local class instance of MSDB
         //loop through each of the user fields that we have and put them next to the label. They come in in the correct order
         setChanged();
         notifyObservers(sc);
@@ -128,11 +128,17 @@ public class InfoView extends Observable {
     /**
      * gets all of the data to be put next to the labels in the grid.
      */
-    public void loadStudentDBInfo() {
+    public void loadUserDBInfo(String userType) {
         ArrayList<String> userNameAL = new ArrayList<String>();
         userNameAL.add(mv.getCurrUserName());
         //ArrayList<String> userNameAL = {mv.getCurrUserName()};
-        returnData = msdb.getData("SELECT CONCAT(FirstName, ' ',  LastName) as 'Name' , UserName, Department, GraduationDate,Major, Role FROM user where UserName in (?)", userNameAL);
+        if(userType == "s"){
+            returnData = msdb.getData("SELECT CONCAT(FirstName, ' ',  LastName) as 'Name' , UserName, Department, GraduationDate,Major, Role FROM user where UserName in (?)", userNameAL);
+        }
+        if(userType == "stf" || userType == "f"){
+            returnData = msdb.getData("SELECT CONCAT(FirstName, ' ',  LastName) as 'Name' , UserName, Department, GraduationDate, Role FROM user where UserName in (?)", userNameAL);
+        }
+
         int rowCount = 0;
         
          for (int i = 0; i < returnData.get(1).size(); i++)
@@ -171,18 +177,25 @@ public class InfoView extends Observable {
         //populating labels to the screen.
         labName = new Label("Name: ");
         labName.getStyleClass().add("infoLabel");
+        
         labUserName = new Label("User Name: ");
         labUserName.getStyleClass().add("infoLabel");
+        
         labDepartment = new Label("Department: ");
         labDepartment.getStyleClass().add("infoLabel");
+        
         labGradDate = new Label("Graduation Date: ");
         labGradDate.getStyleClass().add("infoLabel");
+        
         labRole = new Label("Role: ");
         labRole.getStyleClass().add("infoLabel");
         
-        //editProfileButton.setOnAction(e -> {
-            //makeEditPopup("stf");
-        //});
+        editProfileButton = new Button();
+        editProfileButton.setText("Edit User Profile");
+        
+        editProfileButton.setOnAction(e -> {
+            makeEditPopup("stf");
+        });
         
         //adding to the gridpane
         gp.add(labName, 0, 1);
@@ -190,12 +203,12 @@ public class InfoView extends Observable {
         gp.add(labDepartment, 0, 3);
         gp.add(labGradDate, 0, 4);
         gp.add(labRole, 0, 5);
-        //gp.add(editProfileButton, 0, 6);
+        gp.add(editProfileButton, 0, 6);
 
         gp.gridLinesVisibleProperty().setValue(true);
         //load the student information
         // TODO: 12/12/17 Found my error, its the line below me. gotta implement a loadStaffView method, not gonna mess with making that method generic -Blake 
-        loadStudentDBInfo();//this sets the labels to the proper info using the local class instance of MSDB
+        loadUserDBInfo("stf");//this sets the labels to the proper info using the local class instance of MSDB
         //After the scene is made completely these two methods run which will update the master view to our new view
         setChanged();
         notifyObservers(sc);
@@ -253,8 +266,9 @@ public class InfoView extends Observable {
         gp.add(editProfileButton, 0, 5); //
 
         gp.gridLinesVisibleProperty().setValue(true);
-
-        loadStudentDBInfo();//this sets the labels to the proper info using the local class instance of MSDB
+        
+        loadUserDBInfo("f");//this sets the labels to the proper info using the local class instance of MSDB
+                            //takes in identifier to specifiy which data to pull for each indiviaul type of user
         //loop through each of the user fields that we have and put them next to the label. They come in in the correct order
         setChanged();
         notifyObservers(sc);
@@ -363,16 +377,27 @@ public class InfoView extends Observable {
                    System.out.println("you changed the role!: " + selected );
                }
        
-               makeStudentView(); //depends on which user
+               produceUserView( userType );
                popupWindow.close();
             } else {
-               makeStudentView();
+               produceUserView( userType );
                popupWindow.close();
                popupWindow.show();
             }
         });
 
 
+   }
+   
+   public void produceUserView(String user){ //"s": student -- "stf": staff -- "f": Faculty
+      switch(user){
+         case "s"   : makeStudentView();
+                      break;
+         case "stf" : makeStaffView();
+                      break;
+         case "f"   : makeFacultyView();
+                      break;          
+      }  
    }
    
    private String nameToUserName(String _name) {
