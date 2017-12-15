@@ -358,7 +358,7 @@ public class InfoView extends Observable {
             ArrayList<String> newInfoVals = new ArrayList<>(Arrays.asList(inputDept.getText(), inputGradDate.getText(), inputMaj.getText()));
             
             //Business layer checks the values
-            boolean checkResult = busLayer.checkStudentEditInfo(newInfoVals);
+            boolean checkResult = busLayer.checkUserEditInfo(newInfoVals, userType);
             System.out.println("Business Layer Check: " + checkResult);
             
             if (checkResult) {

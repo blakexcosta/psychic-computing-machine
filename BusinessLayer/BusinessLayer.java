@@ -87,37 +87,71 @@ public class BusinessLayer {
       }
    }   
    
-   public boolean checkStudentEditInfo(ArrayList<String> newInfoVals)
-   {
+   //Specific to editUserInfo popup in infoView.java
+   //userType keys: "s" -> student ; "stf" -> staff ; "f" -> faculty
+   public boolean checkUserEditInfo(ArrayList<String> newInfoVals, String userType){
       try {
-         String userDept = newInfoVals.get(0).toString();
-         System.out.println("Department: " + userDept);
-         String userGradDate = newInfoVals.get(1).toString();
-         System.out.println("Graduation Date: " + userGradDate);
-         String userMajor = newInfoVals.get(2).toString();
-         System.out.println("userMajor: " + userMajor);
          
-         if (userDept.equals("")|| userGradDate.equals("") || userMajor.equals(""))
-         {
-            System.out.println("Incomplete Form");
-            return false;
-         }
-         else 
-         {
-            java.sql.Date validGradDate = java.sql.Date.valueOf(userGradDate);
+         String userDept,
+                userGradDate,
+                userMajor;
+                
+         if(userType == "s"){
+            userDept = newInfoVals.get(0).toString();
+            userGradDate = newInfoVals.get(1).toString();
+            userMajor = newInfoVals.get(2).toString();
+
+            if (userDept.equals("")|| userGradDate.equals("") || userMajor.equals("")){
+               System.out.println("Incomplete Form");
+               return false;
+            }
+            else{
+               java.sql.Date validGradDate = java.sql.Date.valueOf(userGradDate);
+            
+               System.out.println("Graduation Date: " + validGradDate);
+            
+               System.out.println("Date Valid.");
+               return true;
+            } 
+            
+         } //end "s"
          
-            System.out.println("Graduation Date: " + validGradDate);
+         if(userType == "stf"){
+            userDept = newInfoVals.get(0).toString();
+            userGradDate = newInfoVals.get(1).toString();
+
+            if (userDept.equals("")|| userGradDate.equals("") ){
+               System.out.println("Incomplete Form");
+               return false;
+            }
+            else{
+               java.sql.Date validGradDate = java.sql.Date.valueOf(userGradDate);
+            
+               System.out.println("Graduation Date: " + validGradDate);
+            
+               System.out.println("Date Valid.");
+               return true;
+            }
+         } // end "stf"
          
-            System.out.println("Project Valid.");
-            return true;
-         } 
-      }
-      catch (Exception E)
-      {
-         System.out.println("Invalid Project");
+         if(userType == "f"){
+            userDept = newInfoVals.get(0).toString();
+
+            if (userDept.equals("") ){
+               System.out.println("Incomplete Form");
+               return false;
+            }
+            else{
+               return true;
+            }
+         } // end "f"
+
+      }catch (Exception E){
+         System.out.println("Invalid Submission");
          return false;
       }
-   }
+      return true;
+   } //end checkUserEditInfo()
    
    public boolean checkPlagiarismScore(String score)
    {
