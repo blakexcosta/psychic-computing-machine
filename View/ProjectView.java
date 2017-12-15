@@ -573,6 +573,7 @@ public class ProjectView extends Observable {
         Scene sc = mv.getBaseScene();
         BorderPane bp = (BorderPane) sc.getRoot();
 
+        //this pops up a window so if you are having difficulties just comment it out and I can finish up this part - Gavin
         if(msdb.checkUserHasNotifications(mv.getCurrUserName(),"committee")){
             makeFacultyNotifactionPopup();
             System.out.println("Professor has notifications to be added to a committee");
