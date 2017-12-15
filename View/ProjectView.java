@@ -653,10 +653,10 @@ public class ProjectView extends Observable {
         ArrayList<String> userNameAL = new ArrayList<>(Arrays.asList(mv.getCurrUserName()));
         rs = msdb.getData("SELECT ProjectID from committee where UserName in (?)", userNameAL);
 
+        System.out.println(rs);
         if (rs.size() == 1) {
-            Label noComLab = new Label("You are not currently on any committees");
-            gp.add(noComLab,0,0);
             //todo: only headers were returned. show that the professor is not on any committee
+            Label noComLab = new Label("You are not currently on any committees");
             gp.add(noComLab,0,0);
 
         } else {
@@ -679,7 +679,6 @@ public class ProjectView extends Observable {
     }
 
     private void makeFacultyNotifactionPopup() {
-        //TODO: display notifications that have the type committee and give them the option to press yes or no for each one
         //Yes will set the notification to approved and add the professor to the student committee.
         //The student can be found in the notification as notifierUserName
         //No will set the notification to false and not add the professor
@@ -746,25 +745,24 @@ public class ProjectView extends Observable {
         //put the name of all projects into the comboBox
         //use that name in a query to get data
 
-        facultyDropdown = new ComboBox<String>();
 
         ArrayList<String>currentUserName = new ArrayList();
         currentUserName.add(mv.getCurrUserName());
 
-        rs = msdb.getData("select ProjectID from user_project_link where UserName in (?)", currentUserName );
-        System.out.println(rs);
+        rs = msdb.getData("select ProjectID from committee where UserName in (?)", currentUserName );
         boolean header = true;
         for (ArrayList<String> curr : rs) {
             if (header) {
                 header = false;
             } else {
-                facultyDropdown.getItems().add(curr.get(0));
+                System.out.println("adding "+ curr.get(0));
+                optionsBox.getItems().add(curr.get(0));
             }
         }
 
-        Object valueDrop = facultyDropdown.getValue();
+        Object valueDrop = optionsBox.getValue();
         optionsBox.setOnAction(e ->{
-            switchFacProjectView(valueDrop.toString());
+            switchFacProjectView(optionsBox.toString());
         });
         return optionsBox;
     }
