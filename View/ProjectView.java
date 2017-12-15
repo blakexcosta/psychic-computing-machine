@@ -619,7 +619,7 @@ public class ProjectView extends Observable {
 
         //labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved
 
-        mainHeader = new Label("All Projects");
+        mainHeader = new Label("Select a Project from the ComboBox");
         mainHeader.getStyleClass().add("mainHeader");
         labName = new Label("Name: ");
         labSummary = new Label("Summary: ");
@@ -631,8 +631,8 @@ public class ProjectView extends Observable {
         labGrade = new Label("Grade: ");
         labApproved = new Label("Approved? ");
 
-        gp.addColumn(0, projectsComboBox, mainHeader, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved);
-
+        //gp.addColumn(0, projectsComboBox, mainHeader, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved);
+        gp.addColumn(0, mainHeader, projectsComboBox);
         //After the scene is made completely these two methods run which will update the master view to our new view
         setChanged();
         notifyObservers(sc);
