@@ -600,7 +600,15 @@ public class ProjectView extends Observable {
         //Yes will set the notification to approved and add the professor to the student committee.
         //The student can be found in the notification as notifierUserName
         //No will set the notification to false and not add the professor
-
+        Stage popupWindow = new Stage();
+        gp = new GridPane();
+        Scene popupInfo = new Scene(gp, 600, 800);
+        popupWindow.setScene(popupInfo);
+        Label header = new Label("Students would like to add you to their committee");
+        ArrayList<String> userNameAL = new ArrayList<>(Arrays.asList(mv.getCurrUserName()));
+        //this will get all of the notifications they have.
+        rs = msdb.getData("SELECT * from user_notifications where NotifiedUserName in (?) and NotificationType in ('committee')", userNameAL);
+        System.out.println(rs);
     }
 
    public void deleteConfirmPopup() {
