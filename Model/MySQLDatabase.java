@@ -297,7 +297,7 @@ public class MySQLDatabase extends Observable {
         ArrayList<String> queryVals = new ArrayList<>();
         queryVals.add(_userID);
         queryVals.add(type);
-        ArrayList<ArrayList<String>> rs = getData("SELECT * from user_notifications where NotifiedUserName in (?) and NotificationType in (?) and Approved = null", queryVals);
+        ArrayList<ArrayList<String>> rs = getData("SELECT * from user_notifications where NotifiedUserName in (?) and NotificationType in (?) and Approved is NULL", queryVals);
         if (rs.size() == 1) {
             return false;
         }//all it got back was headers

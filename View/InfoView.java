@@ -133,7 +133,7 @@ public class InfoView extends Observable {
         userNameAL.add(mv.getCurrUserName());
         //ArrayList<String> userNameAL = {mv.getCurrUserName()};
         if (userType == "s") {
-            returnData = msdb.getData("SELECT CONCAT(FirstName, ' ',  LastName) as 'Name' , UserName, GraduationDate, Major, EmailAddress, PhoneNumber FROM user JOIN email USING(UserName) JOIN phone USING(UserName) JOIN office USING(UserName) where UserName in (?)", userNameAL);
+            returnData = msdb.getData("SELECT CONCAT(FirstName, ' ',  LastName) as 'Name' , UserName, GraduationDate, Major, EmailAddress, PhoneNumber FROM user JOIN email USING(UserName) JOIN phone USING(UserName) where UserName in (?)", userNameAL);
         }
         if (userType == "stf") {
             returnData = msdb.getData("SELECT CONCAT(FirstName, ' ',  LastName) as 'Name', UserName, Department, PhoneNumber, EmailAddress, OfficeNumber FROM user JOIN email USING(UserName) JOIN phone USING(UserName) JOIN office USING(UserName) where UserName in (?)", userNameAL);
@@ -144,6 +144,8 @@ public class InfoView extends Observable {
 
         int rowCount = 0;
 
+
+        System.out.println(returnData);
         for (int i = 0; i < returnData.get(1).size(); i++) {
             Label lab = new Label(returnData.get(1).get(i));
             lab.getStyleClass().add("infoDataLabel");

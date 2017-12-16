@@ -1,10 +1,4 @@
-/**
- * Blake Costa, Gavin Drabik, Matthew Turczmanovicz, Oswaldo Rosete-Garcia, and Quinn Bissen
- * Group 11
- * ISTE-330
- * Professor Floeser
- * December 18th, 2017
- */
+
 
 package View;
 
@@ -25,6 +19,13 @@ import java.util.Arrays;
 import java.util.Observable;
 import java.util.HashMap;
 
+/**
+ * Blake Costa, Gavin Drabik, Matthew Turczmanovicz, Oswaldo Rosete-Garcia, and Quinn Bissen
+ * Group 11
+ * ISTE-330
+ * Professor Floeser
+ * December 18th, 2017
+ */
 public class ProjectView extends Observable {
     private MySQLDatabase msdb; //there is only one instance of the database.
     private BusinessLayer busLayer = new BusinessLayer();
@@ -120,11 +121,17 @@ public class ProjectView extends Observable {
         ArrayList<String> projectIDAL = new ArrayList<>();
         projectIDAL.add(mv.getCurrProjectID());
         rs = msdb.getData("SELECT MAX(StatusCode) FROM milestone JOIN project_milestone_link on (milestone.ID = project_milestone_link.MilestoneID) WHERE project_milestone_link.ProjectID in (?)", projectIDAL);
-        String maxStatus = rs.get(1).get(0).toString();
-        double maxStatusNum = Double.parseDouble(maxStatus);
-        double progressBarVal = (maxStatusNum / 1600);
-        ProgressBar projectStatusBar = new ProgressBar();
-        projectStatusBar.setProgress(progressBarVal);
+        System.out.println("RESULT SET");
+        System.out.println(rs);
+        if (rs.get(1).equals(null) ) {//only add the progress bar if they have milestones
+            String maxStatus = rs.get(1).get(0).toString();
+            double maxStatusNum = Double.parseDouble(maxStatus);
+            double progressBarVal = (maxStatusNum / 1600);
+            ProgressBar projectStatusBar = new ProgressBar();
+            projectStatusBar.setProgress(progressBarVal);
+            gp.add(projectStatusBar, 0, 7, 2, 1);
+        }
+
 
         //initialize all of the buttons and add them to the grid
         labName = new Label("Name: ");
@@ -139,7 +146,6 @@ public class ProjectView extends Observable {
         gp.add(labDueDate, 0, 4);
         gp.add(labGrade, 0, 5);
         gp.add(labApproved, 0, 6);
-        gp.add(projectStatusBar, 0, 7, 2, 1);
         ColumnConstraints col1Style = new ColumnConstraints();
         col1Style.setPercentWidth(20);
         gp.getColumnConstraints().add(col1Style);
@@ -242,15 +248,7 @@ public class ProjectView extends Observable {
         ArrayList<String> userNameAL = new ArrayList<String>();
         userNameAL.add(mv.getCurrUserName());
         rs = msdb.getData("select * from user_project_link where UserName in (?)", userNameAL);
-        for (ArrayList<String> row : rs) {
-            mv.setCurrProjectID(row.get(1));
-        }
 
-        ArrayList<String> projectIDAL = new ArrayList<>();
-        projectIDAL.add(mv.getCurrProjectID());
-        rs = msdb.getData("Select Name, Summary, Topic, DueDate, Grade,ProposalApproved from  project where ID in (?)", projectIDAL);
-        // TODO: 12/14/17 7. make another call here to get more info.
-        moreInfoArray = msdb.getData("SELECT * FROM project WHERE ID IN (?)", projectIDAL); //populating a new array.
 
         if (rs.size() == 1) {//They do not have any project info, so we need to make the view to add a project.
             //TODO: notify the user that they have no projects before the new view is made.
@@ -258,6 +256,14 @@ public class ProjectView extends Observable {
             makeAddProjectView();
             return false;
         } else {
+            System.out.println(rs);
+            mv.setCurrProjectID(rs.get(1).get(1));
+            System.out.println("CURR ID IS: " + mv.getCurrProjectID());
+            ArrayList<String> projectIDAL = new ArrayList<>();
+            projectIDAL.add(mv.getCurrProjectID());
+            rs = msdb.getData("Select Name, Summary, Topic, DueDate, Grade,ProposalApproved from  project where ID in (?)", projectIDAL);
+            // TODO: 12/14/17 7. make another call here to get more info.
+            moreInfoArray = msdb.getData("SELECT * FROM project WHERE ID IN (?)", projectIDAL); //populating a new array.
             //add their project info to the grid pane one row at a time
             int rowCount = 0;
             for (int i = 0; i < rs.get(1).size(); i++) {
@@ -516,10 +522,9 @@ public class ProjectView extends Observable {
                 Button btn = new Button("NOTIFY");
                 btn.setOnAction(e -> {
 
-                    if (rs.size() == 1){
+                    if (rs.size() == 1) {
                         System.out.println("they dont have an email");
-                    }
-                    else{
+                    } else {
                         if (curr.get(0).equals("Michael.Floeser@rit.edu")) {
                             mv.sendEmail(curr.get(0), "Test sending an email");
                         } else {
@@ -612,9 +617,7 @@ public class ProjectView extends Observable {
     }
 
     /**
-     * helper used to convert a Full Name to a user name EX: Gavin Drabik -> grd2747.
-     *
-     * @param _name to be converted
+     * @param _name
      * @return
      */
     private String nameToUserName(String _name) {
@@ -741,8 +744,15 @@ public class ProjectView extends Observable {
                 gp.add(noButton, 3, rowCount);
 
                 //select project id where username = curr.get(0)
-                String notifierProjectID = msdb.getData("SELECT ProjectID from user_project_link where UserName in (?)",
-                        new ArrayList<String>(Arrays.asList(curr.get(0)))).get(1).get(0);
+                ArrayList<String> notifierUserNameAL = new ArrayList<>(Arrays.asList(curr.get(0)));
+                rs = msdb.getData("SELECT ProjectID from user_project_link where UserName in (?)", notifierUserNameAL);
+
+                if (rs.size() == 1) {//project was deleted but a notification is still there
+                    msdb.setData("UPDATE user_notifications set Approved = 0 WHERE NotifierUserName in (?)", notifierUserNameAL);
+                    makeFacultyView();
+                    return;
+                }
+                String notifierProjectID = rs.get(1).get(0);
                 ArrayList<String> queryVals = new ArrayList<>();
                 queryVals.add(mv.getCurrUserName());
                 queryVals.add(notifierProjectID);

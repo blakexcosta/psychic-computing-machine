@@ -16,7 +16,7 @@ public class BusinessLayer {
         try {
             int projID = Integer.parseInt(newProjectVals.get(0));
             String projNm = newProjectVals.get(1).toString();
-            String projSum = newProjectVals.get(2).toString();
+            String projSum = newProjectVals.get(2).toString();  
             String projTopic = newProjectVals.get(3).toString();
             String projType = newProjectVals.get(4).toString();
             projType = projType.toUpperCase();
