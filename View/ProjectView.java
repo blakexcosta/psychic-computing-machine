@@ -33,7 +33,7 @@ public class ProjectView extends Observable {
     private GridPane gp, facGP;
     private Label mainHeader, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved;
     private TextField inputName, inputSummary, inputStartDate, inputEndDate, inputDueDate, inputTopic, inputType;
-    private Button showMilestonesButton, editInfoButton, committeeInfoButton, deleteProjectButton, showMoreInfoButton, staffPlagiarismButton;
+    private Button showMilestonesButton, editInfoButton, committeeInfoButton, deleteProjectButton, showMoreInfoButton, staffPlagiarismButton, approveProjectButton;
     private ComboBox memberDropdown, staffProjectDropdown, facultyDropdown;
     private ArrayList<ArrayList<String>> rs;
     private ArrayList<ArrayList<String>> moreInfoArray; //used to get more information from the project, used when a button is clicked.
@@ -239,7 +239,7 @@ public class ProjectView extends Observable {
     }
 
     /**
-     * returns true or false based on if the user has project informatioh. If not the view needs to be made to add a project
+     * returns true or false based on if the user has project information. If not the view needs to be made to add a project
      *
      * @return
      */
@@ -248,7 +248,6 @@ public class ProjectView extends Observable {
         ArrayList<String> userNameAL = new ArrayList<String>();
         userNameAL.add(mv.getCurrUserName());
         rs = msdb.getData("select * from user_project_link where UserName in (?)", userNameAL);
-
 
         if (rs.size() == 1) {//They do not have any project info, so we need to make the view to add a project.
             //TODO: notify the user that they have no projects before the new view is made.
@@ -648,6 +647,12 @@ public class ProjectView extends Observable {
             makeStaffPlagiarismPopup();
         });
 
+        approveProjectButton = new Button();
+        approveProjectButton.setText("Approve project");
+        approveProjectButton.setOnAction(e -> {makeApproveProjectPopup();
+        });
+
+
         //Combo box that contains the projects
         ComboBox projectsComboBox = loadStaffDBInfo();
 
@@ -705,15 +710,17 @@ public class ProjectView extends Observable {
         }
 
 
+
+
+        //After the scene is made completely these two methods run which will update the master view to our new view
+        setChanged();
+        notifyObservers(sc);
+
         //this pops up a window so if you are having difficulties just comment it out and I can finish up this part - Gavin
         if (msdb.checkUserHasNotifications(mv.getCurrUserName(), "committee")) {
             makeFacultyNotifactionPopup();
             System.out.println("Professor has notifications to be added to a committee");
         }
-
-        //After the scene is made completely these two methods run which will update the master view to our new view
-        setChanged();
-        notifyObservers(sc);
     }
 
     private void makeFacultyNotifactionPopup() {
@@ -782,6 +789,7 @@ public class ProjectView extends Observable {
         }
 
         popupWindow.show();
+        popupWindow.toFront();
     }
 
     private ComboBox<String> makeFacultyProjOptionsDropdown() {
@@ -877,7 +885,7 @@ public class ProjectView extends Observable {
         ComboBox projectsComboBox = loadStaffDBInfo();
 
 
-        gp.addColumn(0, projectsComboBox, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved, staffPlagiarismButton);
+        gp.addColumn(0, projectsComboBox, labName, labSummary, labTopic, labType, labStartDate, labEndDate, labDueDate, labGrade, labApproved, staffPlagiarismButton,approveProjectButton);
 
         for (String curr : rs.get(1)) {
             Label lab = new Label(curr);
@@ -893,8 +901,6 @@ public class ProjectView extends Observable {
 
     public void makeStaffPlagiarismPopup() {
         ArrayList<String> projectIDAL = new ArrayList<>(Arrays.asList(mv.getCurrProjectID()));
-        System.out.println("Current Project ID: " + mv.getCurrProjectID());
-
         Stage popupWindow = new Stage();
         gp = new GridPane();
         Scene popupInfo = new Scene(gp, 600, 800);
@@ -932,5 +938,28 @@ public class ProjectView extends Observable {
 
         popupWindow.show();
         makeStaffView();
+    }
+
+    public void makeApproveProjectPopup(){
+        ArrayList<String> projectIDAL = new ArrayList<>(Arrays.asList(mv.getCurrProjectID()));
+        Stage popupWindow = new Stage();
+        gp = new GridPane();
+        Scene popupInfo = new Scene(gp, 600, 800);
+        popupWindow.setScene(popupInfo);
+        Label approveHeader = new Label("Aprrove the project?");
+        Button yesButt = new Button("Yes");
+        Button noButt = new Button("No");
+        gp.add(approveHeader,0,0);
+        gp.addRow(1, yesButt,noButt);
+        yesButt.setOnAction(e -> {
+            msdb.setData("UPDATE project set ProposalApproved = 1 where ID in (?)",projectIDAL);
+            popupWindow.close();
+            makeStaffView();
+        });
+        noButt.setOnAction(e -> {
+            makeStaffView();
+        });
+        popupWindow.show();
+
     }
 }

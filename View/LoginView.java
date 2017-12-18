@@ -113,7 +113,18 @@ public class LoginView extends Observable {
                     mv.getInfoView().makeFacultyView();
                 }
             } else {//login was not successful
-                passwordField.setText(""); //reset the text
+                Alert a = new Alert(Alert.AlertType.WARNING);
+                a.setTitle("Incorrect login");
+                a.setHeaderText("Incorret username or password");
+                a.setResizable(true);
+                a.showAndWait();
+//                Alert al = new Alert(Alert.AlertType.CONFIRMATION);
+//                al.setTitle("Incorrect login");
+//                al.setContentText("Incorrect username or password");
+//                al.showAndWait();
+
+
+                    passwordField.setText(""); //reset the text
             }
         });
     }

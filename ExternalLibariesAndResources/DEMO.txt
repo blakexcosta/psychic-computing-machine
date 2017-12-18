@@ -1,0 +1,21 @@
+Basic flow of a student making a new project and adding a committee member. (Takes all three roles)
+
+Login as ab1234
+-Project more info popup
+-edit project info
+-delete project
+-make new project
+
+Switch to staff(GradCoord)
+-show staff info
+-edit staff info
+-Approve project
+
+Back to ab1234
+-add committee member mjfics
+-email notify
+
+Switch to mjfics
+-approve committee notification
+-show committee
+
